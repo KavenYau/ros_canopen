@@ -1,6 +1,6 @@
 #include <class_loader/class_loader.hpp>
-#include <socketcan_interface/reader.h>
-#include <canopen_master/canopen.h>
+#include <socketcan_interface/reader.hpp>
+#include <canopen_master/canopen.hpp>
 
 #include <set>
 
@@ -14,7 +14,7 @@ protected:
     std::set<void *> nodes_;
     boost::mutex nodes_mutex_;
     std::atomic<size_t> nodes_size_;
-    
+
     virtual void handleShutdown(LayerStatus &status) {
     }
 
@@ -40,7 +40,7 @@ public:
     }
 };
 
-    
+
 class SimpleSyncLayer: public ManagingSyncLayer {
     time_point read_time_, write_time_;
 protected:
@@ -114,4 +114,3 @@ typedef WrapMaster<ExternalSyncLayer> ExternalMaster;
 }
 CLASS_LOADER_REGISTER_CLASS(canopen::SimpleMaster::Allocator, canopen::Master::Allocator);
 CLASS_LOADER_REGISTER_CLASS(canopen::ExternalMaster::Allocator, canopen::Master::Allocator);
-

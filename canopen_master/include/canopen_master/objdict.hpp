@@ -10,7 +10,7 @@
 #include <functional>
 #include <typeinfo>
 #include <vector>
-#include "exceptions.h"
+#include "exceptions.hpp"
 
 #include <socketcan_interface/helpers.hpp>
 

@@ -1,4 +1,4 @@
-#include <canopen_master/canopen.h>
+#include <canopen_master/canopen.hpp>
 
 using namespace canopen;
 
@@ -47,7 +47,7 @@ struct InitiateLong{
     uint16_t index;
     uint8_t sub_index;
     uint8_t payload[4];
-    
+
     size_t data_size(){
         if(expedited && size_indicated) return 4-num;
         else if(!expedited && size_indicated) return payload[0] | (payload[3]<<8);
@@ -99,7 +99,7 @@ struct SegmentLong{
 
 struct DownloadInitiateRequest: public FrameOverlay<InitiateLong>{
     static const uint8_t command = 1;
-    
+
     DownloadInitiateRequest(const Header &h, const canopen::ObjectDict::Entry &entry, const String &buffer, size_t &offset) : FrameOverlay(h) {
         data.command = command;
         data.index = entry.index;
@@ -111,9 +111,9 @@ struct DownloadInitiateRequest: public FrameOverlay<InitiateLong>{
 
 struct DownloadInitiateResponse: public FrameOverlay<InitiateShort>{
     static const uint8_t command = 3;
-    
+
     DownloadInitiateResponse(const can::Frame &f) : FrameOverlay(f){ }
-    
+
     bool test(const can::Frame  &msg, uint32_t &reason){
         DownloadInitiateRequest req(msg);
         if(req.data.command ==  DownloadInitiateRequest::command && data.index == req.data.index && data.sub_index == req.data.sub_index){
@@ -126,9 +126,9 @@ struct DownloadInitiateResponse: public FrameOverlay<InitiateShort>{
 
 struct DownloadSegmentRequest: public FrameOverlay<SegmentLong>{
     static const uint8_t command = 0;
-    
+
     DownloadSegmentRequest(const can::Frame &f) : FrameOverlay(f){ }
-    
+
     DownloadSegmentRequest(const Header &h, bool toggle, const String &buffer, size_t& offset) : FrameOverlay(h) {
         data.command = command;
         data.toggle = toggle?1:0;
@@ -173,7 +173,7 @@ struct UploadInitiateResponse: public FrameOverlay<InitiateLong>{
                 if(ds == 0  || size == 0 || ds >= size) { // should be ==, but >= is needed for Elmo, it responses with more byte than requested
                     if(!data.expedited || (ds <= 4 && size <= 4)) return true;
                 }else{
-                    reason = 0x06070010; // Data type does not match, length of service parameter does not match                    
+                    reason = 0x06070010; // Data type does not match, length of service parameter does not match
                     return false;
                 }
         }
@@ -237,7 +237,7 @@ struct AbortData{
     uint16_t index;
     uint8_t sub_index;
     uint32_t reason;
-    
+
     const char * text(){
         switch(reason){
         case 0x05030000: return "Toggle bit not alternated.";
@@ -297,7 +297,7 @@ void SDOClient::abort(uint32_t reason){
 
 bool SDOClient::processFrame(const can::Frame & msg){
     if(msg.dlc != 8) return false;
-    
+
     uint32_t reason = 0;
     switch(msg.data[0] >> 5){
         case DownloadInitiateResponse::command:
@@ -324,7 +324,7 @@ bool SDOClient::processFrame(const can::Frame & msg){
             }
             break;
         }
-            
+
         case UploadInitiateResponse::command:
         {
             UploadInitiateResponse resp(msg);
@@ -368,8 +368,8 @@ bool SDOClient::processFrame(const can::Frame & msg){
     }
     return true;
 
-}    
-    
+}
+
 void SDOClient::init(){
     assert(storage_);
     assert(interface_);
@@ -381,7 +381,7 @@ void SDOClient::init(){
     catch(...){
         client_id = can::MsgHeader(0x600+ storage_->node_id_);
     }
-    
+
     last_msg = AbortTranserRequest(client_id, 0,0,0);
     current_entry = 0;
 
