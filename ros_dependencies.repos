@@ -1,10 +1,20 @@
 repositories:
-  # xacro:
-  #   type: git
-  #   url: https://github.com/samiamlabs/xacro.git
-  #   version: ros2
+  xacro:
+    type: git
+    url: https://github.com/samiamlabs/xacro.git
+    version: ros2
 
   diagnostics:
     type: git
     url: https://github.com/ros/diagnostics.git
     version: ros2-devel
+
+  ros2_control:
+    type: git
+    url: https://github.com/ros-controls/ros2_control.git
+    version: crystal
+
+  ros2_controllers:
+    type: git
+    url: https://github.com/ros-controls/ros2_controllers.git
+    version: crystal

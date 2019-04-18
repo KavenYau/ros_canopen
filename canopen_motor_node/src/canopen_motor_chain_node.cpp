@@ -1,22 +1,19 @@
-#include <canopen_motor_node/motor_chain.h>
+#include <canopen_motor_node/motor_chain.hpp>
 
 using namespace canopen;
 
 
 int main(int argc, char** argv){
-  ros::init(argc, argv, "canopen_motor_chain_node");
-  ros::AsyncSpinner spinner(0);
-  spinner.start();
+  rclcpp::init(argc,  argv);
 
-  ros::NodeHandle nh;
-  ros::NodeHandle nh_priv("~");
+  auto node = std::make_shared<MotorChain>("motor_chain_node");
 
-  MotorChain chain(nh, nh_priv);
-
-  if(!chain.setup()){
+  if(!node->setup()){
       return 1;
   }
 
-  ros::waitForShutdown();
+  rclcpp::spin(node);
+  rclcpp::shutdown();
+
   return 0;
 }

@@ -4,10 +4,10 @@
 
 #include <memory>
 
-#include <ros/node_handle.h>
+// #include <ros/node_handle.h>
 #include <atomic>
-#include <canopen_master/canopen.h>
-#include <canopen_motor_node/robot_layer.h>
+#include <canopen_master/canopen.hpp>
+#include <canopen_motor_node/robot_layer.hpp>
 
 // forward declarations
 namespace controller_manager {
@@ -17,17 +17,21 @@ namespace controller_manager {
 namespace canopen {
 
 class ControllerManagerLayer : public canopen::Layer {
-    std::shared_ptr<controller_manager::ControllerManager> cm_;
+    // std::shared_ptr<controller_manager::ControllerManager> cm_;
     canopen::RobotLayerSharedPtr robot_;
-    ros::NodeHandle nh_;
+    // ros::NodeHandle nh_;
 
     canopen::time_point last_time_;
     std::atomic<bool> recover_;
-    const ros::Duration fixed_period_;
+    // const ros::Duration fixed_period_;
 
 public:
-    ControllerManagerLayer(const canopen::RobotLayerSharedPtr robot, const ros::NodeHandle &nh, const ros::Duration &fixed_period)
-    :Layer("ControllerManager"), robot_(robot), nh_(nh), fixed_period_(fixed_period) {
+    // ControllerManagerLayer(const canopen::RobotLayerSharedPtr robot, const ros::NodeHandle &nh, const ros::Duration &fixed_period)
+    // :Layer("ControllerManager"), robot_(robot), nh_(nh), fixed_period_(fixed_period) {
+    // }
+
+    ControllerManagerLayer(const canopen::RobotLayerSharedPtr robot)
+    :Layer("ControllerManager"), robot_(robot) {
     }
 
     virtual void handleRead(canopen::LayerStatus &status, const LayerState &current_state);
