@@ -21,55 +21,62 @@ void RobotLayer::stopControllers(const std::vector<std::string> controllers){
     // call.detach();
 }
 
-// void RobotLayer::add(const std::string &name, HandleLayerBaseSharedPtr handle){
-//     // LayerGroupNoDiag::add(handle);
-//     // handles_.insert(std::make_pair(name, handle));
-// }
+void RobotLayer::add(const std::string &name, HandleLayerBaseSharedPtr handle){
+    LayerGroupNoDiag::add(handle);
+    handles_.insert(std::make_pair(name, handle));
+}
 
-// RobotLayer::RobotLayer() : LayerGroupNoDiag<HandleLayerBase>("RobotLayer"), first_init_(true)
-// {
-//     // registerInterface(&state_interface_);
-//     // registerInterface(&pos_interface_);
-//     // registerInterface(&vel_interface_);
-//     // registerInterface(&eff_interface_);
-//     //
-//     // urdf_.initParam("robot_description");
-// }
+RobotLayer::RobotLayer(rclcpp::Logger logger) :
+  LayerGroupNoDiag<HandleLayerBase>("RobotLayer"), first_init_(true), ros_logger_(logger)
+{
+    // ros_logger_ = logger;
+    // registerInterface(&state_interface_);
+    // registerInterface(&pos_interface_);
+    // registerInterface(&vel_interface_);
+    // registerInterface(&eff_interface_);
+    //
+    // urdf_.initParam("robot_description");
+}
 
 void RobotLayer::handleInit(LayerStatus &status){
-    // if(first_init_){
-    //     for(HandleMap::iterator it = handles_.begin(); it != handles_.end(); ++it){
-    //         joint_limits_interface::JointLimits limits;
-    //         joint_limits_interface::SoftJointLimits soft_limits;
-    //
-    //         urdf::JointConstSharedPtr joint = getJoint(it->first);
-    //
-    //         if(!joint){
-    //             status.error("joint " + it->first + " not found");
-    //             return;
-    //         }
-    //
-    //         bool has_joint_limits = joint_limits_interface::getJointLimits(joint, limits);
-    //
-    //         has_joint_limits = joint_limits_interface::getJointLimits(it->first, nh_, limits) || has_joint_limits;
-    //
-    //         bool has_soft_limits = has_joint_limits && joint_limits_interface::getSoftJointLimits(joint, soft_limits);
-    //
-    //         if(!has_joint_limits){
-    //             ROS_WARN_STREAM("No limits found for " << it->first);
-    //         }
-    //
-    //         it->second->registerHandle(state_interface_);
-    //
-    //         const hardware_interface::JointHandle *h  = 0;
-    //
-    //         it->second->registerHandle(pos_interface_, limits, has_soft_limits ? &soft_limits : 0);
-    //         it->second->registerHandle(vel_interface_, limits, has_soft_limits ? &soft_limits : 0);
-    //         it->second->registerHandle(eff_interface_, limits, has_soft_limits ? &soft_limits : 0);
-    //     }
-    //     first_init_ = false;
-    // }
-    // LayerGroupNoDiag::handleInit(status);
+    RCLCPP_INFO(ros_logger_, "handle init robot layer");
+
+    if(first_init_){
+        for(HandleMap::iterator it = handles_.begin(); it != handles_.end(); ++it){
+            // joint_limits_interface::JointLimits limits;
+            // joint_limits_interface::SoftJointLimits soft_limits;
+            //
+            // urdf::JointConstSharedPtr joint = getJoint(it->first);
+            //
+            // if(!joint){
+            //     status.error("joint " + it->first + " not found");
+            //     return;
+            // }
+            //
+            // bool has_joint_limits = joint_limits_interface::getJointLimits(joint, limits);
+            //
+            // has_joint_limits = joint_limits_interface::getJointLimits(it->first, nh_, limits) || has_joint_limits;
+            //
+            // bool has_soft_limits = has_joint_limits && joint_limits_interface::getSoftJointLimits(joint, soft_limits);
+            //
+            // if(!has_joint_limits){
+            //     ROS_WARN_STREAM("No limits found for " << it->first);
+            // }
+            //
+            // it->second->registerHandle(state_interface_);
+            //
+            // const hardware_interface::JointHandle *h  = 0;
+            //
+            // it->second->registerHandle(pos_interface_, limits, has_soft_limits ? &soft_limits : 0);
+            // it->second->registerHandle(vel_interface_, limits, has_soft_limits ? &soft_limits : 0);
+            // it->second->registerHandle(eff_interface_, limits, has_soft_limits ? &soft_limits : 0);
+
+            // RCLCPP_INFO(ros_logger_, "motor node: %u", it->second->motor_->getMode());
+        }
+        first_init_ = false;
+    }
+
+    LayerGroupNoDiag::handleInit(status);
 }
 
 // void RobotLayer::enforce(const ros::Duration &period, bool reset){

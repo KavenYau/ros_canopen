@@ -18,7 +18,7 @@ namespace canopen {
 class MotorChain : public RosChain {
     ClassAllocator<MotorBase> motor_allocator_;
     std::shared_ptr<LayerGroupNoDiag<MotorBase> > motors_;
-    // RobotLayerSharedPtr robot_layer_;
+    RobotLayerSharedPtr robot_layer_;
 
     // std::shared_ptr<ControllerManagerLayer> cm_;
 
@@ -29,6 +29,9 @@ public:
     MotorChain(std::string node_name = "motor_chain_node");
 
     virtual bool setup_chain();
+
+    // NOTE(sam): optional?
+    bool setup_debug_interface();
 };
 
 }  // namespace canopen

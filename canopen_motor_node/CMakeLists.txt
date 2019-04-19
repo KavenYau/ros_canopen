@@ -6,6 +6,7 @@ if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 14)
 endif()
 
+find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(canopen_402 REQUIRED)
 find_package(canopen_chain_node REQUIRED)
@@ -73,6 +74,7 @@ target_link_libraries(canopen_motor
 
 ament_target_dependencies(canopen_motor
   "rclcpp"
+  "canopen_master"
   "canopen_chain_node"
   "canopen_402"
 )

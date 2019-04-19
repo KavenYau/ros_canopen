@@ -1,4 +1,3 @@
-
 #ifndef CANOPEN_MOTOR_NODE_ROBOT_LAYER_H_
 #define CANOPEN_MOTOR_NODE_ROBOT_LAYER_H_
 
@@ -10,6 +9,10 @@
 // #include <hardware_interface/robot_hw.h>
 // #include <urdf/urdfdom_compatibility.h>
 // #include <urdf/model.h>
+
+
+#include <rclcpp/rclcpp.hpp>
+
 #include <canopen_402/base.hpp>
 #include <canopen_motor_node/handle_layer_base.hpp>
 
@@ -32,8 +35,8 @@ class RobotLayer : public LayerGroupNoDiag<HandleLayerBase>{  //, public hardwar
     // ros::NodeHandle nh_;
     // urdf::Model urdf_;
 
-    // typedef std::unordered_map< std::string, HandleLayerBaseSharedPtr > HandleMap;
-    // HandleMap handles_;
+    typedef std::unordered_map<std::string, HandleLayerBaseSharedPtr> HandleMap;
+    HandleMap handles_;
     struct SwitchData {
         // HandleLayerBaseSharedPtr handle;
         canopen::MotorBase::OperationMode mode;
@@ -47,8 +50,8 @@ class RobotLayer : public LayerGroupNoDiag<HandleLayerBase>{  //, public hardwar
 
     void stopControllers(const std::vector<std::string> controllers);
 public:
-    // void add(const std::string &name, HandleLayerBaseSharedPtr handle);
-    RobotLayer();
+    void add(const std::string &name, HandleLayerBaseSharedPtr handle);
+    RobotLayer(rclcpp::Logger logger);
     // RobotLayer(ros::NodeHandle nh);
     // urdf::JointConstSharedPtr getJoint(const std::string &n) const { return ""; } //urdf_.getJoint(n); }
 
@@ -56,6 +59,9 @@ public:
     // void enforce(const ros::Duration &period, bool reset);
     // virtual bool prepareSwitch(const std::list<hardware_interface::ControllerInfo> &start_list, const std::list<hardware_interface::ControllerInfo> &stop_list);
     // virtual void doSwitch(const std::list<hardware_interface::ControllerInfo> &start_list, const std::list<hardware_interface::ControllerInfo> &stop_list);
+private:
+    rclcpp::Logger ros_logger_;
+
 };
 
 typedef std::shared_ptr<RobotLayer> RobotLayerSharedPtr;

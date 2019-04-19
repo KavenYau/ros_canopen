@@ -55,7 +55,8 @@ bool HandleLayer::select(const MotorBase::OperationMode &m){
 //    // conv_eff_.reset(new UnitConverter(e2r, std::bind(&ObjectVariables::getVariable, &variables_, std::placeholders::_1)));
 // }
 
-HandleLayer::HandleLayer(const std::string & name) : HandleLayerBase("change_me!")
+HandleLayer::HandleLayer(const std::string & name, const canopen::MotorBaseSharedPtr & motor, const canopen::ObjectStorageSharedPtr storage) :
+  HandleLayerBase(name + " Handle"), motor_(motor)
 {}
 
 HandleLayer::CanSwitchResult HandleLayer::canSwitch(const MotorBase::OperationMode &m){
