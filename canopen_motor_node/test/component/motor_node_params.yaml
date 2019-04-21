@@ -30,5 +30,7 @@ canopen_driver:
       motor_0:
         id: 8
         eds_pkg: 'canopen_chain_node' # optional package  name for relative path
-        eds_file: 'test/eds/ISD860.dcf' # path to EDS/DCF file
-        publish: ["obj:6040", "obj:6041", "obj:6061!", "obj:6064!", "obj:6069!"] # list of objects to be published (one topic per node)
+        # eds_file: 'test/eds/ISD860.dcf' # path to EDS/DCF file
+        # publish: ["obj:6040", "obj:6041", "obj:6061!", "obj:6064!", "obj:6069!",
+        #           "obj:6062!", "obj:606b!", "obj:606c!", "obj:607a!",
+        #           "obj:607c!"] # list of objects to be published (one topic per node)

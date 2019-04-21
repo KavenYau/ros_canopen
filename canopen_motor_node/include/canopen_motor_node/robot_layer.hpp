@@ -36,7 +36,6 @@ class RobotLayer : public LayerGroupNoDiag<HandleLayerBase>{  //, public hardwar
     // urdf::Model urdf_;
 
     typedef std::unordered_map<std::string, HandleLayerBaseSharedPtr> HandleMap;
-    HandleMap handles_;
     struct SwitchData {
         // HandleLayerBaseSharedPtr handle;
         canopen::MotorBase::OperationMode mode;
@@ -50,6 +49,7 @@ class RobotLayer : public LayerGroupNoDiag<HandleLayerBase>{  //, public hardwar
 
     void stopControllers(const std::vector<std::string> controllers);
 public:
+    HandleMap handles_;
     void add(const std::string &name, HandleLayerBaseSharedPtr handle);
     RobotLayer(rclcpp::Logger logger);
     // RobotLayer(ros::NodeHandle nh);

@@ -12,6 +12,8 @@ class HandleLayerBase: public canopen::Layer{
 public:
     HandleLayerBase(const std::string &name) : Layer(name) {}
 
+    canopen::MotorBaseSharedPtr motor_;
+
     enum CanSwitchResult{
         NotSupported,
         NotReadyToSwitch,

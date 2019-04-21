@@ -512,7 +512,7 @@ void Motor402::handleDiag(LayerReport &report){
         report.add("402 State Machine", "Not ready to switch on");
       }
     } else if (first_bits == 0b0001) {
-      report.add("402 State Machine", "Not ready to switch on");
+      report.add("402 State Machine", "Ready to switch on");
     } else if (first_bits == 0b0011) {
       report.add("402 State Machine", "Switched on");
     } else if (first_bits == 0b0111) {

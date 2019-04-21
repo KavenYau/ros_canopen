@@ -15,34 +15,33 @@
 
 #include <canopen_chain_node/ros_chain.hpp>
 
-#include <std_msgs/msg/int8.hpp>
+#include <std_msgs/msg/float32.hpp>
+#include <std_msgs/msg/float64.hpp>
 #include <std_msgs/msg/int16.hpp>
 #include <std_msgs/msg/int32.hpp>
 #include <std_msgs/msg/int64.hpp>
-#include <std_msgs/msg/u_int8.hpp>
+#include <std_msgs/msg/int8.hpp>
+#include <std_msgs/msg/string.hpp>
 #include <std_msgs/msg/u_int16.hpp>
 #include <std_msgs/msg/u_int32.hpp>
 #include <std_msgs/msg/u_int64.hpp>
-#include <std_msgs/msg/float32.hpp>
-#include <std_msgs/msg/float64.hpp>
-#include <std_msgs/msg/string.hpp>
+#include <std_msgs/msg/u_int8.hpp>
 
-#include <string>
-#include <memory>
 #include <map>
-#include <vector>
+#include <memory>
+#include <string>
 #include <utility>
+#include <vector>
 
 // using namespace can;
 
-namespace canopen
-{
+namespace canopen {
 
-template<typename Tpub, int dt>
-PublishFuncType RosChain::createPublisher(
-  const std::string & name, ObjectStorageSharedPtr storage,
-  const std::string & key, const bool force)
-{
+template <typename Tpub, int dt>
+PublishFuncType RosChain::createPublisher(const std::string &name,
+                                          ObjectStorageSharedPtr storage,
+                                          const std::string &key,
+                                          const bool force) {
   using data_type = typename ObjectStorage::DataType<dt>::type;
   using entry_type = ObjectStorage::Entry<data_type>;
 
@@ -53,74 +52,79 @@ PublishFuncType RosChain::createPublisher(
 
   auto pub = this->create_publisher<Tpub>(name);
 
-  typedef const data_type (entry_type::* getter_type)(void);
+  typedef const data_type (entry_type::*getter_type)(void);
   const getter_type getter =
-    force ? static_cast<getter_type>(&entry_type::get) :
-    static_cast<getter_type>(&entry_type::get_cached);
+      force ? static_cast<getter_type>(&entry_type::get)
+            : static_cast<getter_type>(&entry_type::get_cached);
 
   return [force, pub, entry, getter]() mutable {
-           Tpub msg;
-           msg.data = (const typename Tpub::_data_type &)(entry.*getter)();
-           pub->publish(msg);
-         };
+    Tpub msg;
+    msg.data = (const typename Tpub::_data_type &)(entry.*getter)();
+    pub->publish(msg);
+  };
 }
 
-PublishFuncType RosChain::createPublishFunc(
-  const std::string & name, canopen::NodeSharedPtr node,
-  const std::string & key, bool force)
-{
+PublishFuncType RosChain::createPublishFunc(const std::string &name,
+                                            canopen::NodeSharedPtr node,
+                                            const std::string &key,
+                                            bool force) {
   ObjectStorageSharedPtr storage = node->getStorage();
 
   switch (ObjectDict::DataTypes(storage->dict_->get(key)->data_type)) {
-    case ObjectDict::DEFTYPE_INTEGER8:
-      return createPublisher<std_msgs::msg::Int8, ObjectDict::DEFTYPE_INTEGER8>(
+  case ObjectDict::DEFTYPE_INTEGER8:
+    return createPublisher<std_msgs::msg::Int8, ObjectDict::DEFTYPE_INTEGER8>(
         name, storage, key, force);
-    case ObjectDict::DEFTYPE_INTEGER16:
-      return createPublisher<std_msgs::msg::Int16, ObjectDict::DEFTYPE_INTEGER16>(
+  case ObjectDict::DEFTYPE_INTEGER16:
+    return createPublisher<std_msgs::msg::Int16, ObjectDict::DEFTYPE_INTEGER16>(
         name, storage, key, force);
-    case ObjectDict::DEFTYPE_INTEGER32:
-      return createPublisher<std_msgs::msg::Int32, ObjectDict::DEFTYPE_INTEGER32>(
+  case ObjectDict::DEFTYPE_INTEGER32:
+    return createPublisher<std_msgs::msg::Int32, ObjectDict::DEFTYPE_INTEGER32>(
         name, storage, key, force);
-    case ObjectDict::DEFTYPE_INTEGER64:
-      return createPublisher<std_msgs::msg::Int64, ObjectDict::DEFTYPE_INTEGER64>(
+  case ObjectDict::DEFTYPE_INTEGER64:
+    return createPublisher<std_msgs::msg::Int64, ObjectDict::DEFTYPE_INTEGER64>(
         name, storage, key, force);
-    case ObjectDict::DEFTYPE_UNSIGNED8:
-      return createPublisher<std_msgs::msg::UInt8, ObjectDict::DEFTYPE_UNSIGNED8>(
+  case ObjectDict::DEFTYPE_UNSIGNED8:
+    return createPublisher<std_msgs::msg::UInt8, ObjectDict::DEFTYPE_UNSIGNED8>(
         name, storage, key, force);
-    case ObjectDict::DEFTYPE_UNSIGNED16:
-      return createPublisher<std_msgs::msg::UInt16, ObjectDict::DEFTYPE_UNSIGNED16>(
+  case ObjectDict::DEFTYPE_UNSIGNED16:
+    return createPublisher<std_msgs::msg::UInt16,
+                           ObjectDict::DEFTYPE_UNSIGNED16>(name, storage, key,
+                                                           force);
+  case ObjectDict::DEFTYPE_UNSIGNED32:
+    return createPublisher<std_msgs::msg::UInt32,
+                           ObjectDict::DEFTYPE_UNSIGNED32>(name, storage, key,
+                                                           force);
+  case ObjectDict::DEFTYPE_UNSIGNED64:
+    return createPublisher<std_msgs::msg::UInt64,
+                           ObjectDict::DEFTYPE_UNSIGNED64>(name, storage, key,
+                                                           force);
+  case ObjectDict::DEFTYPE_REAL32:
+    return createPublisher<std_msgs::msg::Float32, ObjectDict::DEFTYPE_REAL32>(
         name, storage, key, force);
-    case ObjectDict::DEFTYPE_UNSIGNED32:
-      return createPublisher<std_msgs::msg::UInt32, ObjectDict::DEFTYPE_UNSIGNED32>(
+  case ObjectDict::DEFTYPE_REAL64:
+    return createPublisher<std_msgs::msg::Float64, ObjectDict::DEFTYPE_REAL64>(
         name, storage, key, force);
-    case ObjectDict::DEFTYPE_UNSIGNED64:
-      return createPublisher<std_msgs::msg::UInt64, ObjectDict::DEFTYPE_UNSIGNED64>(
+  case ObjectDict::DEFTYPE_VISIBLE_STRING:
+    return createPublisher<std_msgs::msg::String,
+                           ObjectDict::DEFTYPE_VISIBLE_STRING>(name, storage,
+                                                               key, force);
+  case ObjectDict::DEFTYPE_OCTET_STRING:
+    return createPublisher<std_msgs::msg::String, ObjectDict::DEFTYPE_DOMAIN>(
         name, storage, key, force);
-    case ObjectDict::DEFTYPE_REAL32:
-      return createPublisher<std_msgs::msg::Float32, ObjectDict::DEFTYPE_REAL32>(
-        name, storage, key, force);
-    case ObjectDict::DEFTYPE_REAL64:
-      return createPublisher<std_msgs::msg::Float64, ObjectDict::DEFTYPE_REAL64>(
-        name, storage, key, force);
-    case ObjectDict::DEFTYPE_VISIBLE_STRING:
-      return createPublisher<std_msgs::msg::String, ObjectDict::DEFTYPE_VISIBLE_STRING>(
-        name, storage, key, force);
-    case ObjectDict::DEFTYPE_OCTET_STRING:
-      return createPublisher<std_msgs::msg::String, ObjectDict::DEFTYPE_DOMAIN>(
-        name, storage, key, force);
-    case ObjectDict::DEFTYPE_UNICODE_STRING:
-      return createPublisher<std_msgs::msg::String, ObjectDict::DEFTYPE_UNICODE_STRING>(
-        name, storage, key, force);
-    case ObjectDict::DEFTYPE_DOMAIN:
-      return createPublisher<std_msgs::msg::String, ObjectDict::DEFTYPE_DOMAIN>(
+  case ObjectDict::DEFTYPE_UNICODE_STRING:
+    return createPublisher<std_msgs::msg::String,
+                           ObjectDict::DEFTYPE_UNICODE_STRING>(name, storage,
+                                                               key, force);
+  case ObjectDict::DEFTYPE_DOMAIN:
+    return createPublisher<std_msgs::msg::String, ObjectDict::DEFTYPE_DOMAIN>(
         name, storage, key, force);
 
-    default: return 0;
+  default:
+    return 0;
   }
 }
 
-void RosChain::logState(const can::State & s)
-{
+void RosChain::logState(const can::State &s) {
   can::DriverInterfaceSharedPtr interface = interface_;
   std::string msg;
   if (interface && !interface->translateError(s.internal_error, msg)) {
@@ -134,8 +138,7 @@ void RosChain::logState(const can::State & s)
   //   s.internal_error, msg.c_str());
 }
 
-void RosChain::run()
-{
+void RosChain::run() {
   running_ = true;
   time_point abs_time = boost::chrono::high_resolution_clock::now();
   while (running_) {
@@ -149,7 +152,7 @@ void RosChain::run()
       } else if (!s.bounded<LayerStatus::Ok>()) {
         RCLCPP_WARN(this->get_logger(), s.reason());
       }
-    } catch (const canopen::Exception & e) {
+    } catch (const canopen::Exception &e) {
       RCLCPP_ERROR(this->get_logger(), boost::diagnostic_information(e));
     }
     if (!sync_) {
@@ -160,9 +163,8 @@ void RosChain::run()
 }
 
 void RosChain::handle_init(
-  const std::shared_ptr<std_srvs::srv::Trigger::Request> request,
-  std::shared_ptr<std_srvs::srv::Trigger::Response> response)
-{
+    const std::shared_ptr<std_srvs::srv::Trigger::Request> request,
+    std::shared_ptr<std_srvs::srv::Trigger::Response> response) {
   RCLCPP_INFO(this->get_logger(), "Initializing XXX");
 
   boost::mutex::scoped_lock lock(mutex_);
@@ -184,7 +186,7 @@ void RosChain::handle_init(
       heartbeat_timer_.restart();
       return;
     }
-  } catch (const std::exception & e) {
+  } catch (const std::exception &e) {
     std::string info = boost::diagnostic_information(e);
     RCLCPP_ERROR(this->get_logger(), info);
     response->message = info;
@@ -199,9 +201,8 @@ void RosChain::handle_init(
 }
 
 void RosChain::handle_recover(
-  const std::shared_ptr<std_srvs::srv::Trigger::Request> request,
-  std::shared_ptr<std_srvs::srv::Trigger::Response> response)
-{
+    const std::shared_ptr<std_srvs::srv::Trigger::Request> request,
+    std::shared_ptr<std_srvs::srv::Trigger::Response> response) {
   RCLCPP_INFO(this->get_logger(), "Recovering XXX");
   boost::mutex::scoped_lock lock(mutex_);
   response->success = false;
@@ -210,8 +211,8 @@ void RosChain::handle_recover(
     LayerReport status;
     try {
       if (!reset_errors_before_recover_ ||
-        emcy_handlers_->callFunc<LayerStatus::Warn>(&EMCYHandler::resetErrors, status))
-      {
+          emcy_handlers_->callFunc<LayerStatus::Warn>(&EMCYHandler::resetErrors,
+                                                      status)) {
         recover(status);
       }
       if (!status.bounded<LayerStatus::Warn>()) {
@@ -219,7 +220,7 @@ void RosChain::handle_recover(
       }
       response->success = status.bounded<LayerStatus::Warn>();
       response->message = status.reason();
-    } catch (const std::exception & e) {
+    } catch (const std::exception &e) {
       std::string info = boost::diagnostic_information(e);
       RCLCPP_ERROR(this->get_logger(), info);
       response->message = info;
@@ -231,18 +232,17 @@ void RosChain::handle_recover(
   }
 }
 
-void RosChain::handleWrite(LayerStatus & status, const LayerState & current_state)
-{
+void RosChain::handleWrite(LayerStatus &status,
+                           const LayerState &current_state) {
   LayerStack::handleWrite(status, current_state);
   if (current_state > Shutdown) {
-    for (const PublishFuncType & func : publishers_) {
+    for (const PublishFuncType &func : publishers_) {
       func();
     }
   }
 }
 
-void RosChain::handleShutdown(LayerStatus & status)
-{
+void RosChain::handleShutdown(LayerStatus &status) {
   boost::mutex::scoped_lock lock(diag_mutex_);
   heartbeat_timer_.stop();
   LayerStack::handleShutdown(status);
@@ -255,9 +255,8 @@ void RosChain::handleShutdown(LayerStatus & status)
 }
 
 void RosChain::handle_shutdown(
-  const std::shared_ptr<std_srvs::srv::Trigger::Request> request,
-  std::shared_ptr<std_srvs::srv::Trigger::Response> response)
-{
+    const std::shared_ptr<std_srvs::srv::Trigger::Request> request,
+    std::shared_ptr<std_srvs::srv::Trigger::Response> response) {
   RCLCPP_INFO(this->get_logger(), "Shuting down XXX");
   boost::mutex::scoped_lock lock(mutex_);
   response->success = true;
@@ -271,9 +270,8 @@ void RosChain::handle_shutdown(
 }
 
 void RosChain::handle_halt(
-  const std::shared_ptr<std_srvs::srv::Trigger::Request> request,
-  std::shared_ptr<std_srvs::srv::Trigger::Response> response)
-{
+    const std::shared_ptr<std_srvs::srv::Trigger::Request> request,
+    std::shared_ptr<std_srvs::srv::Trigger::Response> response) {
   RCLCPP_INFO(this->get_logger(), "Halting down XXX");
   boost::mutex::scoped_lock lock(mutex_);
   response->success = true;
@@ -286,73 +284,70 @@ void RosChain::handle_halt(
 }
 
 void RosChain::handle_get_object(
-  const std::shared_ptr<canopen_msgs::srv::GetObject::Request> request,
-  std::shared_ptr<canopen_msgs::srv::GetObject::Response> response)
-{
+    const std::shared_ptr<canopen_msgs::srv::GetObject::Request> request,
+    std::shared_ptr<canopen_msgs::srv::GetObject::Response> response) {
   std::map<std::string, canopen::NodeSharedPtr>::iterator it =
-    nodes_lookup_.find(request->node);
+      nodes_lookup_.find(request->node);
   if (it == nodes_lookup_.end()) {
     response->message = "node not found";
   } else {
     try {
       response->value = it->second->getStorage()->getStringReader(
-        canopen::ObjectDict::Key(request->object), request->cached)();
+          canopen::ObjectDict::Key(request->object), request->cached)();
       response->success = true;
-    } catch (std::exception & e) {
+    } catch (std::exception &e) {
       response->message = boost::diagnostic_information(e);
     }
   }
 }
 
 void RosChain::handle_set_object(
-  const std::shared_ptr<canopen_msgs::srv::SetObject::Request> request,
-  std::shared_ptr<canopen_msgs::srv::SetObject::Response> response)
-{
+    const std::shared_ptr<canopen_msgs::srv::SetObject::Request> request,
+    std::shared_ptr<canopen_msgs::srv::SetObject::Response> response) {
   std::map<std::string, canopen::NodeSharedPtr>::iterator it =
-    nodes_lookup_.find(request->node);
+      nodes_lookup_.find(request->node);
   if (it == nodes_lookup_.end()) {
     response->message = "node not found";
   } else {
     try {
       it->second->getStorage()->getStringWriter(
-        canopen::ObjectDict::Key(request->object), request->cached)(request->value);
+          canopen::ObjectDict::Key(request->object),
+          request->cached)(request->value);
       response->success = true;
-    } catch (std::exception & e) {
+    } catch (std::exception &e) {
       response->message = boost::diagnostic_information(e);
     }
   }
 }
 
-bool RosChain::setup_bus()
-{
+bool RosChain::setup_bus() {
   std::string can_device;
   std::string driver_plugin;
   std::string master_alloc;
   bool loopback;
 
   if (!get_parameter_or("bus.device", can_device, std::string("can0"))) {
-    RCLCPP_WARN(this->get_logger(),
-      "CAN device not specified, using can0");
+    RCLCPP_WARN(this->get_logger(), "CAN device not specified, using can0");
   }
   RCLCPP_INFO(this->get_logger(), "can device: %s", can_device.c_str());
 
-  if (!get_parameter_or("bus.driver_plugin", driver_plugin,
-    std::string("socketcan_interface/SocketCANInterface")))
-  {
+  if (!get_parameter_or(
+          "bus.driver_plugin", driver_plugin,
+          std::string("socketcan_interface/SocketCANInterface"))) {
     RCLCPP_WARN(this->get_logger(),
-      "driver_plugin not specified, using can::SocketCANInterface");
+                "driver_plugin not specified, using can::SocketCANInterface");
   }
   RCLCPP_INFO(this->get_logger(), "driver_plugin: %s", driver_plugin.c_str());
 
   if (!get_parameter_or("bus.loopback", loopback, false)) {
     RCLCPP_WARN(this->get_logger(),
-      "loopback not specified, socket will not loop back messages");
+                "loopback not specified, socket will not loop back messages");
   }
   RCLCPP_INFO(this->get_logger(), "loopback: %d", loopback);
 
   try {
     interface_ = driver_loader_.createInstance(driver_plugin);
-  } catch (pluginlib::PluginlibException & ex) {
+  } catch (pluginlib::PluginlibException &ex) {
     RCLCPP_ERROR(this->get_logger(), ex.what());
     return false;
   }
@@ -360,16 +355,16 @@ bool RosChain::setup_bus()
   state_listener_ = interface_->createStateListenerM(this, &RosChain::logState);
 
   if (!get_parameter_or("bus.master_allocator", master_alloc,
-    std::string("canopen_master/SimpleMasterAllocator")))
-  {
-    RCLCPP_WARN(this->get_logger(),
-      "master_allocator not specified, using canopen_master/SimpleMasterAllocator");
+                        std::string("canopen_master/SimpleMasterAllocator"))) {
+    RCLCPP_WARN(this->get_logger(), "master_allocator not specified, using "
+                                    "canopen_master/SimpleMasterAllocator");
   }
   RCLCPP_INFO(this->get_logger(), "master_allocator: %s", master_alloc.c_str());
 
   try {
-    master_ = master_allocator_.allocateInstance(master_alloc, can_device, interface_);
-  } catch (const std::exception & e) {
+    master_ = master_allocator_.allocateInstance(master_alloc, can_device,
+                                                 interface_);
+  } catch (const std::exception &e) {
     std::string info = boost::diagnostic_information(e);
     RCLCPP_ERROR(this->get_logger(), info);
     return false;
@@ -385,19 +380,19 @@ bool RosChain::setup_bus()
   return true;
 }
 
-bool RosChain::setup_sync()
-{
+bool RosChain::setup_sync() {
   int sync_ms;
   int sync_overflow;
 
   if (!get_parameter_or("sync.interval_ms", sync_ms, 0)) {
-    RCLCPP_WARN(this->get_logger(),
-      "sync interval was not specified, so sync is disabled per default");
+    RCLCPP_WARN(
+        this->get_logger(),
+        "sync interval was not specified, so sync is disabled per default");
   }
   RCLCPP_INFO(this->get_logger(), "interval_ms: %d", sync_ms);
   if (sync_ms < 0) {
     RCLCPP_ERROR(this->get_logger(),
-      "sync interval " + std::to_string(sync_ms) + " is invalid");
+                 "sync interval " + std::to_string(sync_ms) + " is invalid");
     return false;
   }
 
@@ -407,8 +402,9 @@ bool RosChain::setup_sync()
     RCLCPP_INFO(this->get_logger(), "update_ms: %d", update_ms);
   }
   if (update_ms == 0) {
-    RCLCPP_ERROR(this->get_logger(),
-      "update interval " + std::to_string(update_ms) + " is invalid");
+    RCLCPP_ERROR(this->get_logger(), "update interval " +
+                                         std::to_string(update_ms) +
+                                         " is invalid");
     return false;
   } else {
     update_duration_ = boost::chrono::milliseconds(update_ms);
@@ -416,22 +412,23 @@ bool RosChain::setup_sync()
 
   if (sync_ms) {
     if (!get_parameter_or("sync.overflow", sync_overflow, 0)) {
-      RCLCPP_WARN(this->get_logger(),
-        "sync overflow was not specified, so overflow is disabled per default");
+      RCLCPP_WARN(this->get_logger(), "sync overflow was not specified, so "
+                                      "overflow is disabled per default");
     }
     RCLCPP_INFO(this->get_logger(), "overflow: %d", sync_overflow);
     if (sync_overflow == 1 || sync_overflow > 240) {
-      RCLCPP_ERROR(this->get_logger(),
-        "sync overflow " + std::to_string(sync_overflow) + " is invalid");
+      RCLCPP_ERROR(this->get_logger(), "sync overflow " +
+                                           std::to_string(sync_overflow) +
+                                           " is invalid");
       return false;
     }
 
     // TODO(sam): parse header
-    sync_ = master_->getSync(SyncProperties(can::MsgHeader(0x80), sync_ms, sync_overflow));
+    sync_ = master_->getSync(
+        SyncProperties(can::MsgHeader(0x80), sync_ms, sync_overflow));
 
     if (!sync_ && sync_ms) {
-      RCLCPP_ERROR(this->get_logger(),
-        "Initializing sync master failed");
+      RCLCPP_ERROR(this->get_logger(), "Initializing sync master failed");
       return false;
     }
     add(sync_);
@@ -439,8 +436,7 @@ bool RosChain::setup_sync()
   return true;
 }
 
-bool RosChain::setup_heartbeat()
-{
+bool RosChain::setup_heartbeat() {
   std::string msg;
   double rate = 0;
 
@@ -450,26 +446,25 @@ bool RosChain::setup_heartbeat()
     got_any = true;
   } else {
     RCLCPP_WARN(this->get_logger(),
-      "heartbeat_msg not specified, using 77f#05");
+                "heartbeat_msg not specified, using 77f#05");
   }
   RCLCPP_INFO(this->get_logger(), "heartbeat_msg: %s", msg.c_str());
 
   if (get_parameter_or("heartbeat.rate", rate, 10.0)) {
     got_any = true;
   } else {
-    RCLCPP_WARN(this->get_logger(),
-      "heartbeat_rate not specified, using 10.0");
+    RCLCPP_WARN(this->get_logger(), "heartbeat_rate not specified, using 10.0");
   }
   RCLCPP_INFO(this->get_logger(), "heartbeat_rate: %f", rate);
 
   if (!got_any) {
     RCLCPP_INFO(this->get_logger(), "not producing heartbeat!");
-    return true;  // nothing to do
+    return true; // nothing to do
   }
 
   if (rate <= 0) {
     RCLCPP_ERROR(this->get_logger(),
-      "rate " + std::to_string(rate) + " is invalid");
+                 "rate " + std::to_string(rate) + " is invalid");
     return false;
   }
 
@@ -477,15 +472,14 @@ bool RosChain::setup_heartbeat()
 
   if (!hb_sender_.frame.isValid()) {
     // ROS_ERROR_STREAM("Message '"<< msg << "' is invalid");
-    RCLCPP_ERROR(this->get_logger(),
-      "heartbeat_msg " + msg + " is invalid");
+    RCLCPP_ERROR(this->get_logger(), "heartbeat_msg " + msg + " is invalid");
     return false;
   }
 
   hb_sender_.interface = interface_;
 
   heartbeat_timer_.start(std::bind(&HeartbeatSender::send, &hb_sender_),
-    boost::chrono::duration<double>(1.0 / rate), false);
+                         boost::chrono::duration<double>(1.0 / rate), false);
 
   return true;
 }
@@ -521,56 +515,59 @@ bool RosChain::setup_heartbeat()
 //     return true;
 // }
 
-bool RosChain::setup_nodes()
-{
+bool RosChain::setup_nodes() {
   nodes_.reset(new canopen::LayerGroupNoDiag<canopen::Node>("301 layer"));
   add(nodes_);
 
-  emcy_handlers_.reset(new canopen::LayerGroupNoDiag<canopen::EMCYHandler>("EMCY layer"));
+  emcy_handlers_.reset(
+      new canopen::LayerGroupNoDiag<canopen::EMCYHandler>("EMCY layer"));
 
   std::string default_eds_pkg;
   if (!get_parameter_or("defaults.eds_pkg", default_eds_pkg, std::string(""))) {
-    RCLCPP_WARN(this->get_logger(),
-      "default eds_pkg not specified");
+    RCLCPP_WARN(this->get_logger(), "default eds_pkg not specified");
   }
-  RCLCPP_INFO(this->get_logger(), "default eds_pkg: %s", default_eds_pkg.c_str());
+  RCLCPP_INFO(this->get_logger(), "default eds_pkg: %s",
+              default_eds_pkg.c_str());
 
   std::string default_eds_file;
-  if (!get_parameter_or("defaults.eds_file", default_eds_file, std::string(""))) {
-    RCLCPP_WARN(this->get_logger(),
-      "default eds_file not specified");
+  if (!get_parameter_or("defaults.eds_file", default_eds_file,
+                        std::string(""))) {
+    RCLCPP_WARN(this->get_logger(), "default eds_file not specified");
   }
-  RCLCPP_INFO(this->get_logger(), "default eds_file: %s", default_eds_file.c_str());
+  RCLCPP_INFO(this->get_logger(), "default eds_file: %s",
+              default_eds_file.c_str());
 
   std::vector<std::string> nodes;
   if (!get_parameter_or("nodes", nodes, {})) {
-    RCLCPP_ERROR(this->get_logger(),
-      "no nodes were spiecified!");
+    RCLCPP_ERROR(this->get_logger(), "no nodes were spiecified!");
     return false;
   }
 
-  for (auto & node_name : nodes) {
+  for (auto &node_name : nodes) {
     int node_id;
     if (!get_parameter_or(node_name + ".id", node_id, 4)) {
       RCLCPP_ERROR(this->get_logger(),
-        "no node id was spiecified for " + node_name);
+                   "no node id was spiecified for " + node_name);
       return false;
     }
     RCLCPP_INFO(this->get_logger(), node_name + " node id: %d", node_id);
 
     std::string eds_file;
-    if (!get_parameter_or(node_name + ".eds_file", eds_file, default_eds_file)) {
-      RCLCPP_WARN(this->get_logger(),
-        "eds_file not specified for " + node_name + ", using " + eds_file);
+    if (!get_parameter_or(node_name + ".eds_file", eds_file,
+                          default_eds_file)) {
+      RCLCPP_WARN(this->get_logger(), "eds_file not specified for " +
+                                          node_name + ", using " + eds_file);
     }
-    RCLCPP_INFO(this->get_logger(), node_name + " eds_file: %s", eds_file.c_str());
+    RCLCPP_INFO(this->get_logger(), node_name + " eds_file: %s",
+                eds_file.c_str());
 
     std::string eds_pkg;
     if (!get_parameter_or(node_name + ".eds_pkg", eds_pkg, default_eds_pkg)) {
-      RCLCPP_WARN(this->get_logger(),
-        "eds_pkg not specified for " + node_name + ", using " + eds_pkg);
+      RCLCPP_WARN(this->get_logger(), "eds_pkg not specified for " + node_name +
+                                          ", using " + eds_pkg);
     } else {
-      RCLCPP_INFO(this->get_logger(), node_name + " eds_pkg: %s", eds_pkg.c_str());
+      RCLCPP_INFO(this->get_logger(), node_name + " eds_pkg: %s",
+                  eds_pkg.c_str());
     }
 
     std::string eds_pkg_share_directory = "";
@@ -578,18 +575,19 @@ bool RosChain::setup_nodes()
     if (!eds_pkg.empty()) {
       try {
         eds_pkg_share_directory =
-          ament_index_cpp::get_package_share_directory(eds_pkg);
+            ament_index_cpp::get_package_share_directory(eds_pkg);
       } catch (...) {
-        RCLCPP_ERROR(this->get_logger(),
-          "eds_pkg share directory not found!");
+        RCLCPP_ERROR(this->get_logger(), "eds_pkg share directory not found!");
         return false;
       }
 
       eds_full_path =
-        (boost::filesystem::path(eds_pkg_share_directory) / eds_file).make_preferred().native();
+          (boost::filesystem::path(eds_pkg_share_directory) / eds_file)
+              .make_preferred()
+              .native();
     }
     RCLCPP_INFO(this->get_logger(), node_name + " eds full path: %s",
-      eds_full_path.c_str());
+                eds_full_path.c_str());
 
     ObjectDict::Overlay overlay;
     // TODO(sam): parse overlay
@@ -612,27 +610,27 @@ bool RosChain::setup_nodes()
     //     }
     // }
 
-    auto exists =
-      [this](const std::string & name) -> bool
-      {
-        struct stat buffer;
-        return stat(name.c_str(), &buffer) == 0;
-      };
+    auto exists = [this](const std::string &name) -> bool {
+      struct stat buffer;
+      return stat(name.c_str(), &buffer) == 0;
+    };
 
     if (!exists(eds_full_path)) {
-      RCLCPP_ERROR(this->get_logger(), node_name + " eds file: %s does not exist!",
-        eds_full_path.c_str());
+      RCLCPP_ERROR(this->get_logger(),
+                   node_name + " eds file: %s does not exist!",
+                   eds_full_path.c_str());
       return false;
     }
 
     ObjectDictSharedPtr dict = ObjectDict::fromFile(eds_full_path, overlay);
     if (!dict) {
       RCLCPP_ERROR(this->get_logger(),
-        "EDS '" + eds_file + "' could not be parsed");
+                   "EDS '" + eds_file + "' could not be parsed");
       return false;
     }
 
-    canopen::NodeSharedPtr node = std::make_shared<canopen::Node>(interface_, dict, node_id, sync_);
+    canopen::NodeSharedPtr node =
+        std::make_shared<canopen::Node>(interface_, dict, node_id, sync_);
     LoggerSharedPtr logger = std::make_shared<Logger>(node);
 
     // TODO(sam): figure out what this is supposed to do...
@@ -643,21 +641,23 @@ bool RosChain::setup_nodes()
     // if(!addLoggerEntries(merged, "log",
     //  diagnostic_updater::DiagnosticStatusWrapper::OK, *logger)) return false;
     // if(!addLoggerEntries(merged, "log_warn",
-    // diagnostic_updater::DiagnosticStatusWrapper::WARN, *logger)) return false;
+    // diagnostic_updater::DiagnosticStatusWrapper::WARN, *logger)) return
+    // false;
     // if(!addLoggerEntries(merged, "log_error",
-    // diagnostic_updater::DiagnosticStatusWrapper::ERROR, *logger)) return false;
+    // diagnostic_updater::DiagnosticStatusWrapper::ERROR, *logger)) return
+    // false;
 
     loggers_.push_back(logger);
-    diag_updater_.add(node_name, std::bind(&Logger::log, logger, std::placeholders::_1));
-
+    diag_updater_.add(node_name,
+                      std::bind(&Logger::log, logger, std::placeholders::_1));
 
     std::vector<std::string> publish;
     if (!get_parameter_or(node_name + ".publish", publish, {})) {
       RCLCPP_INFO(this->get_logger(),
-        "no objects to be published were spiecified");
+                  "no objects to be published were spiecified");
     }
 
-    for (auto & object : publish) {
+    for (auto &object : publish) {
       std::string object_name = object.substr(object.find(":") + 1);
       bool force = false;
       if (object_name.back() == '!') {
@@ -666,17 +666,16 @@ bool RosChain::setup_nodes()
       }
 
       RCLCPP_INFO(this->get_logger(),
-        "%s object to be published: %s, force: %d", node_name.c_str(),
-        object_name.c_str(), force);
+                  "%s object to be published: %s, force: %d", node_name.c_str(),
+                  object_name.c_str(), force);
 
-      PublishFuncType pub =
-        createPublishFunc(node_name + "_" + object_name,
-          node, object_name, force);
+      PublishFuncType pub = createPublishFunc(node_name + "/obj" + object_name,
+                                              node, object_name, force);
 
       if (!pub) {
         RCLCPP_ERROR(this->get_logger(),
-          "%s could not create publisher for object: '%s'", node_name.c_str(),
-          object_name.c_str());
+                     "%s could not create publisher for object: '%s'",
+                     node_name.c_str(), object_name.c_str());
         return false;
       }
 
@@ -686,7 +685,7 @@ bool RosChain::setup_nodes()
     nodes_->add(node);
     nodes_lookup_.insert(std::make_pair(node_name, node));
     std::shared_ptr<canopen::EMCYHandler> emcy =
-      std::make_shared<canopen::EMCYHandler>(interface_, node->getStorage());
+        std::make_shared<canopen::EMCYHandler>(interface_, node->getStorage());
     emcy_handlers_->add(emcy);
     logger->add(emcy);
     nodes_lookup_.insert(std::make_pair(node_name, node));
@@ -695,13 +694,13 @@ bool RosChain::setup_nodes()
   return true;
 }
 
-bool RosChain::nodeAdded(const canopen::NodeSharedPtr & node, const LoggerSharedPtr & logger)
-{
+bool RosChain::nodeAdded(const canopen::NodeSharedPtr &node,
+                         const LoggerSharedPtr &logger) {
   return true;
 }
 
-void RosChain::report_diagnostics(diagnostic_updater::DiagnosticStatusWrapper & stat)
-{
+void RosChain::report_diagnostics(
+    diagnostic_updater::DiagnosticStatusWrapper &stat) {
   boost::mutex::scoped_lock lock(diag_mutex_);
   LayerReport r;
   if (getLayerState() == Off) {
@@ -710,11 +709,11 @@ void RosChain::report_diagnostics(diagnostic_updater::DiagnosticStatusWrapper & 
     stat.summary(stat.ERROR, "Thread is not running");
   } else {
     diag(r);
-    if (r.bounded<LayerStatus::Unbounded>()) {  // valid
+    if (r.bounded<LayerStatus::Unbounded>()) { // valid
       stat.summary(r.get(), r.reason());
       for (std::vector<std::pair<std::string, std::string>>::const_iterator it =
-        r.values().begin(); it != r.values().end(); ++it)
-      {
+               r.values().begin();
+           it != r.values().end(); ++it) {
         stat.add(it->first, it->second);
       }
     }
@@ -722,73 +721,63 @@ void RosChain::report_diagnostics(diagnostic_updater::DiagnosticStatusWrapper & 
 }
 
 RosChain::RosChain(std::string node_name)
-: Node(node_name),
-  LayerStack("ROS stack"),
-  driver_loader_("socketcan_interface", "can::DriverInterface"),
-  master_allocator_("canopen_master", "canopen::Master::Allocator"),
-  running_(false),
-  reset_errors_before_recover_(false)
-{
-}
+    : Node(node_name), LayerStack("ROS stack"),
+      driver_loader_("socketcan_interface", "can::DriverInterface"),
+      master_allocator_("canopen_master", "canopen::Master::Allocator"),
+      running_(false), reset_errors_before_recover_(false) {}
 
-bool RosChain::setup()
-{
+bool RosChain::setup() {
   boost::mutex::scoped_lock lock(mutex_);
   bool okay = setup_chain();
-  if (okay) {add(emcy_handlers_);}
+  if (okay) {
+    add(emcy_handlers_);
+  }
   return okay;
 }
 
-bool RosChain::setup_chain()
-{
+bool RosChain::setup_chain() {
   std::string hardware_id;
   get_parameter_or_set("hardware_id", hardware_id, std::string("none"));
   get_parameter_or_set("reset_errors_before_recover",
-    reset_errors_before_recover_, false);
+                       reset_errors_before_recover_, false);
 
   RCLCPP_INFO(this->get_logger(), "hardware_id: %s", hardware_id.c_str());
-  RCLCPP_INFO(this->get_logger(), "reset_errors_before_recover: %d", reset_errors_before_recover_);
+  RCLCPP_INFO(this->get_logger(), "reset_errors_before_recover: %d",
+              reset_errors_before_recover_);
 
   diag_updater_.setHardwareID(hardware_id);
   diag_updater_.add("chain", this, &RosChain::report_diagnostics);
-  diag_timer_ =
-    this->create_wall_timer(1s, std::bind(&diagnostic_updater::Updater::update, &diag_updater_));
+  diag_timer_ = this->create_wall_timer(
+      1s, std::bind(&diagnostic_updater::Updater::update, &diag_updater_));
 
   srv_init_ = create_service<std_srvs::srv::Trigger>(
-    "init", std::bind(
-      &RosChain::handle_init, this,
-      std::placeholders::_1, std::placeholders::_2));
+      "init", std::bind(&RosChain::handle_init, this, std::placeholders::_1,
+                        std::placeholders::_2));
 
   srv_recover_ = create_service<std_srvs::srv::Trigger>(
-    "recover", std::bind(
-      &RosChain::handle_recover, this,
-      std::placeholders::_1, std::placeholders::_2));
+      "recover", std::bind(&RosChain::handle_recover, this,
+                           std::placeholders::_1, std::placeholders::_2));
 
   srv_halt_ = create_service<std_srvs::srv::Trigger>(
-    "halt", std::bind(
-      &RosChain::handle_halt, this,
-      std::placeholders::_1, std::placeholders::_2));
+      "halt", std::bind(&RosChain::handle_halt, this, std::placeholders::_1,
+                        std::placeholders::_2));
 
   srv_shutdown_ = create_service<std_srvs::srv::Trigger>(
-    "shutdown", std::bind(
-      &RosChain::handle_shutdown, this,
-      std::placeholders::_1, std::placeholders::_2));
+      "shutdown", std::bind(&RosChain::handle_shutdown, this,
+                            std::placeholders::_1, std::placeholders::_2));
 
   srv_get_object_ = create_service<canopen_msgs::srv::GetObject>(
-    "get_object", std::bind(
-      &RosChain::handle_get_object, this,
-      std::placeholders::_1, std::placeholders::_2));
+      "get_object", std::bind(&RosChain::handle_get_object, this,
+                              std::placeholders::_1, std::placeholders::_2));
 
   srv_set_object_ = create_service<canopen_msgs::srv::SetObject>(
-    "set_object", std::bind(
-      &RosChain::handle_set_object, this,
-      std::placeholders::_1, std::placeholders::_2));
+      "set_object", std::bind(&RosChain::handle_set_object, this,
+                              std::placeholders::_1, std::placeholders::_2));
 
   return setup_bus() && setup_sync() && setup_heartbeat() && setup_nodes();
 }
 
-RosChain::~RosChain()
-{
+RosChain::~RosChain() {
   try {
     LayerStatus s;
     halt(s);
@@ -798,4 +787,4 @@ RosChain::~RosChain()
   }
 }
 
-}  // namespace canopen
+} // namespace canopen

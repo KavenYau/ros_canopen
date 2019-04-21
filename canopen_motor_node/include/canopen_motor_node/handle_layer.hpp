@@ -85,7 +85,6 @@ template<> inline double* ObjectVariables::func<canopen::ObjectDict::DEFTYPE_DOM
 
 
 class HandleLayer: public canopen::HandleLayerBase {
-    canopen::MotorBaseSharedPtr motor_;
     // double pos_, vel_, eff_;
 
     // double cmd_pos_, cmd_vel_, cmd_eff_;

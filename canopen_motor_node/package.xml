@@ -20,6 +20,9 @@
 
   <depend>rclcpp</depend>
 
+  <depend>std_msgs</depend>
+  <depend>canopen_msgs</depend>
+
   <depend>canopen_402</depend>
   <depend>canopen_chain_node</depend>
   <depend>canopen_master</depend>

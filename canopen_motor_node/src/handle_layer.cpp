@@ -56,8 +56,10 @@ bool HandleLayer::select(const MotorBase::OperationMode &m){
 // }
 
 HandleLayer::HandleLayer(const std::string & name, const canopen::MotorBaseSharedPtr & motor, const canopen::ObjectStorageSharedPtr storage) :
-  HandleLayerBase(name + " Handle"), motor_(motor)
-{}
+  HandleLayerBase(name + " Handle")
+{
+  motor_ = motor;
+}
 
 HandleLayer::CanSwitchResult HandleLayer::canSwitch(const MotorBase::OperationMode &m){
     // if(!motor_->isModeSupported(m) || commands_.find(m) == commands_.end()){

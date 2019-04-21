@@ -317,14 +317,10 @@ private:
     bool switchMode(LayerStatus &status, uint16_t mode);
 
     std::atomic<uint16_t> status_word_;
-    std::atomic<uint16_t> op_mode_display_atomic_; // TODO(sam): rename
     uint16_t control_word_;
     boost::mutex cw_mutex_;
     std::atomic<bool> start_fault_reset_;
     std::atomic<State402::InternalState> target_state_;
-
-
-    State402 state_handler_;
 
     boost::mutex map_mutex_;
     std::unordered_map<uint16_t, ModeSharedPtr > modes_;

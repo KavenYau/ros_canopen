@@ -8,9 +8,11 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
 find_package(canopen_402 REQUIRED)
 find_package(canopen_chain_node REQUIRED)
 find_package(canopen_master REQUIRED)
+find_package(canopen_msgs REQUIRED)
 
 # find_package(controller_manager REQUIRED)
 # find_package(controller_manager_msgs REQUIRED)
@@ -74,6 +76,8 @@ target_link_libraries(canopen_motor
 
 ament_target_dependencies(canopen_motor
   "rclcpp"
+  "std_msgs"
+  "canopen_msgs"
   "canopen_master"
   "canopen_chain_node"
   "canopen_402"

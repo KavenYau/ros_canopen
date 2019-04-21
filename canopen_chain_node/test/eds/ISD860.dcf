@@ -1193,8 +1193,8 @@ DataType=0x0002
 AccessType=wo
 HighLimit=127
 LowLimit=-128
-DefaultValue=
-ParameterValue=
+DefaultValue=0
+ParameterValue=1
 PDOMapping=1
 
 [6061]
@@ -1326,8 +1326,8 @@ DataType=0x0004
 AccessType=rww
 HighLimit=2147483647
 LowLimit=-2147483648
-DefaultValue=
-ParameterValue=
+DefaultValue=1779812309
+ParameterValue=0
 PDOMapping=1
 
 [607C]
@@ -1338,7 +1338,7 @@ ObjectType=0x7
 DataType=0x0004
 AccessType=rww
 DefaultValue=0
-ParameterValue=
+ParameterValue=0
 PDOMapping=1
 
 [6081]
@@ -1862,4 +1862,3 @@ AccessType=rww
 DefaultValue=
 ParameterValue=
 PDOMapping=1
-

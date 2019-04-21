@@ -44,10 +44,11 @@ public:
     InternalState read(uint16_t sw);
     bool waitForNewState(const time_point &abstime, InternalState &state);
     State402() : state_(Unknown) {}
+
 private:
+    InternalState state_;
     boost::condition_variable cond_;
     boost::mutex mutex_;
-    InternalState state_;
 };
 
 class MotorBase : public canopen::Layer {
@@ -76,6 +77,10 @@ public:
 
     // NOTE(sam): Keep this?
     virtual bool switchState(const State402::InternalState & target) {}
+
+    // NOTE(sam): expose state in different way?
+    State402 state_handler_;
+    std::atomic<uint16_t> op_mode_display_atomic_; // TODO(sam): rename
 
     typedef std::shared_ptr<MotorBase> MotorBaseSharedPtr;
 
