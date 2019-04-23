@@ -49,8 +49,7 @@ private:
   rclcpp::Subscription<canopen_msgs::msg::DebugPublishers>::SharedPtr
       set_debug_publishers_sub_;
   rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr switch_state_sub_;
-  rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr
-      set_target_position_sub_;
+  rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr set_target_sub_;
   rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr
       switch_operation_mode_sub_;
 };

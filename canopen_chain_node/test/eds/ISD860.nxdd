@@ -1,0 +1,1517 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OpenEDSProject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0">
+  <ISO15745ProfileContainer xmlns="http://www.canopen.org/xml/1.0">
+    <ISO15745Profile>
+      <ProfileHeader>
+        <ProfileIdentification>CAN device profile</ProfileIdentification>
+        <ProfileRevision>1</ProfileRevision>
+        <ProfileName />
+        <ProfileSource />
+        <ProfileClassID>Device</ProfileClassID>
+        <ISO15745Reference>
+          <ISO15745Part>1</ISO15745Part>
+          <ISO15745Edition>1</ISO15745Edition>
+          <ProfileTechnology>Canopen</ProfileTechnology>
+        </ISO15745Reference>
+      </ProfileHeader>
+      <ProfileBody xsi:type="ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="ISD860.dcf" fileCreator="Augustin Ignat" fileCreationDate="0001-01-01" fileCreationTime="00:00:00.0000000+02:00" fileModificationDate="0001-01-01" fileModificationTime="00:00:00.0000000+02:00" fileModifiedBy="Augustin Ignat" fileVersion="1" supportedLanguages="en">
+        <DeviceIdentity>
+          <vendorName readOnly="true">Technosoft</vendorName>
+          <vendorID>419</vendorID>
+          <deviceFamily />
+          <productFamily readOnly="true" />
+          <productName readOnly="true">IDM/ISCM</productName>
+          <productID>0</productID>
+          <productText readOnly="true">
+            <description lang="en">FileDescription=CANopen Technosoft|EdsVersion=4.0|FileRevision=1|RevisionNum=0</description>
+          </productText>
+          <version versionType="SW" />
+          <version versionType="FW" />
+          <version versionType="HW" />
+          <specificationRevision />
+          <instanceName readOnly="true" />
+        </DeviceIdentity>
+        <DeviceManager>
+          <indicatorList>
+            <LEDList>
+              <LED LEDcolors="monocolor" />
+            </LEDList>
+          </indicatorList>
+        </DeviceManager>
+        <ApplicationProcess>
+          <parameterList>
+            <parameter uniqueID="UID_PARAM_1000" access="read">
+              <label lang="en">Device type</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x60192" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1001" access="read">
+              <label lang="en">Error register</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1002" access="read">
+              <label lang="en">Manufacturer status register</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1003" access="readWrite">
+              <label lang="en">Error Field</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_100300" access="readWrite">
+              <label lang="en">Number of errors in history</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_100301" access="read">
+              <label lang="en">Standard error field</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_100302" access="read">
+              <label lang="en">Standard error field</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_100303" access="read">
+              <label lang="en">Standard error field</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_100304" access="read">
+              <label lang="en">Standard error field</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_100305" access="read">
+              <label lang="en">Standard error field</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1005" access="readWrite">
+              <label lang="en">COB-ID SYNC Message</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x80" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1006" access="readWrite">
+              <label lang="en">Communication cycle period</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_100c" access="readWrite">
+              <label lang="en">Guard time</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_100d" access="readWrite">
+              <label lang="en">Life time factor</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1013" access="readWriteOutput">
+              <label lang="en">High Resolution Time Stamp</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1014" access="read">
+              <label lang="en">COB-ID EMCY Message</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="$NODEID +0x80" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1017" access="readWrite">
+              <label lang="en">Producer Heartbeat Time</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1018" access="readWrite">
+              <label lang="en">Identity Object</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_101800" access="read">
+              <label lang="en">number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="1" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_101801" access="read">
+              <label lang="en">Vendor ID</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x000001A3" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1200" access="readWrite">
+              <label lang="en">Server SDO Parameter</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_120000" access="read">
+              <label lang="en">Number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="2" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_120001" access="read">
+              <label lang="en">COB-ID Client -&gt; Server (rx)</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="$NODEID + 0x600" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_120002" access="read">
+              <label lang="en">COB-ID Server -&gt; Client (tx)</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="$NODEID + 0x580" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1400" access="readWrite">
+              <label lang="en">RPDO1 Communication Parameter</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_140000" access="read">
+              <label lang="en">Number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="2" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_140001" access="readWrite">
+              <label lang="en">COB-ID RPDO1</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="$NODEID + 0x200" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_140002" access="readWrite">
+              <label lang="en">Transmission type</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="255" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1401" access="readWrite">
+              <label lang="en">RPDO2 Communication Parameter</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_140100" access="read">
+              <label lang="en">Number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="2" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_140101" access="readWrite">
+              <label lang="en">COB-ID RPDO2</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="$NODEID + 0x300" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_140102" access="readWrite">
+              <label lang="en">Transmission type</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="255" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1402" access="readWrite">
+              <label lang="en">RPDO3 Communication Parameter</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_140200" access="read">
+              <label lang="en">Number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="2" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_140201" access="readWrite">
+              <label lang="en">COB-ID RPDO3</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="$NODEID + 0x400" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_140202" access="readWrite">
+              <label lang="en">Transmission type</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="255" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1403" access="readWrite">
+              <label lang="en">RPDO4 Communication Parameter</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_140300" access="read">
+              <label lang="en">Number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="2" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_140301" access="readWrite">
+              <label lang="en">COB-ID RPDO4</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="$NODEID + 0x500" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_140302" access="readWrite">
+              <label lang="en">Transmission type</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="255" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1600" access="readWrite">
+              <label lang="en">RPDO1 Mapping Parameter</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_160000" access="readWrite">
+              <label lang="en">Number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="1" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_160001" access="readWrite">
+              <label lang="en">the first mapped object</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x60400010" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1601" access="readWrite">
+              <label lang="en">RPDO2 Mapping Parameter</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_160100" access="readWrite">
+              <label lang="en">Number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="2" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_160101" access="readWrite">
+              <label lang="en">the first mapped object</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x60400010" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_160102" access="readWrite">
+              <label lang="en">the second mapped object</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x60600008" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1602" access="readWrite">
+              <label lang="en">RPDO3 Mapping Parameter</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_160200" access="readWrite">
+              <label lang="en">Number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="2" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_160201" access="readWrite">
+              <label lang="en">the first mapped object</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x60400010" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_160202" access="readWrite">
+              <label lang="en">the second mapped object</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x607A0020" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1603" access="readWrite">
+              <label lang="en">RPDO4 Mapping Parameter</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_160300" access="readWrite">
+              <label lang="en">Number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="2" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_160301" access="readWrite">
+              <label lang="en">the first mapped object</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x60400010" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_160302" access="readWrite">
+              <label lang="en">the second mapped object</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x60FF0020" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1800" access="readWrite">
+              <label lang="en">TPDO1 Communication Parameter</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180000" access="read">
+              <label lang="en">Number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="5" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180001" access="readWrite">
+              <label lang="en">COB-ID TPDO1</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="$NODEID + 0x180" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180002" access="readWrite">
+              <label lang="en">Transmission type</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="255" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180003" access="readWrite">
+              <label lang="en">Reserved</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180004" access="read">
+              <label lang="en">Reserved</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180005" access="readWrite">
+              <label lang="en">Event timer</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1801" access="readWrite">
+              <label lang="en">TPDO2 Communication Parameter</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180100" access="read">
+              <label lang="en">Number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="5" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180101" access="readWrite">
+              <label lang="en">COB-ID TPDO2</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="$NODEID + 0x280" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180102" access="readWrite">
+              <label lang="en">Transmission type</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="255" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180103" access="readWrite">
+              <label lang="en">Reserved</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180104" access="read">
+              <label lang="en">Reserved</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180105" access="readWrite">
+              <label lang="en">Event timer</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1802" access="readWrite">
+              <label lang="en">TPDO3 Communication Parameter</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180200" access="read">
+              <label lang="en">Number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="5" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180201" access="readWrite">
+              <label lang="en">COB-ID TPDO3</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="$NODEID + 0x380" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180202" access="readWrite">
+              <label lang="en">Transmision type</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="255" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180203" access="readWrite">
+              <label lang="en">Reserved</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180204" access="read">
+              <label lang="en">Reserved</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180205" access="readWrite">
+              <label lang="en">Event timer</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1803" access="readWrite">
+              <label lang="en">TPDO4 Communication Parameter</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180300" access="read">
+              <label lang="en">Number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="5" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180301" access="readWrite">
+              <label lang="en">COB-ID TPDO4</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="$NODEID + 0x480" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180302" access="readWrite">
+              <label lang="en">Transmission type</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="255" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180303" access="readWrite">
+              <label lang="en">Reserved</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180304" access="read">
+              <label lang="en">Reserved</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_180305" access="readWrite">
+              <label lang="en">Event timer</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1a00" access="readWrite">
+              <label lang="en">TPDO1 Mapping Parameter</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1a0000" access="readWrite">
+              <label lang="en">Number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="1" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1a0001" access="readWrite">
+              <label lang="en">the first mapped object</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x60410010" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1a01" access="readWrite">
+              <label lang="en">TPDO2 Mapping Parameter</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1a0100" access="readWrite">
+              <label lang="en">Number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="2" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1a0101" access="readWrite">
+              <label lang="en">the first mapped object</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x60410010" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1a0102" access="readWrite">
+              <label lang="en">the second mapped object</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x60610008" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1a02" access="readWrite">
+              <label lang="en">TPDO3 Mapping Parameter</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1a0200" access="readWrite">
+              <label lang="en">Number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1a0201" access="readWrite">
+              <label lang="en">the first mapped object</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x60410010" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1a0202" access="readWrite">
+              <label lang="en">the second mapped object</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x60640020" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1a03" access="readWrite">
+              <label lang="en">TPDO4 Mapping Parameter</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1a0300" access="readWrite">
+              <label lang="en">Number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1a0301" access="readWrite">
+              <label lang="en">the first mapped object</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x60410010" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_1a0302" access="readWrite">
+              <label lang="en">the second mapped object</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x606C0020" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2000" access="read">
+              <label lang="en">Manufacturer Error Register</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2001" access="readWriteOutput">
+              <label lang="en">Manufacturer Error Register Mask</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0xFFFF" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2002" access="readWriteOutput">
+              <label lang="en">Status Word Mask</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x047F0000" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2004" access="readWrite">
+              <label lang="en">COB-ID High resolution time stamp</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x100" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2006" access="write">
+              <label lang="en">Call TML function</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2022" access="read">
+              <label lang="en">Control effort</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2023" access="readWriteOutput">
+              <label lang="en">Jerk time</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2040" access="readWriteOutput">
+              <label lang="en">Digital Input Status</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2043" access="write">
+              <label lang="en">Digital Outputs Command</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2050" access="readWriteOutput">
+              <label lang="en">Over-current protection level</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2051" access="readWriteOutput">
+              <label lang="en">Over-current time out</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2052" access="readWrite">
+              <label lang="en">Motor nominal current</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2053" access="readWrite">
+              <label lang="en">I2t protection integrator limit</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2054" access="readWrite">
+              <label lang="en">I2t protection scaling factor</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2064" access="readWriteOutput">
+              <label lang="en">Read/Write configuration register</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x84" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2065" access="write">
+              <label lang="en">Write data at address set in 0x2064</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2066" access="read">
+              <label lang="en">Read data from address set in 0x2064</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2067" access="write">
+              <label lang="en">Write data at specified address</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2069" access="readWrite">
+              <label lang="en">Checksum configuration register</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_206a" access="read">
+              <label lang="en">Checksum read register</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2072" access="read">
+              <label lang="en">Interpolated position mode status</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2073" access="readWriteOutput">
+              <label lang="en">Interpolated position buffer length</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="7" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2074" access="write">
+              <label lang="en">Interpolated position buffer configuration</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2076" access="write">
+              <label lang="en">Save current configuration</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2077" access="write">
+              <label lang="en">Execute TML program</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_2079" access="readWriteOutput">
+              <label lang="en">Interpolated position initial position</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6040" access="readWriteOutput">
+              <label lang="en">Control word</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6041" access="read">
+              <label lang="en">Status word</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6060" access="write">
+              <label lang="en">Modes of Operation</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6061" access="read">
+              <label lang="en">Modes of Operation Display</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6062" access="read">
+              <label lang="en">Position demand value</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6064" access="read">
+              <label lang="en">Position actual value</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6065" access="readWriteOutput">
+              <label lang="en">Following error window</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6066" access="readWriteOutput">
+              <label lang="en">Following error time out</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6067" access="readWriteOutput">
+              <label lang="en">Position window</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6068" access="readWriteOutput">
+              <label lang="en">Position window time</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6069" access="read">
+              <label lang="en">Velocity sensor actual value</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_606b" access="read">
+              <label lang="en">Velocity demand value</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_606c" access="read">
+              <label lang="en">Velocity actual value</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_607a" access="readWriteOutput">
+              <label lang="en">Target position</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_607c" access="readWriteOutput">
+              <label lang="en">Home offset</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6081" access="readWriteOutput">
+              <label lang="en">Profile velocity</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6083" access="readWriteOutput">
+              <label lang="en">Profile acceleration</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6085" access="readWriteOutput">
+              <label lang="en">Quick stop deceleration</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6086" access="readWriteOutput">
+              <label lang="en">Motion profile type</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6098" access="readWriteOutput">
+              <label lang="en">Homing method</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6099" access="readWrite">
+              <label lang="en">Homing speed</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_609900" access="read">
+              <label lang="en">number of entries</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="2" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_609901" access="readWriteOutput">
+              <label lang="en">Speed during search for switch</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_609902" access="readWriteOutput">
+              <label lang="en">Speed during search for zero</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_609a" access="readWriteOutput">
+              <label lang="en">Homing acceleration</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_60c0" access="readWriteOutput">
+              <label lang="en">Interpolation sub mode select</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_60c1" access="readWrite">
+              <label lang="en">Interpolation data record</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_60c100" access="read">
+              <label lang="en">number of elements</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="2" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_60c101" access="readWriteOutput">
+              <label lang="en">X1: the first parameter of ip function</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_60c102" access="readWriteOutput">
+              <label lang="en">X2: the second parameter of ip function</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_60ff" access="readWriteOutput">
+              <label lang="en">Target velocity</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="" />
+            </parameter>
+            <parameter uniqueID="UID_PARAM_6502" access="read">
+              <label lang="en">Supported drive modes</label>
+              <description lang="en" />
+              <denotation>
+                <label lang="en" />
+              </denotation>
+              <defaultValue value="0x00000065" />
+            </parameter>
+          </parameterList>
+        </ApplicationProcess>
+      </ProfileBody>
+    </ISO15745Profile>
+    <ISO15745Profile>
+      <ProfileHeader>
+        <ProfileIdentification>CAN comm net profile</ProfileIdentification>
+        <ProfileRevision>1</ProfileRevision>
+        <ProfileName />
+        <ProfileSource />
+        <ProfileClassID>CommunicationNetwork</ProfileClassID>
+        <ISO15745Reference>
+          <ISO15745Part>1</ISO15745Part>
+          <ISO15745Edition>1</ISO15745Edition>
+          <ProfileTechnology>Canopen</ProfileTechnology>
+        </ISO15745Reference>
+      </ProfileHeader>
+      <ProfileBody xsi:type="ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="ISD860.dcf" fileCreator="Augustin Ignat" fileCreationDate="0001-01-01" fileCreationTime="00:00:00.0000000+02:00" fileModificationDate="0001-01-01" fileVersion="1" supportedLanguages="en">
+        <ApplicationLayers>
+          <CANopenObjectList>
+            <CANopenObject index="1000" name="Device type" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="0x60192" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1000" />
+            <CANopenObject index="1001" name="Error register" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1001" />
+            <CANopenObject index="1002" name="Manufacturer status register" objectType="7" dataType="0007" lowLimit="0" highLimit="65535" accessType="ro" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_1002" />
+            <CANopenObject index="1003" name="Error Field" objectType="8" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1003" subNumber="6">
+              <CANopenSubObject subIndex="0000" name="Number of errors in history" objectType="7" dataType="0005" lowLimit="0" highLimit="254" accessType="rw" actualValue="0" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_100300" />
+              <CANopenSubObject subIndex="0001" name="Standard error field" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="0" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_100301" />
+              <CANopenSubObject subIndex="0002" name="Standard error field" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="0" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_100302" />
+              <CANopenSubObject subIndex="0003" name="Standard error field" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="0" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_100303" />
+              <CANopenSubObject subIndex="0004" name="Standard error field" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="0" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_100304" />
+              <CANopenSubObject subIndex="0005" name="Standard error field" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="0" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_100305" />
+            </CANopenObject>
+            <CANopenObject index="1005" name="COB-ID SYNC Message" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0x80" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1005" />
+            <CANopenObject index="1006" name="Communication cycle period" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1006" />
+            <CANopenObject index="100C" name="Guard time" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="rw" actualValue="0" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_100c" />
+            <CANopenObject index="100D" name="Life time factor" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="rw" actualValue="0" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_100d" />
+            <CANopenObject index="1013" name="High Resolution Time Stamp" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_1013" />
+            <CANopenObject index="1014" name="COB-ID EMCY Message" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="$NODEID +0x80" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1014" />
+            <CANopenObject index="1017" name="Producer Heartbeat Time" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="rw" actualValue="0" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1017" />
+            <CANopenObject index="1018" name="Identity Object" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1018" subNumber="2">
+              <CANopenSubObject subIndex="0000" name="number of entries" objectType="7" dataType="0005" lowLimit="1" highLimit="4" accessType="ro" actualValue="1" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_101800" />
+              <CANopenSubObject subIndex="0001" name="Vendor ID" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="0x000001A3" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_101801" />
+            </CANopenObject>
+            <CANopenObject index="1200" name="Server SDO Parameter" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1200" subNumber="3">
+              <CANopenSubObject subIndex="0000" name="Number of entries" objectType="7" dataType="0005" lowLimit="2" highLimit="2" accessType="ro" actualValue="2" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_120000" />
+              <CANopenSubObject subIndex="0001" name="COB-ID Client -&gt; Server (rx)" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="$NODEID + 0x600" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_120001" />
+              <CANopenSubObject subIndex="0002" name="COB-ID Server -&gt; Client (tx)" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="$NODEID + 0x580" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_120002" />
+            </CANopenObject>
+            <CANopenObject index="1400" name="RPDO1 Communication Parameter" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1400" subNumber="3">
+              <CANopenSubObject subIndex="0000" name="Number of entries" objectType="7" dataType="0005" lowLimit="2" highLimit="5" accessType="ro" actualValue="2" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_140000" />
+              <CANopenSubObject subIndex="0001" name="COB-ID RPDO1" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="$NODEID + 0x200" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_140001" />
+              <CANopenSubObject subIndex="0002" name="Transmission type" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="rw" actualValue="1" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_140002" />
+            </CANopenObject>
+            <CANopenObject index="1401" name="RPDO2 Communication Parameter" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1401" subNumber="3">
+              <CANopenSubObject subIndex="0000" name="Number of entries" objectType="7" dataType="0005" lowLimit="2" highLimit="5" accessType="ro" actualValue="2" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_140100" />
+              <CANopenSubObject subIndex="0001" name="COB-ID RPDO2" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="$NODEID + 0x300" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_140101" />
+              <CANopenSubObject subIndex="0002" name="Transmission type" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="rw" actualValue="255" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_140102" />
+            </CANopenObject>
+            <CANopenObject index="1402" name="RPDO3 Communication Parameter" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1402" subNumber="3">
+              <CANopenSubObject subIndex="0000" name="Number of entries" objectType="7" dataType="0005" lowLimit="2" highLimit="5" accessType="ro" actualValue="2" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_140200" />
+              <CANopenSubObject subIndex="0001" name="COB-ID RPDO3" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="$NODEID + 0x400" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_140201" />
+              <CANopenSubObject subIndex="0002" name="Transmission type" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="rw" actualValue="1" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_140202" />
+            </CANopenObject>
+            <CANopenObject index="1403" name="RPDO4 Communication Parameter" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1403" subNumber="3">
+              <CANopenSubObject subIndex="0000" name="Number of entries" objectType="7" dataType="0005" lowLimit="2" highLimit="5" accessType="ro" actualValue="2" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_140300" />
+              <CANopenSubObject subIndex="0001" name="COB-ID RPDO4" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="$NODEID + 0x500" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_140301" />
+              <CANopenSubObject subIndex="0002" name="Transmission type" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="rw" actualValue="1" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_140302" />
+            </CANopenObject>
+            <CANopenObject index="1600" name="RPDO1 Mapping Parameter" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1600" subNumber="2">
+              <CANopenSubObject subIndex="0000" name="Number of entries" objectType="7" dataType="0005" lowLimit="0" highLimit="64" accessType="rw" actualValue="1" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_160000" />
+              <CANopenSubObject subIndex="0001" name="the first mapped object" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0x60400010" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_160001" />
+            </CANopenObject>
+            <CANopenObject index="1601" name="RPDO2 Mapping Parameter" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1601" subNumber="3">
+              <CANopenSubObject subIndex="0000" name="Number of entries" objectType="7" dataType="0005" lowLimit="0" highLimit="64" accessType="rw" actualValue="2" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_160100" />
+              <CANopenSubObject subIndex="0001" name="the first mapped object" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0x60400010" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_160101" />
+              <CANopenSubObject subIndex="0002" name="the second mapped object" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0x60600008" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_160102" />
+            </CANopenObject>
+            <CANopenObject index="1602" name="RPDO3 Mapping Parameter" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1602" subNumber="3">
+              <CANopenSubObject subIndex="0000" name="Number of entries" objectType="7" dataType="0005" lowLimit="0" highLimit="64" accessType="rw" actualValue="2" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_160200" />
+              <CANopenSubObject subIndex="0001" name="the first mapped object" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0x60400010" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_160201" />
+              <CANopenSubObject subIndex="0002" name="the second mapped object" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0x607A0020" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_160202" />
+            </CANopenObject>
+            <CANopenObject index="1603" name="RPDO4 Mapping Parameter" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1603" subNumber="3">
+              <CANopenSubObject subIndex="0000" name="Number of entries" objectType="7" dataType="0005" lowLimit="0" highLimit="64" accessType="rw" actualValue="2" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_160300" />
+              <CANopenSubObject subIndex="0001" name="the first mapped object" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0x60400010" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_160301" />
+              <CANopenSubObject subIndex="0002" name="the second mapped object" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0x60FF0020" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_160302" />
+            </CANopenObject>
+            <CANopenObject index="1800" name="TPDO1 Communication Parameter" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1800" subNumber="6">
+              <CANopenSubObject subIndex="0000" name="Number of entries" objectType="7" dataType="0005" lowLimit="2" highLimit="5" accessType="ro" actualValue="5" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180000" />
+              <CANopenSubObject subIndex="0001" name="COB-ID TPDO1" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="$NODEID + 0x180" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180001" />
+              <CANopenSubObject subIndex="0002" name="Transmission type" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="rw" actualValue="1" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180002" />
+              <CANopenSubObject subIndex="0003" name="Reserved" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="rw" actualValue="0" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180003" />
+              <CANopenSubObject subIndex="0004" name="Reserved" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180004" />
+              <CANopenSubObject subIndex="0005" name="Event timer" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="rw" actualValue="0" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180005" />
+            </CANopenObject>
+            <CANopenObject index="1801" name="TPDO2 Communication Parameter" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1801" subNumber="6">
+              <CANopenSubObject subIndex="0000" name="Number of entries" objectType="7" dataType="0005" lowLimit="2" highLimit="5" accessType="ro" actualValue="5" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180100" />
+              <CANopenSubObject subIndex="0001" name="COB-ID TPDO2" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="$NODEID + 0x280" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180101" />
+              <CANopenSubObject subIndex="0002" name="Transmission type" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="rw" actualValue="1" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180102" />
+              <CANopenSubObject subIndex="0003" name="Reserved" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180103" />
+              <CANopenSubObject subIndex="0004" name="Reserved" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180104" />
+              <CANopenSubObject subIndex="0005" name="Event timer" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="rw" actualValue="0" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180105" />
+            </CANopenObject>
+            <CANopenObject index="1802" name="TPDO3 Communication Parameter" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1802" subNumber="6">
+              <CANopenSubObject subIndex="0000" name="Number of entries" objectType="7" dataType="0005" lowLimit="2" highLimit="5" accessType="ro" actualValue="5" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180200" />
+              <CANopenSubObject subIndex="0001" name="COB-ID TPDO3" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="$NODEID + 0x380" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180201" />
+              <CANopenSubObject subIndex="0002" name="Transmision type" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="rw" actualValue="1" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180202" />
+              <CANopenSubObject subIndex="0003" name="Reserved" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="rw" actualValue="0" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180203" />
+              <CANopenSubObject subIndex="0004" name="Reserved" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180204" />
+              <CANopenSubObject subIndex="0005" name="Event timer" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="rw" actualValue="0" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180205" />
+            </CANopenObject>
+            <CANopenObject index="1803" name="TPDO4 Communication Parameter" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1803" subNumber="6">
+              <CANopenSubObject subIndex="0000" name="Number of entries" objectType="7" dataType="0005" lowLimit="2" highLimit="5" accessType="ro" actualValue="5" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180300" />
+              <CANopenSubObject subIndex="0001" name="COB-ID TPDO4" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="$NODEID + 0x480" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180301" />
+              <CANopenSubObject subIndex="0002" name="Transmission type" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="rw" actualValue="1" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180302" />
+              <CANopenSubObject subIndex="0003" name="Reserved" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="rw" actualValue="0" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180303" />
+              <CANopenSubObject subIndex="0004" name="Reserved" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180304" />
+              <CANopenSubObject subIndex="0005" name="Event timer" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="rw" actualValue="0" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_180305" />
+            </CANopenObject>
+            <CANopenObject index="1A00" name="TPDO1 Mapping Parameter" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1a00" subNumber="2">
+              <CANopenSubObject subIndex="0000" name="Number of entries" objectType="7" dataType="0005" lowLimit="0" highLimit="64" accessType="rw" actualValue="1" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_1a0000" />
+              <CANopenSubObject subIndex="0001" name="the first mapped object" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0x60410010" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_1a0001" />
+            </CANopenObject>
+            <CANopenObject index="1A01" name="TPDO2 Mapping Parameter" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1a01" subNumber="3">
+              <CANopenSubObject subIndex="0000" name="Number of entries" objectType="7" dataType="0005" lowLimit="0" highLimit="64" accessType="rw" actualValue="2" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_1a0100" />
+              <CANopenSubObject subIndex="0001" name="the first mapped object" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0x60410010" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_1a0101" />
+              <CANopenSubObject subIndex="0002" name="the second mapped object" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0x60610008" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_1a0102" />
+            </CANopenObject>
+            <CANopenObject index="1A02" name="TPDO3 Mapping Parameter" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1a02" subNumber="3">
+              <CANopenSubObject subIndex="0000" name="Number of entries" objectType="7" dataType="0005" lowLimit="0" highLimit="64" accessType="rw" actualValue="0" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_1a0200" />
+              <CANopenSubObject subIndex="0001" name="the first mapped object" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0x60410010" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_1a0201" />
+              <CANopenSubObject subIndex="0002" name="the second mapped object" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0x60640020" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_1a0202" />
+            </CANopenObject>
+            <CANopenObject index="1A03" name="TPDO4 Mapping Parameter" objectType="9" dataType="0000" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_1a03" subNumber="3">
+              <CANopenSubObject subIndex="0000" name="Number of entries" objectType="7" dataType="0005" lowLimit="0" highLimit="64" accessType="rw" actualValue="0" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_1a0300" />
+              <CANopenSubObject subIndex="0001" name="the first mapped object" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0x60410010" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_1a0301" />
+              <CANopenSubObject subIndex="0002" name="the second mapped object" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0x606C0020" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_1a0302" />
+            </CANopenObject>
+            <CANopenObject index="2000" name="Manufacturer Error Register" objectType="7" dataType="0006" lowLimit="0" highLimit="65535" accessType="ro" actualValue="0" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_2000" />
+            <CANopenObject index="2001" name="Manufacturer Error Register Mask" objectType="7" dataType="0006" lowLimit="0" highLimit="65535" accessType="rw" actualValue="0xFFFF" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_2001" />
+            <CANopenObject index="2002" name="Status Word Mask" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0x047F0000" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_2002" />
+            <CANopenObject index="2004" name="COB-ID High resolution time stamp" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0x100" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_2004" />
+            <CANopenObject index="2006" name="Call TML function" objectType="7" dataType="0006" lowLimit="1" highLimit="10" accessType="wo" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_2006" />
+            <CANopenObject index="2022" name="Control effort" objectType="7" dataType="0003" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_2022" />
+            <CANopenObject index="2023" name="Jerk time" objectType="7" dataType="0006" lowLimit="0" highLimit="65535" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_2023" />
+            <CANopenObject index="2040" name="Digital Input Status" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_2040" />
+            <CANopenObject index="2043" name="Digital Outputs Command" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_2043" />
+            <CANopenObject index="2050" name="Over-current protection level" objectType="7" dataType="0006" lowLimit="0" highLimit="32767" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_2050" />
+            <CANopenObject index="2051" name="Over-current time out" objectType="7" dataType="0006" lowLimit="0" highLimit="65535" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_2051" />
+            <CANopenObject index="2052" name="Motor nominal current" objectType="7" dataType="0006" lowLimit="0" highLimit="32767" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_2052" />
+            <CANopenObject index="2053" name="I2t protection integrator limit" objectType="7" dataType="0007" lowLimit="0" highLimit="2147483647" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_2053" />
+            <CANopenObject index="2054" name="I2t protection scaling factor" objectType="7" dataType="0006" lowLimit="0" highLimit="65535" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_2054" />
+            <CANopenObject index="2064" name="Read/Write configuration register" objectType="7" dataType="0007" lowLimit="0" highLimit="2147483647" accessType="rw" actualValue="0x84" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_2064" />
+            <CANopenObject index="2065" name="Write data at address set in 0x2064" objectType="7" dataType="0007" lowLimit="0" highLimit="2147483647" accessType="wo" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_2065" />
+            <CANopenObject index="2066" name="Read data from address set in 0x2064" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_2066" />
+            <CANopenObject index="2067" name="Write data at specified address" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_2067" />
+            <CANopenObject index="2069" name="Checksum configuration register" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_2069" />
+            <CANopenObject index="206A" name="Checksum read register" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_206a" />
+            <CANopenObject index="2072" name="Interpolated position mode status" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_2072" />
+            <CANopenObject index="2073" name="Interpolated position buffer length" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="rw" actualValue="7" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_2073" />
+            <CANopenObject index="2074" name="Interpolated position buffer configuration" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_2074" />
+            <CANopenObject index="2076" name="Save current configuration" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_2076" />
+            <CANopenObject index="2077" name="Execute TML program" objectType="7" dataType="0006" lowLimit="" highLimit="" accessType="wo" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_2077" />
+            <CANopenObject index="2079" name="Interpolated position initial position" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_2079" />
+            <CANopenObject index="6040" name="Control word" objectType="7" dataType="0006" lowLimit="0" highLimit="65535" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_6040" />
+            <CANopenObject index="6041" name="Status word" objectType="7" dataType="0006" lowLimit="0" highLimit="65535" accessType="ro" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_6041" />
+            <CANopenObject index="6060" name="Modes of Operation" objectType="7" dataType="0002" lowLimit="-128" highLimit="127" accessType="wo" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_6060" />
+            <CANopenObject index="6061" name="Modes of Operation Display" objectType="7" dataType="0002" lowLimit="-128" highLimit="127" accessType="ro" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_6061" />
+            <CANopenObject index="6062" name="Position demand value" objectType="7" dataType="0004" lowLimit="-2147483648" highLimit="2147483647" accessType="ro" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_6062" />
+            <CANopenObject index="6064" name="Position actual value" objectType="7" dataType="0004" lowLimit="-2147483648" highLimit="2147483647" accessType="ro" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_6064" />
+            <CANopenObject index="6065" name="Following error window" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_6065" />
+            <CANopenObject index="6066" name="Following error time out" objectType="7" dataType="0006" lowLimit="0" highLimit="65535" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_6066" />
+            <CANopenObject index="6067" name="Position window" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_6067" />
+            <CANopenObject index="6068" name="Position window time" objectType="7" dataType="0006" lowLimit="0" highLimit="65535" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_6068" />
+            <CANopenObject index="6069" name="Velocity sensor actual value" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_6069" />
+            <CANopenObject index="606B" name="Velocity demand value" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_606b" />
+            <CANopenObject index="606C" name="Velocity actual value" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_606c" />
+            <CANopenObject index="607A" name="Target position" objectType="7" dataType="0004" lowLimit="-2147483648" highLimit="2147483647" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_607a" />
+            <CANopenObject index="607C" name="Home offset" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_607c" />
+            <CANopenObject index="6081" name="Profile velocity" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_6081" />
+            <CANopenObject index="6083" name="Profile acceleration" objectType="7" dataType="0007" lowLimit="0" highLimit="4294967295" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_6083" />
+            <CANopenObject index="6085" name="Quick stop deceleration" objectType="7" dataType="0007" lowLimit="0" highLimit="4294967295" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_6085" />
+            <CANopenObject index="6086" name="Motion profile type" objectType="7" dataType="0003" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_6086" />
+            <CANopenObject index="6098" name="Homing method" objectType="7" dataType="0002" lowLimit="" highLimit="" accessType="rw" actualValue="0" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_6098" />
+            <CANopenObject index="6099" name="Homing speed" objectType="8" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_6099" subNumber="3">
+              <CANopenSubObject subIndex="0000" name="number of entries" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="2" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_609900" />
+              <CANopenSubObject subIndex="0001" name="Speed during search for switch" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0" denotation="" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_609901" />
+              <CANopenSubObject subIndex="0002" name="Speed during search for zero" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="0" denotation="" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_609902" />
+            </CANopenObject>
+            <CANopenObject index="609A" name="Homing acceleration" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_609a" />
+            <CANopenObject index="60C0" name="Interpolation sub mode select" objectType="7" dataType="0003" lowLimit="-32768" highLimit="32767" accessType="rw" actualValue="0" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_60c0" />
+            <CANopenObject index="60C1" name="Interpolation data record" objectType="8" dataType="0004" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_60c1" subNumber="3">
+              <CANopenSubObject subIndex="0000" name="number of elements" objectType="7" dataType="0005" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" PDOmapping="no" uniqueIDRef="UID_PARAM_60c100" />
+              <CANopenSubObject subIndex="0001" name="X1: the first parameter of ip function" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_60c101" />
+              <CANopenSubObject subIndex="0002" name="X2: the second parameter of ip function" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_60c102" />
+            </CANopenObject>
+            <CANopenObject index="60FF" name="Target velocity" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_60ff" />
+            <CANopenObject index="6502" name="Supported drive modes" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="ro" actualValue="0x00000065" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_6502" />
+          </CANopenObjectList>
+          <dummyUsage>
+            <dummy entry="Dummy0001=0" />
+            <dummy entry="Dummy0002=0" />
+            <dummy entry="Dummy0003=0" />
+            <dummy entry="Dummy0004=0" />
+            <dummy entry="Dummy0005=0" />
+            <dummy entry="Dummy0006=0" />
+            <dummy entry="Dummy0007=0" />
+          </dummyUsage>
+        </ApplicationLayers>
+        <TransportLayers>
+          <PhysicalLayer>
+            <baudRate>
+              <supportedBaudRate value="125 Kbps" />
+              <supportedBaudRate value="250 Kbps" />
+              <supportedBaudRate value="500 Kbps" />
+              <supportedBaudRate value="1000 Kbps" />
+            </baudRate>
+          </PhysicalLayer>
+        </TransportLayers>
+        <NetworkManagement>
+          <CANopenGeneralFeatures granularity="8" nrOfRxPDO="4" nrOfTxPDO="4" bootUpSlave="true" />
+          <CANopenMasterFeatures />
+          <deviceCommissioning nodeID="0" actualBaudRate="0" networkNumber="0" CANopenManager="false" />
+        </NetworkManagement>
+      </ProfileBody>
+    </ISO15745Profile>
+  </ISO15745ProfileContainer>
+</OpenEDSProject>

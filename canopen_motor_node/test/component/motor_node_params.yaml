@@ -13,8 +13,10 @@ canopen_driver:
 
       sync:
         overflow: 10 # overflow sync counter at value or do not set it (0, default)
-        interval_ms: 100 # set to 0 to disable sync
-        update_ms: 0 # update interval of control loop, must be set explecitly if sync is disabled
+        # interval_ms: 100 # set to 0 to disable sync
+        # update_ms: 0 # update interval of control loop, must be set explecitly if sync is disabled
+        interval_ms: 0 # set to 0 to disable sync
+        update_ms: 100 # update interval of control loop, must be set explecitly if sync is disabled
 
       # heartbeat:
       #   msg: "704#05" # message to send, cansend format: heartbeat of node 704 with status 5=Started
@@ -28,9 +30,10 @@ canopen_driver:
       # TODO(sam): figure out how to do this with "dynamicly nested" values
       nodes: ['motor_0']
       motor_0:
-        id: 8
+        # id: 8
+        id: 2
         eds_pkg: 'canopen_chain_node' # optional package  name for relative path
-        # eds_file: 'test/eds/ISD860.dcf' # path to EDS/DCF file
+        eds_file: 'test/eds/ISD860v2.dcf' # path to EDS/DCF file
         # publish: ["obj:6040", "obj:6041", "obj:6061!", "obj:6064!", "obj:6069!",
         #           "obj:6062!", "obj:606b!", "obj:606c!", "obj:607a!",
         #           "obj:607c!"] # list of objects to be published (one topic per node)

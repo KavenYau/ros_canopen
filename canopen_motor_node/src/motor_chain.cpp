@@ -204,14 +204,14 @@ bool MotorChain::setup_debug_interface(const canopen::NodeSharedPtr &node,
   switch_operation_mode_sub_ = create_subscription<std_msgs::msg::Int32>(
       node_name + "/switch_operation_mode", switch_operation_mode_callback);
 
-  auto set_target_position_callback =
+  auto set_target_callback =
       [this, motor](const std_msgs::msg::Float32::SharedPtr msg) -> void {
     RCLCPP_INFO(this->get_logger(), "setting target: [%f]", msg->data);
     motor->setTarget(msg->data);
   };
 
-  set_target_position_sub_ = create_subscription<std_msgs::msg::Float32>(
-      node_name + "/set_target_position", set_target_position_callback);
+  set_target_sub_ = create_subscription<std_msgs::msg::Float32>(
+      node_name + "/set_target", set_target_callback);
 }
 
 void MotorChain::publish_all_debug(MotorBaseSharedPtr motor) {
