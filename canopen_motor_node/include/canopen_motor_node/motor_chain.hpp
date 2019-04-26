@@ -7,6 +7,7 @@
 #include <std_msgs/msg/float32.hpp>
 #include <std_msgs/msg/int32.hpp>
 #include <std_msgs/msg/string.hpp>
+#include <std_msgs/msg/bool.hpp>
 
 #include <canopen_msgs/msg/debug_publishers.hpp>
 
@@ -52,6 +53,7 @@ private:
   rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr set_target_sub_;
   rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr
       switch_operation_mode_sub_;
+  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr enable_ros_control_command_sub_;
 };
 
 } // namespace canopen

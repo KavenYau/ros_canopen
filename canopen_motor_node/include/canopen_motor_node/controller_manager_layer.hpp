@@ -35,6 +35,7 @@ public:
   // fixed_period_(fixed_period) {
   // }
 
+  // NOTE(sam): remove executor or use it?
   ControllerManagerLayer(const canopen::RobotLayerSharedPtr robot)
       : Layer("ControllerManager"), robot_(robot) {
     executor_ = std::make_shared<rclcpp::executors::MultiThreadedExecutor>();

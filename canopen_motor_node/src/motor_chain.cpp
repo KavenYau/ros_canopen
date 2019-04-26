@@ -1,4 +1,5 @@
 #include <canopen_motor_node/handle_layer.hpp>
+#include <canopen_motor_node/robot_layer.hpp>
 #include <canopen_motor_node/motor_chain.hpp>
 
 using namespace canopen;
@@ -213,6 +214,23 @@ bool MotorChain::setup_debug_interface(const canopen::NodeSharedPtr &node,
 
   set_target_sub_ = create_subscription<std_msgs::msg::Float32>(
       node_name + "/set_target", set_target_callback);
+
+  auto enable_ros_control_command_callback =
+      [this, motor](const std_msgs::msg::Bool::SharedPtr msg) -> void {
+    if (msg->data) {
+      RCLCPP_INFO(this->get_logger(), "enabling ros_control command");
+    } else {
+      RCLCPP_INFO(this->get_logger(), "disabling ros_control command");
+    }
+    for (RobotLayer::HandleMap::iterator it = robot_layer_->handles_.begin();
+         it != robot_layer_->handles_.end(); ++it)
+     {
+        it->second->setEnableRosControlCommand(msg->data);
+     }
+  };
+
+  enable_ros_control_command_sub_ = create_subscription<std_msgs::msg::Bool>(
+      node_name + "/enable_ros_control_command", enable_ros_control_command_callback);
 }
 
 void MotorChain::publish_all_debug(MotorBaseSharedPtr motor) {

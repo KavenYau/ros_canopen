@@ -151,10 +151,12 @@ public:
 
     virtual hardware_interface::JointStateHandle *getJointStateHandle()
     {
-      // fprintf("creating joint state handle\n");
-      // joint_state_handle_ = new hardware_interface::JointStateHandle("add_real_name_here", &pos_, &vel_, &eff_);
-      double test = joint_state_handle_.get_position();
       return &joint_state_handle_;
+    }
+
+    virtual hardware_interface::JointCommandHandle *getJointCommandHandle()
+    {
+      return &joint_command_handle_;
     }
     // void registerHandle(hardware_interface::JointStateInterface &iface){
     //     iface.registerHandle(jsh_);
@@ -174,6 +176,11 @@ public:
 
     bool prepareFilters(canopen::LayerStatus &status);
 
+    virtual void setEnableRosControlCommand(bool value)
+    {
+      enable_ros_control_command_ = value;
+    }
+
 private:
 
     virtual void handleRead(canopen::LayerStatus &status, const LayerState &current_state);
@@ -184,6 +191,7 @@ private:
     virtual void handleHalt(canopen::LayerStatus &status) { /* TODO */ }
     virtual void handleRecover(canopen::LayerStatus &status) { /* nothing to do */ }
 
+    bool enable_ros_control_command_;
 };
 
 typedef std::shared_ptr<HandleLayer> HandleLayerSharedPtr;

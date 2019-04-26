@@ -16,7 +16,7 @@ repositories:
 
   ros2_controllers:
     type: git
-    url: https://github.com/ros-controls/ros2_controllers.git
+    url: https://github.com/samiamlabs/ros2_controllers.git
     version: crystal
 
   filters:

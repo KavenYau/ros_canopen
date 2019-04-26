@@ -1349,8 +1349,8 @@ ObjectType=0x7
 ;StorageLocation=RAM
 DataType=0x0007
 AccessType=rww
-DefaultValue=
-ParameterValue=
+DefaultValue=2894403505
+ParameterValue=3000000
 PDOMapping=1
 
 [6083]
@@ -1375,8 +1375,8 @@ DataType=0x0007
 AccessType=rww
 HighLimit=4294967295
 LowLimit=0
-DefaultValue=
-ParameterValue=
+DefaultValue=32768
+ParameterValue=1000000
 PDOMapping=1
 
 [6086]

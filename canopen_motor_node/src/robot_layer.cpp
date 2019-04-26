@@ -13,14 +13,6 @@ using namespace canopen;
 
 hardware_interface::hardware_interface_ret_t RobotLayer::init() {
   // init robot_hardware
-  // auto joint_names = {
-  //   "my_robot_joint_1",
-  //   "my_robot_joint_2"
-  // };
-  // size_t i = 0;
-  // for (auto & joint_name : joint_names) {
-  //   hardware_interface::JointStateHandle state_handle(joint_name, &pos_[i], &vel_[i], &eff_[i]);
-  // }
 }
 
 hardware_interface::hardware_interface_ret_t RobotLayer::read() {
@@ -90,19 +82,19 @@ void RobotLayer::handleInit(LayerStatus &status) {
       // }
       //
       // it->second->registerJointStateHandle(this);
-      RCLCPP_INFO(ros_logger_, "==========>going to create joint state handle!");
-      std::string joint_name = "temp_joint";
-      // hardware_interface::JointStateHandle joint_state_handle(joint_name, &temp_pos_, &temp_vel_, &temp_eff_);
-      auto joint_state_handle = it->second->getJointStateHandle();
-      // joint_state_handle.get_position();
-      // auto joint_state_ptr = &joint_state_handle;
-      // double test = joint_state_ptr->get_position();
 
+      RCLCPP_INFO(ros_logger_, "==========>going to create joint state handle!");
+
+      auto joint_state_handle = it->second->getJointStateHandle();
       if (register_joint_state_handle(joint_state_handle) != hardware_interface::HW_RET_OK) {
         throw std::runtime_error("unable to register " + joint_state_handle->get_name());
       }
 
-      //
+      auto joint_command_handle = it->second->getJointCommandHandle();
+      if (register_joint_command_handle(joint_command_handle)) {
+        throw std::runtime_error("unable to register " + joint_command_handle->get_name());
+      }
+
       // const hardware_interface::JointHandle *h  = 0;
       //
       // it->second->registerHandle(pos_interface_, limits, has_soft_limits ?

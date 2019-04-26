@@ -40,9 +40,7 @@ void ControllerManagerLayer::handleWrite(canopen::LayerStatus &status,
 }
 
 void ControllerManagerLayer::handleInit(canopen::LayerStatus &status) {
-    RCUTILS_LOG_INFO("init controller");
-  // cm_ = std::make_shared<controller_manager::ControllerManager>(robot_,
-  //                                                               executor_);
+  RCUTILS_LOG_INFO("init controller");
   if (cm_) {
     status.warn("controller_manager is already intialized");
   } else {

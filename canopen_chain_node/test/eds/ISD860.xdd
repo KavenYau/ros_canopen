@@ -1157,7 +1157,7 @@
             <denotation>
               <label lang="en" />
             </denotation>
-            <defaultValue value="" />
+            <defaultValue value="2894403505" />
           </parameter>
           <parameter uniqueID="UID_PARAM_6083" access="readWriteOutput">
             <label lang="en">Profile acceleration</label>
@@ -1173,7 +1173,7 @@
             <denotation>
               <label lang="en" />
             </denotation>
-            <defaultValue value="" />
+            <defaultValue value="32768" />
           </parameter>
           <parameter uniqueID="UID_PARAM_6086" access="readWriteOutput">
             <label lang="en">Motion profile type</label>
@@ -1465,9 +1465,9 @@
           <CANopenObject index="606C" name="Velocity actual value" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="ro" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="optional" uniqueIDRef="UID_PARAM_606c" />
           <CANopenObject index="607A" name="Target position" objectType="7" dataType="0004" lowLimit="-2147483648" highLimit="2147483647" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_607a" />
           <CANopenObject index="607C" name="Home offset" objectType="7" dataType="0004" lowLimit="" highLimit="" accessType="rw" actualValue="0" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_607c" />
-          <CANopenObject index="6081" name="Profile velocity" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_6081" />
+          <CANopenObject index="6081" name="Profile velocity" objectType="7" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="3000000" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_6081" />
           <CANopenObject index="6083" name="Profile acceleration" objectType="7" dataType="0007" lowLimit="0" highLimit="4294967295" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_6083" />
-          <CANopenObject index="6085" name="Quick stop deceleration" objectType="7" dataType="0007" lowLimit="0" highLimit="4294967295" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_6085" />
+          <CANopenObject index="6085" name="Quick stop deceleration" objectType="7" dataType="0007" lowLimit="0" highLimit="4294967295" accessType="rw" actualValue="1000000" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_6085" />
           <CANopenObject index="6086" name="Motion profile type" objectType="7" dataType="0003" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_6086" />
           <CANopenObject index="6098" name="Homing method" objectType="7" dataType="0002" lowLimit="" highLimit="" accessType="rw" actualValue="0" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="RPDO" uniqueIDRef="UID_PARAM_6098" />
           <CANopenObject index="6099" name="Homing speed" objectType="8" dataType="0007" lowLimit="" highLimit="" accessType="rw" actualValue="" denotation="" edseditor_extenstion_storagelocation="RAM" PDOmapping="no" uniqueIDRef="UID_PARAM_6099" subNumber="3">
