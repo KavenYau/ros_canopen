@@ -103,7 +103,7 @@ bool MotorChain::setup_chain() {
 
   if (RosChain::setup_chain()) {
     add(motors_);
-    // add(robot_layer_);
+    add(robot_layer_);
     RCLCPP_INFO(this->get_logger(), "chain setup successful");
 
     // if(!nh_.param("use_realtime_period", false)){
@@ -112,8 +112,9 @@ bool MotorChain::setup_chain() {
     // }else{
     //     ROS_INFO("Using real-time control period");
     // }
-    // cm_.reset(new ControllerManagerLayer(robot_layer_, nh_, dur));
-    // add(cm_);
+    cm_.reset(new ControllerManagerLayer(robot_layer_));
+    RCLCPP_INFO(this->get_logger(), "robot layer");
+    add(cm_);
 
     return true;
   }

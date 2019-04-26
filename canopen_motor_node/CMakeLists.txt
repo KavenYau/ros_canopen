@@ -6,6 +6,11 @@ if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 14)
 endif()
 
+# TODO(sam): Add and fix warnings
+# if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+#   add_compile_options(-Wall -Wextra -Wpedantic)
+# endif()
+
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
@@ -13,11 +18,12 @@ find_package(canopen_402 REQUIRED)
 find_package(canopen_chain_node REQUIRED)
 find_package(canopen_master REQUIRED)
 find_package(canopen_msgs REQUIRED)
+find_package(hardware_interface REQUIRED)
+find_package(controller_manager REQUIRED)
+find_package(controller_interface REQUIRED)
+find_package(filters REQUIRED)
 
-# find_package(controller_manager REQUIRED)
 # find_package(controller_manager_msgs REQUIRED)
-# find_package(filters REQUIRED)
-# find_package(hardware_interface REQUIRED)
 # find_package(joint_limits_interface REQUIRED)
 # find_package(urdf REQUIRED)
 
@@ -75,12 +81,16 @@ target_link_libraries(canopen_motor
 # )
 
 ament_target_dependencies(canopen_motor
-  "rclcpp"
-  "std_msgs"
-  "canopen_msgs"
-  "canopen_master"
-  "canopen_chain_node"
-  "canopen_402"
+  canopen_msgs
+  canopen_master
+  canopen_chain_node
+  canopen_402
+  controller_manager
+  controller_interface
+  hardware_interface
+  rclcpp
+  std_msgs
+  filters
 )
 
 # # canopen_motor_node
@@ -113,9 +123,6 @@ ament_target_dependencies(${PROJECT_NAME}
 #   # MUPARSER
 # )
 
-ament_export_include_directories(include)
-ament_export_libraries(canopen_motor)
-
 install(
   TARGETS
     canopen_motor
@@ -146,21 +153,23 @@ install(DIRECTORY
 #   DESTINATION share/${PROJECT_NAME}/
 # )
 
-# if(BUILD_TESTING)
-#   find_package(ament_lint_auto REQUIRED)
-#   ament_lint_auto_find_test_dependencies()
-#
-#   find_package(ament_cmake_pytest REQUIRED)
-#   find_package(rmw_implementation_cmake REQUIRED)
-#
-#   # catkin_add_gtest(${PROJECT_NAME}-test_muparser
-#   #   test/test_muparser.cpp
-#   # )
-#   # target_link_libraries(${PROJECT_NAME}-test_muparser
-#   #   canopen_motor
-#   #   ${catkin_LIBRARIES}
-#   #   ${MUPARSER_LIBRARIES}
-#   # )
-# endif()
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
 
+  # find_package(ament_cmake_pytest REQUIRED)
+  # find_package(rmw_implementation_cmake REQUIRED)
+
+  # catkin_add_gtest(${PROJECT_NAME}-test_muparser
+  #   test/test_muparser.cpp
+  # )
+  # target_link_libraries(${PROJECT_NAME}-test_muparser
+  #   canopen_motor
+  #   ${catkin_LIBRARIES}
+  #   ${MUPARSER_LIBRARIES}
+  # )
+endif()
+
+ament_export_include_directories(include)
+ament_export_libraries(canopen_motor)
 ament_package()

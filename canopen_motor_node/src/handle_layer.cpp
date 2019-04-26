@@ -56,9 +56,25 @@ bool HandleLayer::select(const MotorBase::OperationMode &m){
 // }
 
 HandleLayer::HandleLayer(const std::string & name, const canopen::MotorBaseSharedPtr & motor, const canopen::ObjectStorageSharedPtr storage) :
-  HandleLayerBase(name + " Handle")
+  HandleLayerBase(name + " Handle"), filter_pos_("double"), filter_vel_("double"), filter_eff_("double"), variables_(storage),
+  joint_state_handle_(name, &pos_, &vel_, &eff_)
 {
+  pos_ = 0.0;
+  vel_ = 0.0;
+  eff_ = 0.0;
+
   motor_ = motor;
+
+  std::string p2d("rint(rad2deg(pos)*1000)"), v2d("rint(rad2deg(vel)*1000)"), e2d("rint(eff)");
+  std::string p2r("deg2rad(obj6064)/1000"), v2r("deg2rad(obj606C)/500"), e2r("obj2022");
+
+  conv_target_pos_.reset(new UnitConverter(p2d, std::bind(assignVariable, "pos", &cmd_pos_, std::placeholders::_1)));
+  conv_target_vel_.reset(new UnitConverter(v2d, std::bind(assignVariable, "vel", &cmd_vel_, std::placeholders::_1)));
+  conv_target_eff_.reset(new UnitConverter(e2d, std::bind(assignVariable, "eff", &cmd_eff_, std::placeholders::_1)));
+
+  conv_pos_.reset(new UnitConverter(p2r, std::bind(&ObjectVariables::getVariable, &variables_, std::placeholders::_1)));
+  conv_vel_.reset(new UnitConverter(v2r, std::bind(&ObjectVariables::getVariable, &variables_, std::placeholders::_1)));
+  conv_eff_.reset(new UnitConverter(e2r, std::bind(&ObjectVariables::getVariable, &variables_, std::placeholders::_1)));
 }
 
 HandleLayer::CanSwitchResult HandleLayer::canSwitch(const MotorBase::OperationMode &m){
@@ -140,12 +156,15 @@ template<typename T> void addLimitsHandle(std::vector<LimitsHandleBaseSharedPtr>
 // }
 
 void HandleLayer::handleRead(LayerStatus &status, const LayerState &current_state) {
-    // if(current_state > Shutdown){
-    //     variables_.sync();
-    //     filter_pos_.update(conv_pos_->evaluate(), pos_);
-    //     filter_vel_.update(conv_vel_->evaluate(), vel_);
-    //     filter_eff_.update(conv_eff_->evaluate(), eff_);
-    // }
+    if(current_state > Shutdown){
+        variables_.sync();
+        filter_pos_.update(conv_pos_->evaluate(), pos_);
+        filter_vel_.update(conv_vel_->evaluate(), vel_);
+        filter_eff_.update(conv_eff_->evaluate(), eff_);
+        // printf("Effort: %f\n", eff_);
+        // printf("Position: %f\n", pos_);
+        // fflush(stdout);
+    }
 }
 
 void HandleLayer::handleWrite(LayerStatus &status, const LayerState &current_state) {

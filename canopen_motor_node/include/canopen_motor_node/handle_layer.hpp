@@ -7,10 +7,16 @@
 #include <atomic>
 #include <functional>
 #include <boost/thread/mutex.hpp>
-// #include <filters/filter_chain.h>
+
+#include <hardware_interface/robot_hardware.hpp>
+#include <hardware_interface/types/hardware_interface_return_values.hpp>
+
+#include <filters/filter_chain.hpp>
+
 // #include <hardware_interface/joint_command_interface.h>
 // #include <hardware_interface/joint_state_interface.h>
 // #include <joint_limits_interface/joint_limits_interface.h>
+
 #include <canopen_master/objdict.hpp>
 #include <canopen_master/layer.hpp>
 #include <canopen_402/base.hpp>
@@ -53,28 +59,29 @@ public:
 
     ObjectVariables(const ObjectStorageSharedPtr storage) : storage_(storage) {}
     bool sync(){
-        // boost::mutex::scoped_lock lock(mutex_);
-        // bool ok = true;
-        // for(GetterMap::iterator it = getters_.begin(); it != getters_.end(); ++it){
-        //     ok = it->second() && ok;
-        // }
-        // return ok;
+        boost::mutex::scoped_lock lock(mutex_);
+        bool ok = true;
+        for(GetterMap::iterator it = getters_.begin(); it != getters_.end(); ++it){
+            ok = it->second() && ok;
+        }
+        return ok;
     }
 
     double * getVariable(const std::string &n) {
-        // boost::mutex::scoped_lock lock(mutex_);
-        // try{
-        //     if(n.find("obj") == 0){
-        //         canopen::ObjectDict::Key key(n.substr(3));
-        //         GetterMap::const_iterator it = getters_.find(key);
-        //         if(it != getters_.end()) return it->second;
-        //         return canopen::branch_type<ObjectVariables, double * (ObjectVariables &list, const canopen::ObjectDict::Key &k)>(storage_->dict_->get(key)->data_type)(*this, key);
-        //     }
-        // }
-        // catch( const std::exception &e){
-        //     ROS_ERROR_STREAM("Could not find variable '" << n << "', reason: " << boost::diagnostic_information(e));
-        // }
-        // return 0;
+        boost::mutex::scoped_lock lock(mutex_);
+        try{
+            if(n.find("obj") == 0){
+                canopen::ObjectDict::Key key(n.substr(3));
+                GetterMap::const_iterator it = getters_.find(key);
+                if(it != getters_.end()) return it->second;
+                return canopen::branch_type<ObjectVariables, double * (ObjectVariables &list, const canopen::ObjectDict::Key &k)>(storage_->dict_->get(key)->data_type)(*this, key);
+            }
+        }
+        catch( const std::exception &e){
+            // ROS_ERROR_STREAM("Could not find variable '" << n << "', reason: " << boost::diagnostic_information(e));
+            printf("Could not find varaible");
+        }
+        return 0;
     }
 };
 
@@ -85,16 +92,18 @@ template<> inline double* ObjectVariables::func<canopen::ObjectDict::DEFTYPE_DOM
 
 
 class HandleLayer: public canopen::HandleLayerBase {
-    // double pos_, vel_, eff_;
+    double pos_, vel_, eff_;
+    double cmd_pos_, cmd_vel_, cmd_eff_;
 
-    // double cmd_pos_, cmd_vel_, cmd_eff_;
+    ObjectVariables variables_;
+    std::unique_ptr<UnitConverter>  conv_target_pos_, conv_target_vel_, conv_target_eff_;
+    std::unique_ptr<UnitConverter>  conv_pos_, conv_vel_, conv_eff_;
 
-    // ObjectVariables variables_;
-    // std::unique_ptr<UnitConverter>  conv_target_pos_, conv_target_vel_, conv_target_eff_;
-    // std::unique_ptr<UnitConverter>  conv_pos_, conv_vel_, conv_eff_;
-
-    // filters::FilterChain<double> filter_pos_, filter_vel_, filter_eff_;
+    filters::FilterChain<double> filter_pos_, filter_vel_, filter_eff_;
     // XmlRpc::XmlRpcValue options_;
+
+    hardware_interface::JointCommandHandle joint_command_handle_;
+    hardware_interface::JointStateHandle joint_state_handle_;
 
     // hardware_interface::JointStateHandle jsh_;
     // hardware_interface::JointHandle jph_, jvh_, jeh_;
@@ -136,6 +145,17 @@ public:
     bool switchMode(const canopen::MotorBase::OperationMode &m);
     bool forwardForMode(const canopen::MotorBase::OperationMode &m);
 
+    // void registerJointStateHandle(RobotLayer robot_layer) {
+    //   printf("register joint state in handle layer\n");
+    // }
+
+    virtual hardware_interface::JointStateHandle *getJointStateHandle()
+    {
+      // fprintf("creating joint state handle\n");
+      // joint_state_handle_ = new hardware_interface::JointStateHandle("add_real_name_here", &pos_, &vel_, &eff_);
+      double test = joint_state_handle_.get_position();
+      return &joint_state_handle_;
+    }
     // void registerHandle(hardware_interface::JointStateInterface &iface){
     //     iface.registerHandle(jsh_);
     // }
@@ -155,6 +175,7 @@ public:
     bool prepareFilters(canopen::LayerStatus &status);
 
 private:
+
     virtual void handleRead(canopen::LayerStatus &status, const LayerState &current_state);
     virtual void handleWrite(canopen::LayerStatus &status, const LayerState &current_state);
     virtual void handleInit(canopen::LayerStatus &status);

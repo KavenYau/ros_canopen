@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include <canopen_master/layer.hpp>
+#include <hardware_interface/robot_hardware.hpp>
 
 namespace canopen {
 
@@ -26,6 +27,7 @@ public:
 
     virtual bool forwardForMode(const canopen::MotorBase::OperationMode &m) = 0;
 
+    virtual hardware_interface::JointStateHandle *getJointStateHandle() = 0;
     // virtual void registerHandle(hardware_interface::JointStateInterface &iface) = 0;
     // virtual hardware_interface::JointHandle* registerHandle(hardware_interface::PositionJointInterface &iface,
     //                                                         const joint_limits_interface::JointLimits &limits,
