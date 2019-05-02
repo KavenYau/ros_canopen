@@ -58,7 +58,7 @@ bool HandleLayer::select(const MotorBase::OperationMode &m){
 HandleLayer::HandleLayer(const std::string & name, const canopen::MotorBaseSharedPtr & motor, const canopen::ObjectStorageSharedPtr storage) :
   HandleLayerBase(name + " Handle"), filter_pos_("double"), filter_vel_("double"), filter_eff_("double"), variables_(storage),
   joint_state_handle_(name, &pos_, &vel_, &eff_), joint_command_handle_(name, &cmd_pos_),
-  enable_ros_control_command_(true)
+  enable_ros_control_command_(false)
 {
   pos_ = 0.0;
   vel_ = 0.0;

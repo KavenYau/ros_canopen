@@ -53,6 +53,16 @@ void ControllerManagerLayer::handleInit(canopen::LayerStatus &status) {
     "ros_controllers::JointStateController",
     "my_robot_joint_state_controller");
 
+    // cm_->load_controller(
+    // "ros_controllers",
+    // "ros_controllers::JointPositionController",
+    // "my_robot_joint_position_controller");
+
+    // cm_->load_controller(
+    //     "ros_controllers",
+    //     "ros_controllers::JointTrajectoryController",
+    //     "my_robot_joint_trajectory_controller");
+
     // or we use the controller manager to configure every loaded controller
     if (cm_->configure() != controller_interface::CONTROLLER_INTERFACE_RET_SUCCESS) {
       RCUTILS_LOG_ERROR("at least one controller failed to configure");
@@ -61,6 +71,9 @@ void ControllerManagerLayer::handleInit(canopen::LayerStatus &status) {
     if (cm_->activate() != controller_interface::CONTROLLER_INTERFACE_RET_SUCCESS) {
       RCUTILS_LOG_ERROR("at least one controller failed to activate");
     }
+    // TODO(sam): move executor and future handle to motor_chain?
+    future_handle_ = std::async(std::launch::async, spin, executor_);
+
   }
 }
 

@@ -21,12 +21,17 @@ namespace canopen {
 class ControllerManagerLayer : public canopen::Layer {
   std::shared_ptr<controller_manager::ControllerManager> cm_;
   canopen::RobotLayerSharedPtr robot_;
-  std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> executor_;
   // ros::NodeHandle nh_;
 
   canopen::time_point last_time_;
   std::atomic<bool> recover_;
   // const ros::Duration fixed_period_;
+
+  static void
+  spin(std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> exe)
+  {
+    exe->spin();
+  }
 
 public:
   // ControllerManagerLayer(const canopen::RobotLayerSharedPtr robot, const
@@ -53,6 +58,9 @@ public:
   virtual void handleInit(canopen::LayerStatus &status);
   virtual void handleRecover(canopen::LayerStatus &status);
   virtual void handleShutdown(canopen::LayerStatus &status);
+
+  std::future<void> future_handle_;
+  std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> executor_;
 };
 
 } //  namespace canopen

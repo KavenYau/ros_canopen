@@ -117,6 +117,7 @@ bool MotorChain::setup_chain() {
     RCLCPP_INFO(this->get_logger(), "robot layer");
     add(cm_);
 
+
     return true;
   }
 
@@ -135,8 +136,10 @@ void MotorChain::handleWrite(LayerStatus &status,
 
 bool MotorChain::setup_debug_interface(const canopen::NodeSharedPtr &node,
                                        MotorBaseSharedPtr motor) {
-  // TODO(sam): get node name
   std::string node_name = "motor_0";
+
+  // TODO(sam): get node name somehow, remove dirty hack
+  // std::string node_name = "motor_" + std::to_string(node->node_id_);
 
   // TODO(sam): replace with custom services?
 

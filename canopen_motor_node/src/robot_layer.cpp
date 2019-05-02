@@ -83,8 +83,6 @@ void RobotLayer::handleInit(LayerStatus &status) {
       //
       // it->second->registerJointStateHandle(this);
 
-      RCLCPP_INFO(ros_logger_, "==========>going to create joint state handle!");
-
       auto joint_state_handle = it->second->getJointStateHandle();
       if (register_joint_state_handle(joint_state_handle) != hardware_interface::HW_RET_OK) {
         throw std::runtime_error("unable to register " + joint_state_handle->get_name());
