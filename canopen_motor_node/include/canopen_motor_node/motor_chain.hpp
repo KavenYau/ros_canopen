@@ -3,6 +3,7 @@
 #define CANOPEN_MOTOR_NODE_MOTOR_CHAIN_H_
 
 #include <memory>
+#include <map>
 
 #include <std_msgs/msg/float32.hpp>
 #include <std_msgs/msg/int32.hpp>
@@ -43,16 +44,16 @@ public:
 private:
   void handleWrite(LayerStatus &status, const LayerState &current_state);
 
-  void publish_all_debug(MotorBaseSharedPtr motor);
-  rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr state_pub_;
-  rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr operation_mode_pub_;
+  void publish_all_debug(HandleLayerBaseSharedPtr handle);
+  std::map<std::string, rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr> state_publishers_;
+  std::map<std::string, rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr> operation_mode_publishers_;
 
   rclcpp::Subscription<canopen_msgs::msg::DebugPublishers>::SharedPtr
       set_debug_publishers_sub_;
-  rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr switch_state_sub_;
-  rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr set_target_sub_;
-  rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr
-      switch_operation_mode_sub_;
+  std::vector<rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr> switch_state_subs_;
+  std::vector<rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr> set_target_subs_;
+  std::vector<rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr>
+      switch_operation_mode_subs_;
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr enable_ros_control_command_sub_;
 };
 

@@ -36,9 +36,14 @@ MotorChain::MotorChain(std::string node_name)
 
 bool MotorChain::nodeAdded(const canopen::NodeSharedPtr &node,
                            const LoggerSharedPtr &logger) {
-  RCLCPP_INFO(this->get_logger(), "adding node");
+  RCLCPP_INFO(this->get_logger(), "adding node with name %s", node->node_name_.c_str());
 
-  std::string name = "joint_m0";
+
+  std::string name;
+  if (!get_parameter_or(node->node_name_ + ".joint_name", name, std::string("default_joint"))) {
+    RCLCPP_ERROR(this->get_logger(), "joint_name parameter not specified for %s, aborting!", node->node_name_.c_str());
+    return false;
+  }
   // std::string name = params["name"];
   std::string &joint = name;
   // if(params.hasMember("joint")) joint.assign(params["joint"]);
@@ -81,7 +86,7 @@ bool MotorChain::nodeAdded(const canopen::NodeSharedPtr &node,
   // HandleLayerSharedPtr handle = std::make_shared<HandleLayer>(joint, motor,
   // node->getStorage(), params);
   HandleLayerSharedPtr handle =
-      std::make_shared<HandleLayer>(joint, motor, node->getStorage());
+      std::make_shared<HandleLayer>(joint, node->node_name_, motor, node->getStorage());
 
   // canopen::LayerStatus s;
   // if(!handle->prepareFilters(s)){
@@ -130,16 +135,14 @@ void MotorChain::handleWrite(LayerStatus &status,
                              const LayerState &current_state) {
   RosChain::handleWrite(status, current_state);
   for (const auto &handle : robot_layer_->handles_) {
-    publish_all_debug(handle.second->motor_);
+    publish_all_debug(handle.second);
   }
 }
 
 bool MotorChain::setup_debug_interface(const canopen::NodeSharedPtr &node,
                                        MotorBaseSharedPtr motor) {
-  std::string node_name = "motor_0";
 
-  // TODO(sam): get node name somehow, remove dirty hack
-  // std::string node_name = "motor_" + std::to_string(node->node_id_);
+  std::string node_name = node->node_name_;
 
   // TODO(sam): replace with custom services?
 
@@ -173,9 +176,9 @@ bool MotorChain::setup_debug_interface(const canopen::NodeSharedPtr &node,
   RCLCPP_INFO(this->get_logger(), "setting up debug interface for node: %s",
               node_name.c_str());
 
-  state_pub_ = create_publisher<std_msgs::msg::Int32>(node_name + "/state");
+  state_publishers_[node_name] = create_publisher<std_msgs::msg::Int32>(node_name + "/state");
 
-  operation_mode_pub_ =
+  operation_mode_publishers_[node_name] =
       create_publisher<std_msgs::msg::Int32>(node_name + "/operation_mode");
 
   auto switch_state_callback =
@@ -185,11 +188,12 @@ bool MotorChain::setup_debug_interface(const canopen::NodeSharedPtr &node,
       RCLCPP_WARN(this->get_logger(), "switching state failed");
     }
 
-    publish_all_debug(motor);
+    // publish_all_debug(motor);
   };
 
-  switch_state_sub_ = create_subscription<std_msgs::msg::Int32>(
+  auto switch_state_sub = create_subscription<std_msgs::msg::Int32>(
       node_name + "/switch_state", switch_state_callback);
+  switch_state_subs_.push_back(switch_state_sub);
 
   auto switch_operation_mode_callback =
       [this, motor](const std_msgs::msg::Int32::SharedPtr msg) -> void {
@@ -203,20 +207,22 @@ bool MotorChain::setup_debug_interface(const canopen::NodeSharedPtr &node,
                    (int)operation_mode);
     }
 
-    publish_all_debug(motor);
+    // publish_all_debug(motor);
   };
 
-  switch_operation_mode_sub_ = create_subscription<std_msgs::msg::Int32>(
+  auto switch_operation_mode_sub = create_subscription<std_msgs::msg::Int32>(
       node_name + "/switch_operation_mode", switch_operation_mode_callback);
+  switch_operation_mode_subs_.push_back(switch_operation_mode_sub);
 
   auto set_target_callback =
       [this, motor](const std_msgs::msg::Float32::SharedPtr msg) -> void {
-    RCLCPP_INFO(this->get_logger(), "setting target: [%f]", msg->data);
+    RCLCPP_INFO(this->get_logger(), "setting target for [%s]: [%f]", motor->name.c_str(), msg->data);
     motor->setTarget(msg->data);
   };
 
-  set_target_sub_ = create_subscription<std_msgs::msg::Float32>(
+  auto set_target_sub = create_subscription<std_msgs::msg::Float32>(
       node_name + "/set_target", set_target_callback);
+  set_target_subs_.push_back(set_target_sub);
 
   auto enable_ros_control_command_callback =
       [this, motor](const std_msgs::msg::Bool::SharedPtr msg) -> void {
@@ -236,14 +242,16 @@ bool MotorChain::setup_debug_interface(const canopen::NodeSharedPtr &node,
       node_name + "/enable_ros_control_command", enable_ros_control_command_callback);
 }
 
-void MotorChain::publish_all_debug(MotorBaseSharedPtr motor) {
-  std::shared_ptr<std_msgs::msg::Int32> msg;
+void MotorChain::publish_all_debug(HandleLayerBaseSharedPtr handle) {
+  auto motor = handle->motor_;
+  std::string node_name = handle->node_name_;
 
+  std::shared_ptr<std_msgs::msg::Int32> msg;
   msg = std::make_shared<std_msgs::msg::Int32>();
   msg->data = (int)motor->state_handler_.getState();
-  state_pub_->publish(msg);
+  state_publishers_[node_name]->publish(msg);
 
   msg = std::make_shared<std_msgs::msg::Int32>();
   msg->data = motor->op_mode_display_atomic_;
-  operation_mode_pub_->publish(msg);
+  operation_mode_publishers_[node_name]->publish(msg);
 }

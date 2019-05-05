@@ -11,7 +11,10 @@ namespace canopen {
 
 class HandleLayerBase: public canopen::Layer{
 public:
-    HandleLayerBase(const std::string &name) : Layer(name) {}
+    HandleLayerBase(const std::string &name, const std::string &node_name) :
+    Layer(name), node_name_(node_name) {}
+
+    const std::string node_name_;
 
     canopen::MotorBaseSharedPtr motor_;
 

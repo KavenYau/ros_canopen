@@ -630,7 +630,7 @@ bool RosChain::setup_nodes() {
     }
 
     canopen::NodeSharedPtr node =
-        std::make_shared<canopen::Node>(interface_, dict, node_id, sync_);
+        std::make_shared<canopen::Node>(interface_, dict, node_id, sync_, node_name);
     LoggerSharedPtr logger = std::make_shared<Logger>(node);
 
     // TODO(sam): figure out what this is supposed to do...

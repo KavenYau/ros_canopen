@@ -191,8 +191,10 @@ public:
     enum State{
         Unknown = 255, BootUp = 0, Stopped = 4, Operational = 5 , PreOperational = 127
     };
+    const std::string node_name_;
     const uint8_t node_id_;
-    Node(const can::CommInterfaceSharedPtr interface, const ObjectDictSharedPtr dict, uint8_t node_id, const SyncCounterSharedPtr sync = SyncCounterSharedPtr());
+    //TODO(sam): require node_name?
+    Node(const can::CommInterfaceSharedPtr interface, const ObjectDictSharedPtr dict, uint8_t   node_id, const SyncCounterSharedPtr sync = SyncCounterSharedPtr(), std::string node_name = "default");
 
     const State getState();
     void enterState(const State &s);
