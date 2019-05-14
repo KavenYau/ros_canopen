@@ -53,8 +53,6 @@ RobotLayer::RobotLayer(rclcpp::Logger logger)
 }
 
 void RobotLayer::handleInit(LayerStatus &status) {
-  RCLCPP_INFO(ros_logger_, "handle init robot layer");
-
   if (first_init_) {
     for (HandleMap::iterator it = handles_.begin(); it != handles_.end();
          ++it) {
@@ -295,8 +293,7 @@ public:
 //     return true;
 // }
 
-// void RobotLayer::doSwitch(const std::list<hardware_interface::ControllerInfo>
-// &start_list, const std::list<hardware_interface::ControllerInfo> &stop_list)
+// void RobotLayer::doSwitch(const std::list<hardware_interface::ControllerInfo> // &start_list, const std::list<hardware_interface::ControllerInfo> &stop_list)
 // { std::vector<std::string> failed_controllers;
 //     for (std::list<hardware_interface::ControllerInfo>::const_iterator
 //     controller_it = start_list.begin(); controller_it != start_list.end();
@@ -329,3 +326,11 @@ public:
 //         stopControllers(failed_controllers);
 //     }
 // }
+
+void RobotLayer::doSwitch()
+{
+    for (auto const & handle : handles_) {
+      fprintf(stderr, "%s: switching to Position Mode\n", handle.second->name.c_str());
+      handle.second->switchMode(MotorBase::Profiled_Position);
+    }
+}

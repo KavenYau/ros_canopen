@@ -94,6 +94,39 @@ bool MotorChain::nodeAdded(const canopen::NodeSharedPtr &node,
   //     return false;
   // }
 
+  auto request = std::make_shared<canopen_msgs::srv::GetJointState::Request>();
+  request->joint_name = name;
+
+  if (get_joint_state_client_->wait_for_service(1s))
+  {
+    using ServiceResponseFuture =
+        rclcpp::Client<canopen_msgs::srv::GetJointState>::SharedFuture;
+
+    auto response_received_callback = [this, handle](ServiceResponseFuture future) {
+        RCLCPP_INFO(this->get_logger(), "%s, setting starting position: [%f]", handle->name.c_str(), future.get()->position);
+        handle->position_offset_ = future.get()->position;
+      };
+
+    auto future_result = get_joint_state_client_->async_send_request(
+      request, response_received_callback);
+  }
+
+  auto handle_set_joint_to_zero =
+    [this, handle](const std::shared_ptr<rmw_request_id_t> request_header,
+      const std::shared_ptr<std_srvs::srv::Trigger::Request> request,
+      std::shared_ptr<std_srvs::srv::Trigger::Response> response) -> void
+    {
+      (void)request_header;
+      RCLCPP_INFO(this->get_logger(), "%s: setting to zero", handle->name.c_str());
+      handle->setJointToZero();
+      response->success = true;
+    };
+
+  auto set_joint_to_zero_srv_ = create_service<std_srvs::srv::Trigger>(
+    node->node_name_ + "/set_joint_to_zero", handle_set_joint_to_zero);
+
+  set_joint_to_zero_srvs_.push_back(set_joint_to_zero_srv_);
+
   robot_layer_->add(joint, handle);
   logger->add(handle);
 
@@ -103,7 +136,10 @@ bool MotorChain::nodeAdded(const canopen::NodeSharedPtr &node,
 }
 
 bool MotorChain::setup_chain() {
-  RCLCPP_INFO(this->get_logger(), "setting up chain");
+  RCLCPP_INFO(this->get_logger(), "setting up motor chain");
+
+  get_joint_state_client_ = create_client<canopen_msgs::srv::GetJointState>("/get_joint_state");
+
   motors_.reset(new LayerGroupNoDiag<MotorBase>("402 Layer"));
   robot_layer_.reset(new RobotLayer(this->get_logger()));
 

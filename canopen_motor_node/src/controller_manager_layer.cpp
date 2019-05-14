@@ -51,12 +51,12 @@ void ControllerManagerLayer::handleInit(canopen::LayerStatus &status) {
     cm_->load_controller(
     "ros_controllers",
     "ros_controllers::JointStateController",
-    "my_robot_joint_state_controller");
+    "joint_state_controller");
 
-    // cm_->load_controller(
-    // "ros_controllers",
-    // "ros_controllers::JointPositionController",
-    // "my_robot_joint_position_controller");
+    cm_->load_controller(
+    "ros_controllers",
+    "ros_controllers::JointPositionController",
+    "joint_position_controller");
 
     // cm_->load_controller(
     //     "ros_controllers",
@@ -74,6 +74,7 @@ void ControllerManagerLayer::handleInit(canopen::LayerStatus &status) {
     // TODO(sam): move executor and future handle to motor_chain?
     future_handle_ = std::async(std::launch::async, spin, executor_);
 
+    robot_->doSwitch();
   }
 }
 

@@ -81,6 +81,8 @@ public:
   // virtual void doSwitch(const std::list<hardware_interface::ControllerInfo>
   // &start_list, const std::list<hardware_interface::ControllerInfo>
   // &stop_list);
+
+  void doSwitch();
 private:
   rclcpp::Logger ros_logger_;
 };

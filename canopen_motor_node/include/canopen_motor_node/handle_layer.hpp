@@ -22,6 +22,7 @@
 #include <canopen_402/base.hpp>
 #include <canopen_motor_node/unit_converter.hpp>
 #include <canopen_motor_node/handle_layer_base.hpp>
+#include <std_srvs/srv/trigger.hpp>
 
 namespace canopen {
 
@@ -98,6 +99,7 @@ class HandleLayer: public canopen::HandleLayerBase {
     ObjectVariables variables_;
     std::unique_ptr<UnitConverter>  conv_target_pos_, conv_target_vel_, conv_target_eff_;
     std::unique_ptr<UnitConverter>  conv_pos_, conv_vel_, conv_eff_;
+    std::unique_ptr<UnitConverter>  conv_pos_offset_;
 
     filters::FilterChain<double> filter_pos_, filter_vel_, filter_eff_;
     // XmlRpc::XmlRpcValue options_;
@@ -180,6 +182,8 @@ public:
     {
       enable_ros_control_command_ = value;
     }
+
+    void setJointToZero();
 
 private:
 

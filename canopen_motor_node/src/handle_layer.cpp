@@ -58,7 +58,7 @@ bool HandleLayer::select(const MotorBase::OperationMode &m){
 HandleLayer::HandleLayer(const std::string & name, const std::string & node_name, const canopen::MotorBaseSharedPtr & motor, const canopen::ObjectStorageSharedPtr storage) :
   HandleLayerBase(name + " Handle", node_name), filter_pos_("double"), filter_vel_("double"), filter_eff_("double"), variables_(storage),
   joint_state_handle_(name, &pos_, &vel_, &eff_), joint_command_handle_(name, &cmd_pos_, &cmd_eff_, &cmd_eff_),
-  enable_ros_control_command_(false)
+  enable_ros_control_command_(true)
 {
   pos_ = 0.0;
   vel_ = 0.0;
@@ -66,7 +66,7 @@ HandleLayer::HandleLayer(const std::string & name, const std::string & node_name
 
   motor_ = motor;
 
-  std::string p2d("rint(rad2deg(pos)*1000)"), v2d("rint(rad2deg(vel)*1000)"), e2d("rint(eff)");
+  std::string p2d("rint(rad2deg(pos)*500)"), v2d("rint(rad2deg(vel)*1000)"), e2d("rint(eff)");
   std::string p2r("deg2rad(obj6064)/500"), v2r("deg2rad(obj606C)/50000"), e2r("obj2022");
 
   conv_target_pos_.reset(new UnitConverter(p2d, std::bind(assignVariable, "pos", &cmd_pos_, std::placeholders::_1)));
@@ -76,6 +76,14 @@ HandleLayer::HandleLayer(const std::string & name, const std::string & node_name
   conv_pos_.reset(new UnitConverter(p2r, std::bind(&ObjectVariables::getVariable, &variables_, std::placeholders::_1)));
   conv_vel_.reset(new UnitConverter(v2r, std::bind(&ObjectVariables::getVariable, &variables_, std::placeholders::_1)));
   conv_eff_.reset(new UnitConverter(e2r, std::bind(&ObjectVariables::getVariable, &variables_, std::placeholders::_1)));
+
+  conv_pos_offset_.reset(new UnitConverter(p2d, std::bind(assignVariable, "pos", &position_offset_, std::placeholders::_1)));
+}
+
+void HandleLayer::setJointToZero()
+{
+  motor_->switchState(State402::Quick_Stop_Active);
+  position_offset_ = -conv_pos_->evaluate();
 }
 
 HandleLayer::CanSwitchResult HandleLayer::canSwitch(const MotorBase::OperationMode &m){
@@ -90,18 +98,20 @@ HandleLayer::CanSwitchResult HandleLayer::canSwitch(const MotorBase::OperationMo
     // }
 }
 
-bool HandleLayer::switchMode(const MotorBase::OperationMode &m){
-    // if(motor_->getMode() != m){
-    //     forward_command_ = false;
-    //     jh_ = 0; // disconnect handle
-    //     if(!motor_->enterModeAndWait(m)){
-    //         ROS_ERROR_STREAM(jsh_.getName() << "could not enter mode " << (int)m);
-    //         LayerStatus s;
-    //         motor_->halt(s);
-    //         return false;
-    //     }
-    // }
-    // return select(m);
+bool HandleLayer::switchMode(const MotorBase::OperationMode &m)
+{
+  if (motor_->getMode() != m) {
+    // forward_command_ = false;
+    // jh_ = 0; // disconnect handle
+    if (!motor_->enterModeAndWait(m)){
+      // ROS_ERROR_STREAM(jsh_.getName() << "could not enter mode " << (int)m);
+      LayerStatus s;
+      motor_->halt(s);
+      return false;
+    }
+  }
+  motor_->switchState(State402::Quick_Stop_Active);
+  return select(m);
 }
 
 bool HandleLayer::forwardForMode(const MotorBase::OperationMode &m){
@@ -159,7 +169,7 @@ template<typename T> void addLimitsHandle(std::vector<LimitsHandleBaseSharedPtr>
 void HandleLayer::handleRead(LayerStatus &status, const LayerState &current_state) {
     if(current_state > Shutdown){
         variables_.sync();
-        filter_pos_.update(conv_pos_->evaluate(), pos_);
+        filter_pos_.update(conv_pos_->evaluate() + position_offset_, pos_);
         filter_vel_.update(conv_vel_->evaluate(), vel_);
         filter_eff_.update(conv_eff_->evaluate(), eff_);
         // printf("Effort: %f\n", eff_);
@@ -170,7 +180,7 @@ void HandleLayer::handleRead(LayerStatus &status, const LayerState &current_stat
 
 void HandleLayer::handleWrite(LayerStatus &status, const LayerState &current_state) {
     if(current_state == Ready && enable_ros_control_command_){
-      motor_->setTarget(conv_target_pos_->evaluate());
+      motor_->setTarget(conv_target_pos_->evaluate() - conv_pos_offset_->evaluate());
     }
 
     // if(current_state == Ready){
@@ -224,12 +234,14 @@ void HandleLayer::handleInit(LayerStatus &status){
     // conv_target_pos_->reset();
     // conv_target_vel_->reset();
     // conv_target_eff_->reset();
+
     //
     //
     // if(prepareFilters(status))
     // {
     //     handleRead(status, Layer::Ready);
     // }
+
 }
 
 // void HandleLayer::enforceLimits(const ros::Duration &period, bool reset){

@@ -18,6 +18,8 @@ public:
 
     canopen::MotorBaseSharedPtr motor_;
 
+    double position_offset_;
+
     enum CanSwitchResult{
         NotSupported,
         NotReadyToSwitch,

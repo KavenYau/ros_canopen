@@ -11,6 +11,7 @@
 #include <std_msgs/msg/bool.hpp>
 
 #include <canopen_msgs/msg/debug_publishers.hpp>
+#include <canopen_msgs/srv/get_joint_state.hpp>
 
 #include <canopen_402/base.hpp>
 #include <canopen_chain_node/ros_chain.hpp>
@@ -55,6 +56,9 @@ private:
   std::vector<rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr>
       switch_operation_mode_subs_;
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr enable_ros_control_command_sub_;
+  rclcpp::Client<canopen_msgs::srv::GetJointState>::SharedPtr get_joint_state_client_;
+
+  std::vector<rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr> set_joint_to_zero_srvs_;
 };
 
 } // namespace canopen
