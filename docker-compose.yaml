@@ -1,0 +1,12 @@
+version: '2'
+services:
+
+  canopen_dev:
+    image: ros_canopen:dev
+    build: .
+    container_name: ros_canopen-dev
+    network_mode: host
+    privileged: true
+    volumes:
+      - ./:/opt/canopen_ws/src/ros_canopen
+    command: tail -f /dev/null

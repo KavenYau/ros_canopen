@@ -37,15 +37,17 @@ canopen_driver:
       #             "obj:6062!", "obj:606b!", "obj:606c!", "obj:607a!",
       #             "obj:607c!"] # list of objects to be published (one topic per node)
 
-      nodes: ['motor_1', 'motor_2']
+      # nodes: ['motor_1', 'motor_2']
+      nodes: ['motor_1']
       motor_1:
-        id: 1
+        id: 2
         eds_pkg: 'canopen_chain_node' # optional package  name for relative path
-        eds_file: 'test/eds/ISD860v2.dcf' # path to EDS/DCF file
+        eds_file: 'test/eds/iPOS.dcf' # path to EDS/DCF file
+        # eds_file: 'test/eds/ISD860.dcf' # path to EDS/DCF file
         joint_name: front_left_vinsch_joint
 
       motor_2:
         id: 2
         eds_pkg: 'canopen_chain_node' # optional package  name for relative path
-        eds_file: 'test/eds/ISD860v2.dcf' # path to EDS/DCF file
+        eds_file: 'test/eds/ISD860.dcf' # path to EDS/DCF file
         joint_name: front_right_vinsch_joint
