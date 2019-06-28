@@ -1404,7 +1404,7 @@ AccessType=rw
 HighLimit=8
 LowLimit=0
 DefaultValue=1
-ParameterValue=1
+ParameterValue=0
 PDOMapping=0
 
 [1A00sub1]
@@ -1512,7 +1512,7 @@ AccessType=rw
 HighLimit=8
 LowLimit=0
 DefaultValue=2
-ParameterValue=2
+ParameterValue=0
 PDOMapping=0
 
 [1A01sub1]
@@ -1620,7 +1620,7 @@ AccessType=rw
 HighLimit=8
 LowLimit=0
 DefaultValue=2
-ParameterValue=2
+ParameterValue=0
 PDOMapping=0
 
 [1A02sub1]
