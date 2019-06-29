@@ -68,6 +68,7 @@ public:
         Cyclic_Synchronous_Position = 8,
         Cyclic_Synchronous_Velocity = 9,
         Cyclic_Synchronous_Torque = 10,
+        External_Reference_Torque = 65531,
     };
     virtual bool setTarget(double val) = 0;
     virtual bool enterModeAndWait(uint16_t mode) = 0;

@@ -39,12 +39,14 @@ canopen_driver:
 
       # nodes: ['motor_1', 'motor_2']
       nodes: ['motor_1']
+
       motor_1:
         id: 2
         eds_pkg: 'canopen_chain_node' # optional package  name for relative path
         eds_file: 'test/eds/iPOS.dcf' # path to EDS/DCF file
         # eds_file: 'test/eds/ISD860.dcf' # path to EDS/DCF file
         joint_name: front_left_vinsch_joint
+        # publish: ["obj:6041!"] # list of objects to be published (one topic per node)
 
       motor_2:
         id: 2

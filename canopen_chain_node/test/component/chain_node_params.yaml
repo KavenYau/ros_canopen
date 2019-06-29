@@ -22,12 +22,12 @@ canopen_driver:
 
       defaults:
         eds_pkg: 'canopen_chain_node' # optional package  name for relative path
-        eds_file: 'test/eds/ISD860.eds' # path to EDS/DCF file
+        eds_file: 'test/eds/iPOS.eds' # path to EDS/DCF file
 
       # TODO(sam): figure out how to do this with "dynamicly nested" values
       nodes: ['node1']
       node1:
-        id: 8
+        id: 2
         eds_pkg: 'canopen_chain_node' # optional package  name for relative path
-        eds_file: 'test/eds/ISD860.eds' # path to EDS/DCF file
-        publish: ["obj:6040", "obj:6041", "obj:6061!", "obj:6064"] # list of objects to be published (one topic per node)
+        eds_file: 'test/eds/iPOS.dcf' # path to EDS/DCF file
+        # publish: ["obj:6041!"] # list of objects to be published (one topic per node)

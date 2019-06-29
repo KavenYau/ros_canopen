@@ -199,6 +199,10 @@ typedef ModeForwardHelper<MotorBase::Interpolated_Position, int32_t, 0x60C1,
                           0x01, (1 << Command402::CW_Operation_mode_specific0)>
     InterpolatedPositionMode;
 
+typedef ModeForwardHelper<MotorBase::External_Reference_Torque, int32_t, 0x201C,
+                          0, (1 << Command402::CW_Operation_mode_specific0)>
+    ExternalReferenceTorqueMode;
+
 class ProfiledPositionMode : public ModeTargetHelper<int32_t> {
   canopen::ObjectStorage::Entry<int32_t> target_position_;
   double last_target_;
@@ -348,6 +352,10 @@ public:
         MotorBase::Cyclic_Synchronous_Velocity, storage);
     registerMode<CyclicSynchronousTorqueMode>(
         MotorBase::Cyclic_Synchronous_Torque, storage);
+
+    // FIXME(sam): this is a manufacturer specific mode
+    registerMode<ExternalReferenceTorqueMode>(
+        MotorBase::External_Reference_Torque, storage);
   }
 
   class Allocator : public MotorBase::Allocator {

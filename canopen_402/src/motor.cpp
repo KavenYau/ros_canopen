@@ -294,6 +294,13 @@ bool Motor402::isModeSupportedByDevice(uint16_t mode) {
     BOOST_THROW_EXCEPTION(
         std::runtime_error("Supported drive modes (object 6502) is not valid"));
   }
+
+  // FIXME(sam): Actually check if supported
+  if (mode == 65531) {
+    LOG("Forcing External Reference Torque mode to always be supported!\n");
+    return true;
+  }
+
   return mode > 0 && mode <= 32 &&
          (supported_drive_modes_.get_cached() & (1 << (mode - 1)));
 }
