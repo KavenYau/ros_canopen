@@ -1,0 +1,6 @@
+[submodule "ros2_controllers"]
+	path = ros2_controllers
+	url = git@github.com:samiamlabs/ros2_controllers.git
+[submodule "ros2_control"]
+	path = ros2_control
+	url = git@github.com:samiamlabs/ros2_control.git

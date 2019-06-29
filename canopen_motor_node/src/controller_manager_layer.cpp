@@ -59,6 +59,11 @@ void ControllerManagerLayer::handleInit(canopen::LayerStatus &status) {
     "joint_position_controller");
 
     // cm_->load_controller(
+    // "ros_controllers",
+    // "ros_controllers::JointEffortController",
+    // "joint_effort_controller");
+
+    // cm_->load_controller(
     //     "ros_controllers",
     //     "ros_controllers::JointTrajectoryController",
     //     "my_robot_joint_trajectory_controller");

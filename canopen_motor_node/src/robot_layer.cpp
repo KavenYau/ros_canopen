@@ -330,7 +330,9 @@ public:
 void RobotLayer::doSwitch()
 {
     for (auto const & handle : handles_) {
-      fprintf(stderr, "%s: switching to Position Mode\n", handle.second->name.c_str());
-      handle.second->switchMode(MotorBase::Profiled_Position);
+      // fprintf(stderr, "%s: switching to Position Mode\n", handle.second->name.c_str());
+      // handle.second->switchMode(MotorBase::Profiled_Position);
+      fprintf(stderr, "%s: switching to Torque Mode\n", handle.second->name.c_str());
+      handle.second->switchMode(MotorBase::External_Reference_Torque);
     }
 }
