@@ -169,8 +169,10 @@ void RosChain::handle_init(
 
   boost::mutex::scoped_lock lock(mutex_);
   if (getLayerState() > Off) {
+    RCLCPP_INFO(this->get_logger(), "Already initialized!");
     response->success = true;
     response->message = "already initialized";
+    return;
   }
   thread_.reset(new boost::thread(&RosChain::run, this));
   LayerReport status;
