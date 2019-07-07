@@ -53,10 +53,10 @@ void ControllerManagerLayer::handleInit(canopen::LayerStatus &status) {
     "ros_controllers::JointStateController",
     "joint_state_controller");
 
-    cm_->load_controller(
+    /*cm_->load_controller(
     "ros_controllers",
     "ros_controllers::JointPositionController",
-    "joint_position_controller");
+    "joint_position_controller");*/
 
     // cm_->load_controller(
     // "ros_controllers",
