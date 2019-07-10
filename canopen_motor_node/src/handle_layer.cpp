@@ -180,7 +180,7 @@ void HandleLayer::handleRead(LayerStatus &status, const LayerState &current_stat
 
 void HandleLayer::handleWrite(LayerStatus &status, const LayerState &current_state) {
     if(current_state == Ready && enable_ros_control_command_){
-      motor_->setTarget(conv_target_pos_->evaluate() - conv_pos_offset_->evaluate());
+      //motor_->setTarget(conv_target_pos_->evaluate() - conv_pos_offset_->evaluate());
       // motor_->setTarget(conv_target_eff_->evaluate());
     }
 
