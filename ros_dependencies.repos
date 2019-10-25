@@ -12,7 +12,7 @@ repositories:
   diagnostics:
     type: git
     url: https://github.com/ros/diagnostics.git
-    version: ros2-devel
+    version: crystal
 
   ros2_control:
     type: git
