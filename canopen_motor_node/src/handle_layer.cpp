@@ -67,7 +67,7 @@ HandleLayer::HandleLayer(const std::string & name, const std::string & node_name
   motor_ = motor;
 
   std::string p2d("rint(rad2deg(pos)*500)"), v2d("rint(rad2deg(vel)*1000)"), e2d("rint(eff)");
-  std::string p2r("deg2rad(obj6064)/500"), v2r("deg2rad(obj606C)/50000"), e2r("obj6077");
+  std::string p2r("deg2rad(obj6064)/500"), v2r("deg2rad(obj606C)/50000"), e2r("obj207E*(2*40/65520)");
 
   conv_target_pos_.reset(new UnitConverter(p2d, std::bind(assignVariable, "pos", &cmd_pos_, std::placeholders::_1)));
   conv_target_vel_.reset(new UnitConverter(v2d, std::bind(assignVariable, "vel", &cmd_vel_, std::placeholders::_1)));
