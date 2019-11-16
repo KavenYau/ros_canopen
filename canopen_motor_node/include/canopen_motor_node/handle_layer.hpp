@@ -139,7 +139,7 @@ class HandleLayer: public canopen::HandleLayerBase {
     // bool enable_limits_;
 public:
     // HandleLayer(const std::string &name, const canopen::MotorBaseSharedPtr & motor, const canopen::ObjectStorageSharedPtr storage,  XmlRpc::XmlRpcValue & options);
-    HandleLayer(const std::string & name, const std::string & node_name, const canopen::MotorBaseSharedPtr & motor, const canopen::ObjectStorageSharedPtr storage);
+    HandleLayer(const std::string & name, const std::string & node_name, const canopen::MotorBaseSharedPtr & motor, const canopen::ObjectStorageSharedPtr storage, const std::string effort2download);
 
     static double * assignVariable(const std::string &name, double * ptr, const std::string &req) { return name == req ? ptr : 0; }
 

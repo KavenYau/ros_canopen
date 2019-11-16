@@ -86,7 +86,7 @@ bool MotorChain::nodeAdded(const canopen::NodeSharedPtr &node,
   // HandleLayerSharedPtr handle = std::make_shared<HandleLayer>(joint, motor,
   // node->getStorage(), params);
   HandleLayerSharedPtr handle =
-      std::make_shared<HandleLayer>(joint, node->node_name_, motor, node->getStorage());
+      std::make_shared<HandleLayer>(joint, node->node_name_, motor, node->getStorage(), "rint(eff/1000000)");
 
   // canopen::LayerStatus s;
   // if(!handle->prepareFilters(s)){
@@ -250,10 +250,17 @@ bool MotorChain::setup_debug_interface(const canopen::NodeSharedPtr &node,
       node_name + "/switch_operation_mode", switch_operation_mode_callback);
   switch_operation_mode_subs_.push_back(switch_operation_mode_sub);
 
+  double write_effort_scale;
+  if (get_parameter_or(node->node_name_ + ".write_effort_scale", write_effort_scale, 1.0)) {
+  } else {
+    RCLCPP_WARN(this->get_logger(), "write_effort_scale not specified, using 10.0");
+  }
+  RCLCPP_INFO(this->get_logger(), "write_effort_scale: %f", write_effort_scale);
+
   auto set_target_callback =
-      [this, motor](const std_msgs::msg::Float32::SharedPtr msg) -> void {
+      [this, motor, write_effort_scale](const std_msgs::msg::Float32::SharedPtr msg) -> void {
     RCLCPP_INFO(this->get_logger(), "setting target for [%s]: [%f]", motor->name.c_str(), msg->data);
-    motor->setTarget(msg->data);
+    motor->setTarget(msg->data*write_effort_scale);
   };
 
   auto set_target_sub = create_subscription<std_msgs::msg::Float32>(
