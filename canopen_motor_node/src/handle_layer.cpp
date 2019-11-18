@@ -55,7 +55,7 @@ bool HandleLayer::select(const MotorBase::OperationMode &m){
 //    // conv_eff_.reset(new UnitConverter(e2r, std::bind(&ObjectVariables::getVariable, &variables_, std::placeholders::_1)));
 // }
 
-HandleLayer::HandleLayer(const std::string & name, const std::string & node_name, const canopen::MotorBaseSharedPtr & motor, const canopen::ObjectStorageSharedPtr storage) :
+HandleLayer::HandleLayer(const std::string & name, const std::string & node_name, const canopen::MotorBaseSharedPtr & motor, const canopen::ObjectStorageSharedPtr storage, const std::string effort2download) :
   HandleLayerBase(name + " Handle", node_name), filter_pos_("double"), filter_vel_("double"), filter_eff_("double"), variables_(storage),
   joint_state_handle_(name, &pos_, &vel_, &eff_), joint_command_handle_(name, &cmd_pos_, &cmd_eff_, &cmd_eff_),
   enable_ros_control_command_(false)
@@ -66,12 +66,12 @@ HandleLayer::HandleLayer(const std::string & name, const std::string & node_name
 
   motor_ = motor;
 
-  std::string p2d("rint(rad2deg(pos)*500)"), v2d("rint(rad2deg(vel)*1000)"), e2d("rint(eff)");
+  std::string p2d("rint(rad2deg(pos)*500)"), v2d("rint(rad2deg(vel)*1000)"); //, e2d("rint(eff)");
   std::string p2r("deg2rad(obj6064)/500"), v2r("deg2rad(obj606C)/50000"), e2r("obj207E*(2*40/65520)");
 
   conv_target_pos_.reset(new UnitConverter(p2d, std::bind(assignVariable, "pos", &cmd_pos_, std::placeholders::_1)));
   conv_target_vel_.reset(new UnitConverter(v2d, std::bind(assignVariable, "vel", &cmd_vel_, std::placeholders::_1)));
-  conv_target_eff_.reset(new UnitConverter(e2d, std::bind(assignVariable, "eff", &cmd_eff_, std::placeholders::_1)));
+  conv_target_eff_.reset(new UnitConverter(effort2download, std::bind(assignVariable, "eff", &cmd_eff_, std::placeholders::_1)));
 
   conv_pos_.reset(new UnitConverter(p2r, std::bind(&ObjectVariables::getVariable, &variables_, std::placeholders::_1)));
   conv_vel_.reset(new UnitConverter(v2r, std::bind(&ObjectVariables::getVariable, &variables_, std::placeholders::_1)));
