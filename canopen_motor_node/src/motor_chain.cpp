@@ -253,7 +253,7 @@ bool MotorChain::setup_debug_interface(const canopen::NodeSharedPtr &node,
   double write_effort_scale;
   if (get_parameter_or(node->node_name_ + ".write_effort_scale", write_effort_scale, 1.0)) {
   } else {
-    RCLCPP_WARN(this->get_logger(), "write_effort_scale not specified, using 10.0");
+    RCLCPP_WARN(this->get_logger(), "write_effort_scale not specified, using 1.0");
   }
   RCLCPP_INFO(this->get_logger(), "write_effort_scale: %f", write_effort_scale);
 
