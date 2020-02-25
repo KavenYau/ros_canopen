@@ -1,18 +1,23 @@
 #!/bin/bash
 set -e
 
-# setup ros2 environment
-source "/opt/ros2_ws/install/local_setup.sh"
-source "/opt/dependencies_ws/install/local_setup.sh"
+# bring up can bus
+/opt/overlay_ws/can0_bringup.sh
 
-file="/opt/overlay_ws/install/setup.sh"
+# setup ros2 environment
+source "$ROS2_WS/install/local_setup.bash"
+source "$DEPENDENCIES_WS/install/local_setup.bash"
+
+file="$OVERLAY_WS/install/local_setup.sh"
 if [ -f "$file" ]
 then
   source "$file"
-else
-  source "/opt/overlay_ws/install/local_setup.sh"
 fi
 
-source "$HOME/.nvm/nvm.sh"
+case "$UDEV" in
+	'1' | 'true')
+		UDEV='on'
+	;;
+esac
 
 exec "$@"

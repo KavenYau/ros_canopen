@@ -38,6 +38,7 @@ include_directories(
 add_library(canopen_chain_component SHARED
   src/canopen_chain_component.cpp
   src/io_subcomponent.cpp
+  src/motor_subcomponent.cpp
 )
 
 target_link_libraries(canopen_chain_component

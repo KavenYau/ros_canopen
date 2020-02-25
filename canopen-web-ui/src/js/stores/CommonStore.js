@@ -85,6 +85,9 @@ class CommonStore extends EventEmitter {
 
                         let typeName = 'not supported';
                         let valueString = 'not supported';
+
+                        let parameterSupported = true;
+
                         switch (type) {
                             case PARAMETER_BOOL:
                                 {
@@ -118,16 +121,19 @@ class CommonStore extends EventEmitter {
                                 }
                             default:
                                 {
+                                    parameterSupported = false;
                                     console.log('Parameter of type ' + type.toString() + ' is not supported!');
                                 }
                         }
-
-                        rosParams.push({
-                            name,
-                            type,
-                            typeName,
-                            valueString
-                        });
+                        if (parameterSupported)
+                        {
+                            rosParams.push({
+                                name,
+                                type,
+                                typeName,
+                                valueString
+                            });
+                        }
                     });
 
                     this.state = this.state.set('rosParams', Immutable.fromJS(rosParams));
@@ -137,6 +143,7 @@ class CommonStore extends EventEmitter {
             case 'CANOPEN_OBJECT_DICTIONARIES':
                 {
                     action.object_dictionaries.forEach( dictionary => {
+                        console.log('Setting object dictionary')
                         this.state = this.state.setIn(['canopenObjectDictionaries', dictionary.node], Immutable.fromJS(dictionary.object_descriptions));
                     })
 

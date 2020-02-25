@@ -19,6 +19,7 @@ import os
 from ament_index_python import get_package_share_directory
 
 import launch
+from launch.actions import SetEnvironmentVariable
 from launch.actions.execute_process import ExecuteProcess
 
 from launch_ros.actions import LifecycleNode
@@ -47,6 +48,7 @@ def generate_launch_description():
     )
 
     ld = launch.LaunchDescription()
+    ld.add_action(SetEnvironmentVariable('RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED', '1'))
     ld.add_action(chain_node)
     ld.add_action(ros2_web_bridge)
 

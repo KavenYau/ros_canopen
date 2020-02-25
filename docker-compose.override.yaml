@@ -2,21 +2,16 @@ version: '3.5'
 services:
 
   ros_canopen_dev:
-    network_mode: host
-    privileged: true
     volumes:
-      - ./can_msgs:/opt/overlay_ws/src/can_msgs
-      - ./canopen_402:/opt/overlay_ws/src/canopen_402
-      - ./canopen_chain_node:/opt/overlay_ws/src/canopen_chain_node
-      - ./canopen_master:/opt/overlay_ws/src/canopen_master
-      # - ./canopen_motor_node:/opt/overlay_ws/src/canopen_motor_node
-      - ./canopen_msgs:/opt/overlay_ws/src/canopen_msgs
-      - ./socketcan_bridge:/opt/overlay_ws/src/socketcan_bridge
-      - ./socketcan_interface:/opt/overlay_ws/src/socketcan_interface
+      # Github and ssh config
+      - ~/.ssh/id_ed25519:/root/.ssh/id_ed25519 # ssh key needed to push to github
+      - ~/.ssh/known_hosts:/root/.ssh/known_hosts # ssh key needed to push to github
+      - ~/.gitconfig:/root/.gitconfig # git config needed for user details
+      - $SSH_AUTH_SOCK:/tmp/ssh_auth_sock # needed to push to github without prompt 
+      # Mount repo/workspace
+      - ./:/opt/overlay_ws/src
+    command: /bin/sh -c "while sleep 1000; do :; done"
 
-  # ros2-web-bridge:
-  #   network_mode: host
-    
   canopen-web-ui:
     volumes: 
       - ./canopen-web-ui/src:/usr/src/app/src

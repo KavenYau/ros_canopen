@@ -10,8 +10,8 @@
                 "${workspaceFolder}/canopen_msgs/**",
                 "${workspaceFolder}/socketcan_bridge/**",
                 "${workspaceFolder}/socketcan_interface/**",
-                "${workspaceFolder}/docker_includes/**",
-                "${workspaceFolder}/docker_includes/overlay_include/**"
+                "/opt/ros2_ws/install/include/**",
+                "/opt/dependencies_ws/install/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

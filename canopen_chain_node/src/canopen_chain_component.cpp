@@ -543,6 +543,16 @@ bool CanopenChainComponent::configure_node(std::string node_name)
     ));
   }
 
+  if (std::find(canopen_profiles.begin(), canopen_profiles.end(), "motor") != canopen_profiles.end())
+  {
+    // CANopen Motor profile (402)
+    motor_profile_subcomponents_.push_back(std::make_shared<MotorSubcomponent>(
+      this,
+      node_name,
+      node->getStorage()
+    ));
+  }
+
   return true;
 }
 

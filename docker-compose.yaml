@@ -5,15 +5,9 @@ services:
     container_name: ros_canopen_dev
     build: .
     tty: true
-    command: tail -f /dev/null
-
-  # ros2-web-bridge:
-  #   container_name: ros2-web-bridge
-  #   build: .
-  #   tty: true
-  #   ports:
-  #     - "9090:9090"
-  #   command: /opt/ros2-web-bridge/bin/rosbridge.js
+    privileged: true
+    network_mode: host
+    command: /bin/sh -c "while sleep 1000; do :; done"
 
   canopen-web-ui:
     container_name: canopen-web-ui
