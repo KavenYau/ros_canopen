@@ -417,6 +417,12 @@ public:
     }
   }
 
+  virtual std::string getStateAsString();
+  virtual State402::InternalState getStateFromString(std::string state_string);
+
+  virtual std::string getModeAsString();
+  virtual OperationMode getModeFromString(std::string operation_mode_string);
+
   virtual bool setTarget(double val);
   virtual bool enterModeAndWait(uint16_t mode);
   virtual bool isModeSupported(uint16_t mode);

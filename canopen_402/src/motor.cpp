@@ -299,6 +299,40 @@ bool DefaultHomingMode::executeHoming(canopen::LayerStatus &status)
   return error(status, "something went wrong while homing");
 }
 
+std::string Motor402::getStateAsString()
+{
+  return state_handler_.internal_state_strings_[state_handler_.getState()];
+}
+
+State402::InternalState Motor402::getStateFromString(std::string state_string)
+{
+  auto iss = state_handler_.internal_state_strings_;
+  auto it = std::find(iss.begin(), iss.end(), state_string);
+  if (it != iss.end())
+  {
+    return State402::InternalState(it - iss.begin());
+  }
+
+  return State402::Unknown;
+}
+
+std::string Motor402::getModeAsString()
+{
+  return operation_mode_strings_[getMode()];
+}
+
+Motor402::OperationMode Motor402::getModeFromString(std::string operation_mode_string)
+{
+  auto it = std::find(operation_mode_strings_.begin(), 
+                      operation_mode_strings_.end(),
+                      operation_mode_string);
+  if (it != operation_mode_strings_.end())
+  {
+    return Motor402::OperationMode(it - operation_mode_strings_.begin());
+  }
+  return Motor402::No_Mode;
+}
+
 bool Motor402::setTarget(double val)
 {
   if(state_handler_.getState() == State402::Operation_Enable)

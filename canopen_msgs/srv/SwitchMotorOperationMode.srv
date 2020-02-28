@@ -1,0 +1,5 @@
+string node
+string operation_mode
+---
+bool success
+string message

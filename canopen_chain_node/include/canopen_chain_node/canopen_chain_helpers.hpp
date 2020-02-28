@@ -1,4 +1,5 @@
 #ifndef CANOPEN_CHAIN_NODE__CANOPEN_CHAIN_HELPERS
+#define CANOPEN_CHAIN_NODE__CANOPEN_CHAIN_HELPERS
 
 #include <canopen_master/canopen.hpp>
 #include <canopen_master/can_layer.hpp>

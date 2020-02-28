@@ -416,6 +416,8 @@ bool CanopenChainComponent::configure_nodes()
   add(nodes_);
   add(emcy_handlers_);
 
+  // add(motors_);
+
   return true;
 }
 
@@ -531,8 +533,6 @@ bool CanopenChainComponent::configure_node(std::string node_name)
   emcy_handlers_->add(emcy);
   logger->add(emcy);
 
-  loggers_.push_back(logger);
-
   if (std::find(canopen_profiles.begin(), canopen_profiles.end(), "io") != canopen_profiles.end())
   {
     // CANopen IO profile (401)
@@ -543,15 +543,24 @@ bool CanopenChainComponent::configure_node(std::string node_name)
     ));
   }
 
+  motors_.reset(new canopen::LayerGroupNoDiag<canopen::MotorBase>("402 Layer"));
+
   if (std::find(canopen_profiles.begin(), canopen_profiles.end(), "motor") != canopen_profiles.end())
   {
     // CANopen Motor profile (402)
-    motor_profile_subcomponents_.push_back(std::make_shared<MotorSubcomponent>(
+    auto motor_subcomponent = std::make_shared<MotorSubcomponent>(
       this,
       node_name,
       node->getStorage()
-    ));
+    );
+
+    motor_profile_subcomponents_.push_back(motor_subcomponent);
+
+    // logger->add(motor_subcomponent->getMotor());
+    motors_->add(motor_subcomponent->getMotor());
   }
+
+  loggers_.push_back(logger);
 
   return true;
 }
@@ -599,6 +608,11 @@ CanopenChainComponent::on_activate(const rclcpp_lifecycle::State &)
   for(auto const& io_profile_subcomponent: io_profile_subcomponents_)
   {
     io_profile_subcomponent->activate();
+  }
+
+  for(auto const& motor_profile_subcomponent: motor_profile_subcomponents_)
+  {
+    motor_profile_subcomponent->activate();
   }
 
   return rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn::SUCCESS;
@@ -649,6 +663,11 @@ CanopenChainComponent::on_deactivate(const rclcpp_lifecycle::State &)
     io_profile_subcomponent->deactivate();
   }
 
+  for(auto const& motor_profile_subcomponent: motor_profile_subcomponents_)
+  {
+    motor_profile_subcomponent->deactivate();
+  }
+
   // Attempt to recover all nodes
   for (auto const& canopen_node_entry: nodes_lookup_)
   {
@@ -675,6 +694,7 @@ CanopenChainComponent::on_cleanup(const rclcpp_lifecycle::State &)
   nodes_.reset();
   nodes_lookup_.empty();
   io_profile_subcomponents_.empty();
+  motor_profile_subcomponents_.empty();
 
   std::flush(std::cout);
   return rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn::SUCCESS;

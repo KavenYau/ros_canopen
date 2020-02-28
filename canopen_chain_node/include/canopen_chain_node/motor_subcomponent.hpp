@@ -19,6 +19,14 @@
 #include <canopen_master/canopen.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_lifecycle/lifecycle_node.hpp>
+#include <canopen_402/base.hpp>
+#include <canopen_402/motor.hpp>
+#include <pluginlib/class_loader.hpp>
+
+#include <canopen_msgs/srv/switch_motor_operation_mode.hpp>
+#include <canopen_msgs/msg/motor_state.hpp>
+
+#include "canopen_chain_helpers.hpp"
 
 namespace canopen_chain_node
 {
@@ -34,15 +42,25 @@ public:
     void activate();
     void deactivate();
 
+    canopen::MotorBaseSharedPtr getMotor() { return motor_; };
+
 private:
     rclcpp_lifecycle::LifecycleNode *parent_component_;
 
-    rclcpp::TimerBase::SharedPtr timer_;
-    rclcpp::TimerBase::SharedPtr lathing_not_working_for_web_ui_temporary_timer_;
+    rclcpp::Service<canopen_msgs::srv::SwitchMotorOperationMode>::SharedPtr switch_operation_mode_srv_;
+
+    std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<canopen_msgs::msg::MotorState>> motor_state_publisher_;
+    rclcpp::TimerBase::SharedPtr motor_state_publisher_timer_;
 
     std::string canopen_node_name_;
     canopen::ObjectStorageSharedPtr canopen_object_storage_;
 
+    ClassAllocator<canopen::MotorBase> motor_allocator_;
+    canopen::MotorBaseSharedPtr motor_;
+
+    bool switchMode(const canopen::MotorBase::OperationMode &m);
+
+    void publishMotorState();
 };
 
 }  // namespace canopen_chain_node

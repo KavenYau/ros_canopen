@@ -25,6 +25,7 @@
   <depend>rclcpp</depend>
   <depend>rclcpp_lifecycle</depend>
   <depend>socketcan_interface</depend> <!-- direct dependency needed for pluginlib look-up -->
+  <depend>canopen_402</depend>
   <depend>std_srvs</depend>
   <depend>std_msgs</depend>
   <depend>canopen_msgs</depend>

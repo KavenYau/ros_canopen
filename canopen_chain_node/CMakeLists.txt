@@ -17,6 +17,7 @@ find_package(pluginlib REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
 find_package(socketcan_interface REQUIRED)
+find_package(canopen_402 REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(canopen_msgs REQUIRED)
@@ -49,9 +50,9 @@ target_link_libraries(canopen_chain_component
 ament_target_dependencies(canopen_chain_component
   "class_loader"
   "canopen_master"
+  "canopen_402"
   "canopen_msgs"
   "std_srvs"
-  # "std_msgs"
   "lifecycle_msgs"
   "diagnostic_updater"
   "socketcan_interface"

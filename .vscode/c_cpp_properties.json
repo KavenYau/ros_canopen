@@ -10,6 +10,7 @@
                 "${workspaceFolder}/canopen_msgs/**",
                 "${workspaceFolder}/socketcan_bridge/**",
                 "${workspaceFolder}/socketcan_interface/**",
+                "/opt/overlay_ws/install/include/**",
                 "/opt/ros2_ws/install/include/**",
                 "/opt/dependencies_ws/install/include/**"
             ],

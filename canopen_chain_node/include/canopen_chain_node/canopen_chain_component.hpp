@@ -30,6 +30,7 @@
 #include <socketcan_interface/interface.hpp>
 #include <std_srvs/srv/trigger.hpp>
 #include <pluginlib/class_loader.hpp>
+#include <canopen_402/base.hpp>
 
 #include "canopen_chain_helpers.hpp"
 #include "io_subcomponent.hpp"
@@ -88,6 +89,8 @@ private:
   canopen::MasterSharedPtr master_;
   canopen::SyncLayerSharedPtr sync_;
   can::DriverInterfaceSharedPtr interface_;
+
+  std::shared_ptr<canopen::LayerGroupNoDiag<canopen::MotorBase>> motors_;
 
   std::shared_ptr<canopen::LayerGroupNoDiag<canopen::Node>> nodes_;
   std::map<std::string, canopen::NodeSharedPtr> nodes_lookup_;

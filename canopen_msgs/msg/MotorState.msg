@@ -1,0 +1,2 @@
+string operation_mode
+string state_402

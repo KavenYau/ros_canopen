@@ -9,6 +9,8 @@ namespace canopen
 class State402
 {
 public:
+  std::vector<std::string> internal_state_strings_;
+
   enum StatusWord
   {
     SW_Ready_To_Switch_On=0,
@@ -41,10 +43,24 @@ public:
     Fault_Reaction_Active = 7,
     Fault = 8,
   };
+
   InternalState getState();
   InternalState read(uint16_t sw);
   bool waitForNewState(const time_point &abstime, InternalState &state);
-  State402() : state_(Unknown) {}
+  State402() : state_(Unknown),  
+    internal_state_strings_(
+    { 
+      "Start",
+      "Not_Ready_To_Switch_On",
+      "Switch_On_Disabled",
+      "Ready_To_Switch_On",
+      "Switched_On",
+      "Operation_Enable",
+      "Quick_Stop_Active",
+      "Fault_Reaction_Active",
+      "Fault"
+    })
+    {}
 private:
   boost::condition_variable cond_;
   boost::mutex mutex_;
@@ -55,9 +71,24 @@ class MotorBase
 : public canopen::Layer
 {
 protected:
+  std::vector<std::string> operation_mode_strings_;
+
   MotorBase(const std::string & name)
-  : Layer(name)
+  : Layer(name), 
+  operation_mode_strings_(
+  {
+    "Start",
+    "Not_Ready_To_Switch_On",
+    "Switch_On_Disabled",
+    "Ready_To_Switch_On",
+    "Switched_On",
+    "Operation_Enable",
+    "Quick_Stop_Active",
+    "Fault_Reaction_Active",
+    "Fault"
+  })
   {}
+
 public:
   enum OperationMode
   {
@@ -73,6 +104,12 @@ public:
     Cyclic_Synchronous_Velocity = 9,
     Cyclic_Synchronous_Torque = 10,
   };
+
+  virtual std::string getStateAsString() = 0;
+  virtual State402::InternalState getStateFromString(std::string state_string) = 0;
+
+  virtual std::string getModeAsString() = 0;
+  virtual OperationMode getModeFromString(std::string operation_mode_string) = 0;
 
   virtual bool setTarget(double val) = 0;
   virtual bool enterModeAndWait(uint16_t mode) = 0;
