@@ -1,7 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Title from './Title';
-import CommonStore from '../stores/CommonStore';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { ListItemText, Snackbar, SnackbarContent} from '@material-ui/core';
@@ -13,8 +12,10 @@ import CloseIcon from '@material-ui/icons/Close';
 import ClearAll from '@material-ui/icons/ClearAll';
 import Grid from '@material-ui/core/Grid';
 import IconButton from "@material-ui/core/IconButton";
-import CommonActions from '../actions/CommonActions';
 import orange from "@material-ui/core/colors/orange";
+
+import RosStore from '../stores/RosStore';
+import RosActions from '../actions/RosActions';
 
 const styles = theme => ({
     ul: {
@@ -39,22 +40,24 @@ class Rosout extends React.Component {
         super(...args);
 
         this.state = {
-            rosoutMsgs: CommonStore.getState().get('rosoutMsgs'),
+            rosoutMsgs: RosStore.getState().get('rosoutMsgs'),
             snackbarOpen: false,
             snackbarMessage: ''
         }
     }
 
     componentDidMount() {
-        CommonStore.on('change', this.storeChange);
+        RosStore.on('change', this.storeChange);
+        RosActions.connectCanopenRosout('canopen_chain');
     }
 
     componentWillUnmount() {
-        CommonStore.removeListener('change', this.storeChange);
+        RosStore.removeListener('change', this.storeChange);
+        RosActions.disconnectCanopenRosout('canopen_chain');
     }
 
     storeChange = () => {
-        const rosoutMsgs = CommonStore.getState().get('rosoutMsgs');
+        const rosoutMsgs = RosStore.getState().get('rosoutMsgs');
         this.setState({
             rosoutMsgs
         });
@@ -67,10 +70,8 @@ class Rosout extends React.Component {
                     snackbarMessage: mostRecentMsg.get('msg'),
                     snackbarOpen: true
                 });
-
             }
         }
-
     }
 
     handleClose = (event, reason) => {
@@ -150,7 +151,7 @@ class Rosout extends React.Component {
                     </Grid>
                     <Grid item>
                         <IconButton
-                            onClick={() => CommonActions.clearRosoutMessages()}
+                            onClick={() => RosActions.clearRosoutMessages()}
                         >
                             <ClearAll color='primary' />
                         </IconButton>

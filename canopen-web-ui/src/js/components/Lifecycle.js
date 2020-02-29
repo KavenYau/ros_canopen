@@ -5,10 +5,11 @@ import Button from '@material-ui/core/Button'
 import Title from './Title';
 import Grid from '@material-ui/core/Grid'
 
-import CommonActions from '../actions/CommonActions';
-import CommonStore from '../stores/CommonStore';
 import { IconButton, Typography } from '@material-ui/core';
 import RefreshIcon from '@material-ui/icons/Refresh';
+
+import RosActions from '../actions/RosActions';
+import RosStore from '../stores/RosStore';
 
 const styles = theme => ({
   button: {
@@ -21,23 +22,25 @@ class Lifecycle extends React.Component {
     super(...args);
 
     this.state = {
-      availableLifecycleTransitions: CommonStore.getState().get('availableLifecycleTransitions'),
-      lifecycleState: CommonStore.getState().get('lifecycleState')
+      availableLifecycleTransitions: RosStore.getState().get('availableLifecycleTransitions'),
+      lifecycleState: RosStore.getState().get('lifecycleState')
     };
   }
 
   componentDidMount() {
-    CommonStore.on('change', this.storeChange);
+    RosStore.on('change', this.storeChange);
+    RosActions.connectLifecycle('canopen_chain');
   }
 
   componentWillUnmount() {
-    CommonStore.removeListener('change', this.storeChange);
+    RosStore.removeListener('change', this.storeChange);
+    RosActions.disconnectLifecycle('canopen_chain');
   }
 
   storeChange = () => {
     this.setState({
-      availableLifecycleTransitions: CommonStore.getState().get('availableLifecycleTransitions'),
-      lifecycleState: CommonStore.getState().get('lifecycleState')
+      availableLifecycleTransitions: RosStore.getState().get('availableLifecycleTransitions'),
+      lifecycleState: RosStore.getState().get('lifecycleState')
     })
   }
 
@@ -54,7 +57,7 @@ class Lifecycle extends React.Component {
           color="primary"
           className={classes.button}
           key={transitionName}
-          onClick={() => CommonActions.callLifecycleChangeStateService(transitionName)}
+          onClick={() => RosActions.callLifecycleChangeStateService(transitionName)}
         >
           {transitionName}
         </Button>
@@ -69,7 +72,7 @@ class Lifecycle extends React.Component {
         </Grid>
         <Grid item>
           <IconButton
-            onClick={() => CommonActions.callGetAvailableLifecycleTransitionsService()}
+            onClick={() => RosActions.callGetAvailableLifecycleTransitionsService()}
           >
             <RefreshIcon color='primary'/>
           </IconButton>

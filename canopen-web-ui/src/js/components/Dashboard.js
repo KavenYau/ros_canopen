@@ -18,14 +18,15 @@ import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems } from './listItems';
+import { mainListItems } from './ListItems';
 import Lifecycle from './Lifecycle';
 import Rosout from './Rosout';
-import Rosparams from './Rosparams';
-import CanopenObjectDictionary from './CanopenObjectDictionary';
+// import Rosparams from './Rosparams';
+// import CanopenObjectDictionary from './CanopenObjectDictionary';
 import RuntimeMonitor from './RuntimeMonitor';
-import CanopenInputs from './CanopenInputs';
-import CanopenOutputs from './CanopenOutputs';
+// import CanopenInputs from './CanopenInputs';
+// import CanopenOutputs from './CanopenOutputs';
+import CanopenNodes from './CanopenNodes';
 
 function Copyright() {
   return (
@@ -199,30 +200,36 @@ export default function Dashboard() {
                 <Rosout/>
               </Paper>
             </Grid>
+            {/* Canopen Nodes */}
+            <Grid item xs={12} md={8} lg={9}>
+              <Paper>
+                <CanopenNodes />
+              </Paper>
+            </Grid>
             {/* CANopen Outputs */}
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Paper className={fixedHeightPaper}>
                 <CanopenOutputs />
               </Paper>
-            </Grid>
+            </Grid> */}
             {/* CANopen Inputs */}
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Paper className={fixedHeightPaper}>
                 <CanopenInputs />
               </Paper>
-            </Grid>
+            </Grid> */}
             {/*  CANopen Object Dictionary */}
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <CanopenObjectDictionary />
               </Paper>
-            </Grid>
+            </Grid> */}
             {/*  Rosparams */}
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Rosparams />
               </Paper>
-            </Grid>
+            </Grid> */}
           </Grid>
           <Box pt={4}>
             <Copyright />

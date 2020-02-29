@@ -3,7 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Title from './Title';
 import Grid from '@material-ui/core/Grid'
 
-import CommonStore from '../stores/CommonStore';
+import RosStore from '../stores/RosStore';
+import RosActions from '../actions/RosActions';
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails} from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 
@@ -23,21 +24,23 @@ class RuntimeMonitor extends React.Component {
         super(...args);
 
         this.state = {
-            diagnosticItems: CommonStore.getState().get('diagnosticItems')
+            diagnosticItems: RosStore.getState().get('diagnosticItems')
         }
     }
 
     componentDidMount() {
-        CommonStore.on('change', this.storeChange);
+        RosStore.on('change', this.storeChange);
+        RosActions.connectCanopenRuntimeMonitor();
     }
 
     componentWillUnmount() {
-        CommonStore.removeListener('change', this.storeChange);
+        RosStore.removeListener('change', this.storeChange);
+        RosActions.disconnectCanopenRuntimeMonitor();
     }
 
     storeChange = () => {
         this.setState({
-            diagnosticItems: CommonStore.getState().get('diagnosticItems')
+            diagnosticItems: RosStore.getState().get('diagnosticItems')
         })
     }
 
@@ -51,6 +54,7 @@ class RuntimeMonitor extends React.Component {
         sortedDiagnosticItems.forEach(diagnosticItem => {
             diagnosticsPanelList.push(
                 <DiagnosticExpansionPanel
+                    key={diagnosticItem.get('name')}
                     diagnosticItem={diagnosticItem}
                     classes={classes}
                 />);
@@ -162,8 +166,10 @@ const DiagnosticTable = (props) => {
     return (
         <Table>
             <TableHead>
-                <TableCell>Name</TableCell>
-                <TableCell align='right'>Value</TableCell>
+                <TableRow>
+                    <TableCell>Name</TableCell>
+                    <TableCell align='right'>Value</TableCell>
+                </TableRow>
             </TableHead>
             <TableBody>
                 {tableRows}

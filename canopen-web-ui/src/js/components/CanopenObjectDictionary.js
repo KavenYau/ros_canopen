@@ -5,8 +5,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Title from './Title';
 import Grid from '@material-ui/core/Grid'
 
-import CommonActions from '../actions/CommonActions';
-import CommonStore from '../stores/CommonStore';
+import CommonActions from '../actions/RosActions';
+import CommonStore from '../stores/RosStore';
 import IconButton from '@material-ui/core/IconButton';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
