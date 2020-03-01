@@ -2,20 +2,15 @@
 /* eslint-disable no-script-url */
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Title from './Title';
 import Grid from '@material-ui/core/Grid'
 
 import CommonActions from '../actions/RosActions';
-import CommonStore from '../stores/RosStore';
+import RosStore from '../stores/RosStore';
 import IconButton from '@material-ui/core/IconButton';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
 import MaterialTable from 'material-table';
 
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
@@ -31,40 +26,32 @@ class Rosparams extends React.Component {
     super(...args);
 
     this.state = {
-      rosParams: CommonStore.getState().get('rosParams'),
-      canopenObjectDictionaries: CommonStore.getState().get('canopenObjectDictionaries'),
-      selectedNode: '',
+      rosParams: RosStore.getState().get('rosParams'),
+      canopenObjectDictionaries: RosStore.getState().get('canopenObjectDictionaries'),
       cached: false
     };
   }
 
   componentDidMount() {
-    CommonStore.on('change', this.storeChange);
+    RosStore.on('change', this.storeChange);
   }
 
   componentWillUnmount() {
-    CommonStore.removeListener('change', this.storeChange);
+    RosStore.removeListener('change', this.storeChange);
   }
 
   storeChange = () => {
     // Only update state if params of objectDictionary in store has changed
     // Running render while editing a Material Table row seems to break stuff
-    if (this.state.rosParams !== CommonStore.getState().get('rosParams') ||
-        this.state.canopenObjectDictionaries !== CommonStore.getState().get('canopenObjectDictionaries'))
+    if (this.state.rosParams !== RosStore.getState().get('rosParams') ||
+        this.state.canopenObjectDictionaries !== RosStore.getState().get('canopenObjectDictionaries'))
     {
       this.setState({
-        rosParams: CommonStore.getState().get('rosParams'),
-        canopenObjectDictionaries: CommonStore.getState().get('canopenObjectDictionaries')
+        rosParams: RosStore.getState().get('rosParams'),
+        canopenObjectDictionaries: RosStore.getState().get('canopenObjectDictionaries')
       });
     }
   }
-
-  handleNodeSelectorChange = event => {
-    this.setState({
-      selectedNode: event.target.value
-    });
-    CommonActions.refreshObjectDictionaries([event.target.value]);
-  };
 
   handleToDeviceChange = event => {
     this.setState({
@@ -73,30 +60,12 @@ class Rosparams extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const { selectedNode } = this.state;
-
-    let canopenNodes = [];
-
-    this.state.rosParams.forEach(parameter => {
-      if (parameter.get('name') === 'canopen_nodes') {
-        canopenNodes = JSON.parse(parameter.get('valueString'))
-      }
-    });
-
-    const nodeMenuItems = [];
-    canopenNodes.forEach( nodeName => {
-      nodeMenuItems.push(
-        <MenuItem key={nodeName} value={nodeName}>
-          {nodeName}
-        </MenuItem>
-      );
-    });
+    const { canopenNode } = this.props;
 
     let canopenDictionaryEntries = [];
-    if (this.state.canopenObjectDictionaries.get(selectedNode))
+    if (this.state.canopenObjectDictionaries.get(canopenNode))
     {
-      canopenDictionaryEntries = this.state.canopenObjectDictionaries.get(selectedNode).toJS()
+      canopenDictionaryEntries = this.state.canopenObjectDictionaries.get(canopenNode).toJS()
     }
 
     const data_type_names = [
@@ -136,21 +105,7 @@ class Rosparams extends React.Component {
 
     return (
       <React.Fragment>
-        <Grid container justify='space-between'>
-        <Grid item>
-          <Title>Object Dictionary</Title>
-        </Grid>
-        <Grid item>
-          <FormControl className={classes.formControl}>
-            <InputLabel>CANopen Node</InputLabel>
-            <Select 
-              value={selectedNode}
-              onChange={this.handleNodeSelectorChange}  
-            >
-              {nodeMenuItems}
-            </Select>
-          </FormControl>
-        </Grid>
+        <Grid container justify='center'>
         <Grid item>
         <FormControlLabel
           control={
@@ -164,7 +119,7 @@ class Rosparams extends React.Component {
         </Grid>
         <Grid item>
           <IconButton
-            onClick={() => CommonActions.refreshObjectDictionaries(canopenNodes)}
+            onClick={() => CommonActions.refreshObjectDictionaries([canopenNode])}
           >
             <RefreshIcon color='primary'/>
           </IconButton>
@@ -178,18 +133,18 @@ class Rosparams extends React.Component {
             { title: 'Value', field: 'value' },
           ]}
           data={canopenDictionaryEntries}
-          title={selectedNode}
+          title='Object Dictionary'
           editable={{
             onRowUpdate: (newData, oldData) => 
               new Promise(resolve => {
-                CommonActions.updateCanopenObject(newData, oldData, selectedNode);
+                CommonActions.updateCanopenObject(newData, oldData, canopenNode);
                 resolve();
               })}}
           actions={[
             rowData => ({
               icon: 'refresh',
               tooltip: 'Read value',
-              onClick: (event, rowData) => CommonActions.callCanopenGetObjectService(selectedNode, rowData, this.state.cached)
+              onClick: (event, rowData) => CommonActions.callCanopenGetObjectService(canopenNode, rowData, this.state.cached)
             })
           ]}
         />

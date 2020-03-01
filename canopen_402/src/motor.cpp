@@ -587,7 +587,9 @@ void Motor402::handleWrite(LayerStatus &status, const LayerState &current_state)
     if (start_fault_reset_.exchange(false)) {
       control_word_entry_.set_cached(control_word_ & ~(1 << Command402::CW_Fault_Reset));
     } else {
-      control_word_entry_.set_cached(control_word_);
+      // FIXME(sam): cached should work...
+      // control_word_entry_.set_cached(control_word_);
+      control_word_entry_.set(control_word_);
     }
   }
 }
@@ -720,35 +722,37 @@ void Motor402::handleInit(LayerStatus &status)
     start_fault_reset_ = true;
   }
 
-  if (!switchState(status, State402::Operation_Enable)) {
-    status.error("Could not enable motor");
-    return;
-  }
+  // FIXME(sam): This does not seem to work for Nanotec N5 drivers, PDO mapping? 
 
-  ModeSharedPtr m = allocMode(MotorBase::Homing);
+  // if (!switchState(status, State402::Operation_Enable)) {
+  //   status.error("Could not enable motor");
+  //   return;
+  // }
 
-  if (!m) {
-    return; // homing not supported
-  }
+  // ModeSharedPtr m = allocMode(MotorBase::Homing);
 
-  HomingMode *homing = dynamic_cast<HomingMode*>(m.get());
+  // if (!m) {
+  //   return; // homing not supported
+  // }
 
-  if (!homing) {
-    status.error("Homing mode has incorrect handler");
-    return;
-  }
+  // HomingMode *homing = dynamic_cast<HomingMode*>(m.get());
 
-  if (!switchMode(status, MotorBase::Homing)) {
-    status.error("Could not enter homing mode");
-    return;
-  }
+  // if (!homing) {
+  //   status.error("Homing mode has incorrect handler");
+  //   return;
+  // }
 
-  if (!homing->executeHoming(status)) {
-    status.error("Homing failed");
-    return;
-  }
+  // if (!switchMode(status, MotorBase::Homing)) {
+  //   status.error("Could not enter homing mode");
+  //   return;
+  // }
 
-  switchMode(status, No_Mode);
+  // if (!homing->executeHoming(status)) {
+  //   status.error("Homing failed");
+  //   return;
+  // }
+
+  // switchMode(status, No_Mode);
 }
 
 void Motor402::handleShutdown(LayerStatus &status)

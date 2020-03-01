@@ -106,7 +106,7 @@ void CanopenChainComponent::report_diagnostics(diagnostic_updater::DiagnosticSta
     diag(report);
     if (report.bounded<canopen::LayerStatus::Unbounded>())
     {
-      // NOTE(sam): I think this runs if the  report is "valid"...
+      // NOTE(sam): I think this runs if the report is "valid"...
       stat.summary(report.get(), report.reason());
       for (std::vector<std::pair<std::string, std::string>>::const_iterator it =
            report.values().begin(); it != report.values().end(); ++it)
@@ -206,7 +206,7 @@ void CanopenChainComponent::handle_get_object(
     const std::shared_ptr<canopen_msgs::srv::GetObject::Request> request,
     std::shared_ptr<canopen_msgs::srv::GetObject::Response> response)
 {
-  RCLCPP_INFO(this->get_logger(), "Getting object: %s from node: %s", 
+  RCLCPP_INFO(this->get_logger(), "Getting object %s from node %s", 
               request->object.c_str(), request->node.c_str());
 
   if (!request->cached && getLayerState() == Off)
@@ -233,6 +233,8 @@ void CanopenChainComponent::handle_get_object(
 
       response->message = "Got object without issues!";
       response->success = true;
+      RCLCPP_INFO(this->get_logger(), "Got object %s from node %s: %s", 
+                  request->object.c_str(), request->node.c_str(), value.c_str());
       
     } catch (std::exception &e) {
       RCLCPP_WARN(this->get_logger(), 
@@ -416,7 +418,7 @@ bool CanopenChainComponent::configure_nodes()
   add(nodes_);
   add(emcy_handlers_);
 
-  // add(motors_);
+  add(motors_);
 
   return true;
 }
@@ -557,7 +559,9 @@ bool CanopenChainComponent::configure_node(std::string node_name)
     motor_profile_subcomponents_.push_back(motor_subcomponent);
 
     // logger->add(motor_subcomponent->getMotor());
-    motors_->add(motor_subcomponent->getMotor());
+    auto motor = motor_subcomponent->getMotor();
+    motors_->add(motor);
+    logger->add(motor);
   }
 
   loggers_.push_back(logger);
@@ -587,8 +591,15 @@ CanopenChainComponent::on_activate(const rclcpp_lifecycle::State &)
   }
 
   std::flush(std::cout);
-  if (getLayerState() == Off) {
-    RCLCPP_ERROR(this->get_logger(), "Could not initialize main CAN Layer! Is the CAN network available? Is device power on?");
+  if ( !status.bounded<canopen::LayerStatus::Ok>() ) {
+    RCLCPP_ERROR(this->get_logger(), "Could not initialize main CAN Layer. %s", status.reason().c_str());
+
+    this->Layer::shutdown(status);
+    return rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn::FAILURE;
+  } else if (getLayerState() == Off) {
+
+    RCLCPP_ERROR(this->get_logger(), "Could not initialize main CAN Layer. Reason unknown.");
+
     this->Layer::shutdown(status);
     return rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn::FAILURE;
   }
@@ -633,7 +644,7 @@ void CanopenChainComponent::update_callback()
       // trigger_transition(lifecycle_msgs::msg::Transition::TRANSITION_DEACTIVATE);
     } else if (!layer_status.bounded<canopen::LayerStatus::Ok>()) {
       RCLCPP_WARN_ONCE(this->get_logger(), layer_status.reason());
-    }
+}
   } catch (const canopen::Exception &e) {
     RCLCPP_ERROR(this->get_logger(), boost::diagnostic_information(e));
   }}

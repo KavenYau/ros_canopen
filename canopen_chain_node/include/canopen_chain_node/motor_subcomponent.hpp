@@ -24,6 +24,7 @@
 #include <pluginlib/class_loader.hpp>
 
 #include <canopen_msgs/srv/switch_motor_operation_mode.hpp>
+#include <canopen_msgs/srv/switch402_state.hpp>
 #include <canopen_msgs/msg/motor_state.hpp>
 
 #include "canopen_chain_helpers.hpp"
@@ -48,6 +49,7 @@ private:
     rclcpp_lifecycle::LifecycleNode *parent_component_;
 
     rclcpp::Service<canopen_msgs::srv::SwitchMotorOperationMode>::SharedPtr switch_operation_mode_srv_;
+    rclcpp::Service<canopen_msgs::srv::Switch402State>::SharedPtr switch_402_state_srv_;
 
     std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<canopen_msgs::msg::MotorState>> motor_state_publisher_;
     rclcpp::TimerBase::SharedPtr motor_state_publisher_timer_;
@@ -61,6 +63,10 @@ private:
     bool switchMode(const canopen::MotorBase::OperationMode &m);
 
     void publishMotorState();
+
+    void handleSwitch402State(
+            const std::shared_ptr<canopen_msgs::srv::Switch402State::Request> request,
+            std::shared_ptr<canopen_msgs::srv::Switch402State::Response> response);
 };
 
 }  // namespace canopen_chain_node

@@ -24,6 +24,7 @@ class RosActions {
             this.rosClient = rosClient;
             this.isConnected = true;
             this.connectRosparams('canopen_chain');
+            this.connectCanopenObjectDictionary();
         });
 
         rosClient.on('error', (error) => {
@@ -53,7 +54,6 @@ class RosActions {
     }
 
     connectRosparams = (rosNodeName) => {
-        console.log('Connecting rosparams for ' + rosNodeName);
         this.listParametersService = new RosLib.Service({
             ros: this.rosClient,
             name: rosNodeName + '/list_parameters',
@@ -74,36 +74,11 @@ class RosActions {
 
         this.refreshParameters();
 
-        // this.listObjectDictionariesService = new RosLib.Service({
-        //     ros: this.rosClient,
-        //     name: '/list_object_dictionaries',
-        //     serviceType: 'canopen_msgs/srv/ListObjectDictionaries'
-        // });
-
-        // this.canopenGetObjectService = new RosLib.Service({
-        //     ros: this.rosClient,
-        //     name: '/get_object',
-        //     serviceType: 'canopen_msgs/srv/GetObject'
-        // });
-
-        // this.canopenSetObjectService = new RosLib.Service({
-        //     ros: this.rosClient,
-        //     name: '/set_object',
-        //     serviceType: 'canopen_msgs/srv/SetObject'
-        // });
-
-        // this.canopenSetDigitalOutputService = new RosLib.Service({
-        //     ros: this.rosClient,
-        //     name: '/set_digital_output',
-        //     serviceType: 'canopen_msgs/srv/SetDigitalOutput'
-        // });
     }
 
     // ----- Runtime Monitor -----
 
     connectCanopenRuntimeMonitor = () => {
-        console.log('Connecting runtime monitor!');
-
         if (this.isConnected) 
         {
             this.diagnosticsListener = new RosLib.Topic({
@@ -131,7 +106,6 @@ class RosActions {
     // ----- Lifecycle -----
 
     connectLifecycle = (rosNodeName) => {
-        console.log('Connecting lifecycle manager!');
         if (this.isConnected) 
         {
             this.changeLifecycleChaneStateService = new RosLib.Service({
@@ -177,7 +151,6 @@ class RosActions {
     // ----- Rosout -----
 
     connectCanopenRosout = (rosNodeName) => {
-        console.log('Connecting rosout!');
         if (this.isConnected) {
             const rosoutTopic = new RosLib.Topic({
                 ros: this.rosClient,
@@ -200,11 +173,88 @@ class RosActions {
         console.log('Disconnecting rosout!');
         // TODO(sam): Disconnect all topics etc...
     }
+    
+    // ----- CANopen Object Dictionary -----
+
+    connectCanopenObjectDictionary = (canopenNode) => {
+
+        this.listObjectDictionariesService = new RosLib.Service({
+            ros: this.rosClient,
+            name: '/list_object_dictionaries',
+            serviceType: 'canopen_msgs/srv/ListObjectDictionaries'
+        });
+
+        this.canopenGetObjectService = new RosLib.Service({
+            ros: this.rosClient,
+            name: '/get_object',
+            serviceType: 'canopen_msgs/srv/GetObject'
+        });
+
+        this.canopenSetObjectService = new RosLib.Service({
+            ros: this.rosClient,
+            name: '/set_object',
+            serviceType: 'canopen_msgs/srv/SetObject'
+        });
+
+    }
+
+    disconnectCanopenObjectDictionary = () => {
+        console.log('Disconnecting object dictionary!');
+        // TODO(sam): Disconnect all topics etc...
+    }
 
     // ----- CANopen Motor -----
 
     connectCanopenMotor = (canopenNode) => {
-        console.log('Connecting canopen motor!');
+        // console.log('Connecting canopen motor!');
+        if (this.isConnected)
+        {
+            this.canopenMotorState = new RosLib.Topic({
+                ros: this.rosClient,
+                name: canopenNode + '/motor_state',
+                messageType: 'canopen_msgs/msg/MotorState'
+            });
+
+            this.canopenMotorState.subscribe(message => {
+                // console.log('Got motor state!');
+                dispatcher.dispatch({
+                    type: 'CANOPEN_MOTOR_STATE',
+                    nodeName: canopenNode,
+                    operationMode: message.operation_mode,
+                    state402: message.state_402
+                });
+            });
+
+            this.canopenMotorSwitch402StateService = new RosLib.Service({
+                ros: this.rosClient,
+                name: canopenNode + '/switch_402_state',
+                serviceType: 'canopen_msgs/srv/Switch402State'
+            });
+
+        } else {
+            setTimeout( () => {this.connectCanopenMotor(canopenNode)}, 250);
+        }
+    }
+
+    callCanopenMotorSwitch402State = (state) =>
+    {
+        const request = new RosLib.ServiceRequest({
+            state 
+        });
+        this.canopenMotorSwitch402StateService.callService(request, response => {
+            console.log("Got from switching 402 state: " + response.message);
+        })
+    }
+
+    disconnectCanopenMotor = (nodeName) => {
+        console.log('Disconnecting canopen motor!');
+        // TODO(sam): Disconnect all topics etc...
+        this.canopenMotorState.unsubscribe();
+    }
+
+    // ----- CANopen IO -----
+    connectCanopenIO = (nodeName) => {
+        console.log('Connecting canopen IO!');
         // this.canopenInputs = new RosLib.Topic({
         //     ros: this.rosClient,
         //     name: '/node_1/inputs',
@@ -234,10 +284,16 @@ class RosActions {
         //         digital_outputs: message.digital_outputs
         //     });
         // });
+
+        // this.canopenSetDigitalOutputService = new RosLib.Service({
+        //     ros: this.rosClient,
+        //     name: '/set_digital_output',
+        //     serviceType: 'canopen_msgs/srv/SetDigitalOutput'
+        // });
     }
 
-    disconnectCanopenMotor = (nodeName) => {
-        console.log('Disconnecting canopen motor!');
+    disconnectCanopenIO = (nodeName) => {
+        console.log('Disconnecting canopen IO!');
         // TODO(sam): Disconnect all topics etc...
     }
 

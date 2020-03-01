@@ -23,10 +23,11 @@ set(msg_files
 
 set(srv_files
   "srv/GetObject.srv"
+  "srv/ListObjectDictionaries.srv"
   "srv/SetDigitalOutput.srv"
   "srv/SetObject.srv"
+  "srv/Switch402State.srv"
   "srv/SwitchMotorOperationMode.srv"
-  "srv/ListObjectDictionaries.srv"
 )
 
 rosidl_generate_interfaces(${PROJECT_NAME}

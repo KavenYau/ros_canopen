@@ -71,8 +71,28 @@ MotorSubcomponent::MotorSubcomponent(
         canopen_node_name_ + "/motor_state", rclcpp::QoS(rclcpp::SystemDefaultsQoS()));
 }
 
+void MotorSubcomponent::handleSwitch402State(
+        const std::shared_ptr<canopen_msgs::srv::Switch402State::Request> request,
+        std::shared_ptr<canopen_msgs::srv::Switch402State::Response> response)
+{
+    RCLCPP_INFO(parent_component_->get_logger(), 
+            "Switching 402 State to %s",
+            request->state.c_str());
+
+    auto state = motor_->getStateFromString(request->state);
+    motor_->switchState(state);
+
+    response->success = false;
+    response->message = "Failed to switch 402 State";
+}
+
 void MotorSubcomponent::activate()
 {
+  switch_402_state_srv_ = parent_component_->create_service<canopen_msgs::srv::Switch402State>(
+      canopen_node_name_ + "/switch_402_state", 
+      std::bind(&MotorSubcomponent::handleSwitch402State, this,
+      std::placeholders::_1, std::placeholders::_2));
+
   motor_state_publisher_->on_activate();
 
   auto publish_motor_state_callback = [this]() -> void

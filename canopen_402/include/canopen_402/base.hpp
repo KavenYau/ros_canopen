@@ -51,13 +51,13 @@ public:
     internal_state_strings_(
     { 
       "Start",
-      "Not_Ready_To_Switch_On",
-      "Switch_On_Disabled",
-      "Ready_To_Switch_On",
-      "Switched_On",
-      "Operation_Enable",
-      "Quick_Stop_Active",
-      "Fault_Reaction_Active",
+      "Not Ready To Switch On",
+      "Switch On Disabled",
+      "Ready To Switch On",
+      "Switched On",
+      "Operation Enable",
+      "Quick Stop Active",
+      "Fault Reaction Active",
       "Fault"
     })
     {}
@@ -77,15 +77,17 @@ protected:
   : Layer(name), 
   operation_mode_strings_(
   {
-    "Start",
-    "Not_Ready_To_Switch_On",
-    "Switch_On_Disabled",
-    "Ready_To_Switch_On",
-    "Switched_On",
-    "Operation_Enable",
-    "Quick_Stop_Active",
-    "Fault_Reaction_Active",
-    "Fault"
+    "No Mode",
+    "Profiled Position",
+    "Velocity",
+    "Profiled Velocity",
+    "Profiled Torque",
+    "Reserved",
+    "Homing",
+    "Interpolated Position",
+    "Cyclic Synchronous Position",
+    "Cyclic Synchronous Velocity",
+    "Cyclic Synchronous Torque"
   })
   {}
 

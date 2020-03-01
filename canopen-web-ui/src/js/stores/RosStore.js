@@ -158,7 +158,8 @@ class CommonStore extends EventEmitter {
                             let value = action.value;
                             // NOTE(sam): for some reason, the canopen_master string
                             // reader represents numbers by using ascii character codes.
-                            if (canopenObject.get('data_type') === 5)
+                            const dataType = canopenObject.get('data_type');
+                            if (dataType === 2 || dataType === 5)
                             {
                                 let valueAsDecimalNubmer = '';
                                 valueAsDecimalNubmer += value.charCodeAt(0);
@@ -213,6 +214,18 @@ class CommonStore extends EventEmitter {
                     this.emit('change');
                     break;
                 }
+            case 'CANOPEN_MOTOR_STATE':
+                {
+                    const { operationMode, state402 } = action;
+                    const motorState = {
+                       operationMode,
+                       state402 
+                    };
+
+                    this.state = this.state.setIn(['canopenMotorStates', action.nodeName, ], Immutable.fromJS(motorState));
+                    this.emit('change');
+                    break;
+                }
             default:
                 console.log(`action.type '${action.type}' not recognized!`);
         }
@@ -227,7 +240,8 @@ CommonStore.defaultState = {
     diagnosticItems: {},
     canopenObjectDictionaries: {},
     canopenInputs: {},
-    canopenOutputs: {}
+    canopenOutputs: {},
+    canopenMotorStates: {}
 }
 
 const commonStore = new CommonStore();

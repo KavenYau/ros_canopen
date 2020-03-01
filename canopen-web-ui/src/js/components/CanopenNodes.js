@@ -10,6 +10,7 @@ import Box from '@material-ui/core/Box';
 import RosStore from '../stores/RosStore';
 
 import CanopenMotor from './CanopenMotor';
+import CanopenObjectDictionary from './CanopenObjectDictionary';
 
 const styles = theme => ({
     root: {
@@ -64,9 +65,12 @@ class CanopenNodes extends React.Component {
     }
 
     storeChange = () => {
-        this.setState({
-            rosParams: RosStore.getState().get('rosParams')
-        });
+        if (this.state.rosParams !== RosStore.getState().get('rosParams'))
+        {
+            this.setState({
+                rosParams: RosStore.getState().get('rosParams')
+            });
+        }
     }
 
     handleChange = (event, newValue) => {
@@ -122,6 +126,7 @@ class CanopenNodes extends React.Component {
                     </Tabs>
                 </AppBar>
                 {nodePanels}
+                <CanopenObjectDictionary canopenNode={canopenNodes[value]}/>
             </div>
         );
     }
