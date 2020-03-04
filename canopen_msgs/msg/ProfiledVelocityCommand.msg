@@ -1,0 +1,3 @@
+float32 target_velocity
+float32 profile_acceleration
+float32 profile_deceleration

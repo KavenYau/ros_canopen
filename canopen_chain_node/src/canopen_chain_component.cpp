@@ -569,10 +569,48 @@ bool CanopenChainComponent::configure_node(std::string node_name)
   return true;
 }
 
+void CanopenChainComponent::runUpdate()
+{
+  // FIXME(sam): should only run when active
+  while (rclcpp::ok())
+  {
+    auto start_time = std::chrono::system_clock::now();
+    update_callback();
+    auto next_time = start_time + std::chrono::microseconds(update_period_ms_);
+    std::this_thread::sleep_until(next_time);
+  }
+}
+
+CanopenChainComponent::~CanopenChainComponent()
+{
+  if (update_thread_.joinable())
+  {
+    update_thread_.join();
+  }
+}
+
 rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
 CanopenChainComponent::on_activate(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(this->get_logger(), "Activating canopen_chain");
+
+  // TODO(sam): Make optional implementation using a dedicated thread and "sleep_until". Don't use boost?
+  // NOTE(sam): The update loop needs to run in the background for 
+  // operation mode/ 402 State switching to work
+  use_dedicated_update_thread_ = true;
+  if (use_dedicated_update_thread_)
+  {
+    update_thread_ = std::thread(std::bind(&CanopenChainComponent::runUpdate, this));
+  } else {
+    update_timer_callback_group_ = create_callback_group(
+        rclcpp::callback_group::CallbackGroupType::MutuallyExclusive);
+
+    update_periodic_timer_ = create_wall_timer(
+      std::chrono::milliseconds(update_period_ms_), 
+      std::bind(&CanopenChainComponent::update_callback, this),
+      update_timer_callback_group_);
+  }
+  
 
   if (getLayerState() > Off) {
     RCLCPP_WARN(this->get_logger(), "Already initialized!");
@@ -605,10 +643,6 @@ CanopenChainComponent::on_activate(const rclcpp_lifecycle::State &)
   }
 
   RCLCPP_INFO(this->get_logger(), "CAN init has finished!");
-
-  // TODO(sam): Make optional implementation using a dedicated thread and "sleep_until". Don't use boost?
-  update_periodic_timer_ = create_wall_timer(
-    std::chrono::milliseconds(update_period_ms_), std::bind(&CanopenChainComponent::update_callback, this));
 
   if (use_heartbeat_)
   {
@@ -666,7 +700,17 @@ CanopenChainComponent::on_deactivate(const rclcpp_lifecycle::State &)
     status.error("Unknown exception while shutting down CAN Layers");
   }
 
-  update_periodic_timer_->cancel();
+  if (use_dedicated_update_thread_)
+  {
+    if (update_thread_.joinable())
+    {
+      update_thread_.join();
+    }
+  } else 
+  {
+    update_periodic_timer_->cancel();
+  }
+
   heartbeat_timer_->cancel();
 
   for(auto const& io_profile_subcomponent: io_profile_subcomponents_)

@@ -216,7 +216,6 @@ class RosActions {
             });
 
             this.canopenMotorState.subscribe(message => {
-                // console.log('Got motor state!');
                 dispatcher.dispatch({
                     type: 'CANOPEN_MOTOR_STATE',
                     nodeName: canopenNode,
@@ -231,9 +230,31 @@ class RosActions {
                 serviceType: 'canopen_msgs/srv/Switch402State'
             });
 
+            this.canopenMotorSwitchOperationModeService = new RosLib.Service({
+                ros: this.rosClient,
+                name: canopenNode + '/switch_operation_mode',
+                serviceType: 'canopen_msgs/srv/SwitchMotorOperationMode'
+            });
+
+            this.canopenMotorProfiledVelocityPublisher = new RosLib.Topic({
+                ros: this.rosClient,
+                name: canopenNode + '/profiled_velocity_command',
+                messageType: 'canopen_msgs/msg/ProfiledVelocityCommand'
+            });
+
         } else {
             setTimeout( () => {this.connectCanopenMotor(canopenNode)}, 250);
         }
+    }
+
+    publishProfiledVelocity = (targetVelocity, profileAccleration, profileDeceleration) => {
+        const msg = new RosLib.Message({
+            target_velocity: targetVelocity,
+            profile_acceleration: profileAccleration,
+            profile_deceleration: profileDeceleration
+        });
+
+        this.canopenMotorProfiledVelocityPublisher.publish(msg);
     }
 
     callCanopenMotorSwitch402State = (state) =>
@@ -242,7 +263,18 @@ class RosActions {
             state 
         });
         this.canopenMotorSwitch402StateService.callService(request, response => {
-            console.log("Got from switching 402 state: " + response.message);
+            console.log("Response from switching 402 state: " + response.message);
+        })
+    }
+
+    callCanopenMotorSwitchOperationMode = (operationMode) =>
+    {
+        console.log("changing operation mode to: " + operationMode);
+        const request = new RosLib.ServiceRequest({
+            operation_mode: operationMode 
+        });
+        this.canopenMotorSwitchOperationModeService.callService(request, response => {
+            console.log("Response from switching motor operation mode: " + response.message);
         })
     }
 

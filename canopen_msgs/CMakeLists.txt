@@ -19,6 +19,7 @@ set(msg_files
   "msg/MotorState.msg"
   "msg/ObjectDictionary.msg"
   "msg/ObjectDescription.msg"
+  "msg/ProfiledVelocityCommand.msg"
 )
 
 set(srv_files

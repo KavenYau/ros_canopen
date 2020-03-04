@@ -587,9 +587,7 @@ void Motor402::handleWrite(LayerStatus &status, const LayerState &current_state)
     if (start_fault_reset_.exchange(false)) {
       control_word_entry_.set_cached(control_word_ & ~(1 << Command402::CW_Fault_Reset));
     } else {
-      // FIXME(sam): cached should work...
-      // control_word_entry_.set_cached(control_word_);
-      control_word_entry_.set(control_word_);
+      control_word_entry_.set_cached(control_word_);
     }
   }
 }
@@ -722,12 +720,12 @@ void Motor402::handleInit(LayerStatus &status)
     start_fault_reset_ = true;
   }
 
-  // FIXME(sam): This does not seem to work for Nanotec N5 drivers, PDO mapping? 
+  if (!switchState(status, State402::Operation_Enable)) {
+    status.error("Could not enable motor");
+    return;
+  }
 
-  // if (!switchState(status, State402::Operation_Enable)) {
-  //   status.error("Could not enable motor");
-  //   return;
-  // }
+  // TODO(sam): Should not always home, even if available?
 
   // ModeSharedPtr m = allocMode(MotorBase::Homing);
 

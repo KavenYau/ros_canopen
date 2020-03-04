@@ -10,6 +10,8 @@ import IconButton from '@material-ui/core/IconButton';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
 import MaterialTable from 'material-table';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -44,8 +46,7 @@ class Rosparams extends React.Component {
     // Only update state if params of objectDictionary in store has changed
     // Running render while editing a Material Table row seems to break stuff
     if (this.state.rosParams !== RosStore.getState().get('rosParams') ||
-        this.state.canopenObjectDictionaries !== RosStore.getState().get('canopenObjectDictionaries'))
-    {
+      this.state.canopenObjectDictionaries !== RosStore.getState().get('canopenObjectDictionaries')) {
       this.setState({
         rosParams: RosStore.getState().get('rosParams'),
         canopenObjectDictionaries: RosStore.getState().get('canopenObjectDictionaries')
@@ -63,8 +64,7 @@ class Rosparams extends React.Component {
     const { canopenNode } = this.props;
 
     let canopenDictionaryEntries = [];
-    if (this.state.canopenObjectDictionaries.get(canopenNode))
-    {
+    if (this.state.canopenObjectDictionaries.get(canopenNode)) {
       canopenDictionaryEntries = this.state.canopenObjectDictionaries.get(canopenNode).toJS()
     }
 
@@ -99,47 +99,55 @@ class Rosparams extends React.Component {
       'UInt64',
     ]
 
-    canopenDictionaryEntries.forEach( entry => {
+    canopenDictionaryEntries.forEach(entry => {
       entry.data_type_name = data_type_names[entry.data_type]
     });
 
     return (
       <React.Fragment>
-        <Grid container justify='center'>
-        <Grid item>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={this.state.cached}
-              onChange={this.handleToDeviceChange}
+        <Grid container justify='space-around'>
+          <Grid item>
+            <Typography component="div" variant="h6">
+              <Box m={1}>
+                Object Dictionary
+              </Box>
+            </Typography>
+          </Grid>
+          <Grid item>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={this.state.cached}
+                  onChange={this.handleToDeviceChange}
+                />
+              }
+              label='Cached'
             />
-          }
-          label='Cached'
-        />
-        </Grid>
-        <Grid item>
-          <IconButton
-            onClick={() => CommonActions.refreshObjectDictionaries([canopenNode])}
-          >
-            <RefreshIcon color='primary'/>
-          </IconButton>
-        </Grid>
+          </Grid>
+          <Grid item>
+            <IconButton
+              onClick={() => CommonActions.refreshObjectDictionaries([canopenNode])}
+            >
+              <RefreshIcon color='primary' />
+            </IconButton>
+          </Grid>
         </Grid>
         <MaterialTable
           columns={[
-            { title: 'Index', field: 'index', editable: 'never'},
-            { title: 'Parameter Name', field: 'parameter_name', editable: 'never'},
-            { title: 'Data Type', field: 'data_type_name', editable: 'never'},
+            { title: 'Index', field: 'index', editable: 'never' },
+            { title: 'Parameter Name', field: 'parameter_name', editable: 'never' },
+            { title: 'Data Type', field: 'data_type_name', editable: 'never' },
             { title: 'Value', field: 'value' },
           ]}
           data={canopenDictionaryEntries}
-          title='Object Dictionary'
+          title=""
           editable={{
-            onRowUpdate: (newData, oldData) => 
+            onRowUpdate: (newData, oldData) =>
               new Promise(resolve => {
                 CommonActions.updateCanopenObject(newData, oldData, canopenNode);
                 resolve();
-              })}}
+              })
+          }}
           actions={[
             rowData => ({
               icon: 'refresh',

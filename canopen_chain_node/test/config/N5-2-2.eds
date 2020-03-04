@@ -992,6 +992,7 @@ ObjectType=0x7
 DataType=0x0007
 AccessType=rw
 DefaultValue=0x60420010
+ParameterValue=0x60ff0020
 PDOMapping=0
 
 [1602sub2]
@@ -1060,7 +1061,7 @@ ParameterName=Highest sub-index supported
 ObjectType=0x7
 DataType=0x0005
 AccessType=rw
-DefaultValue=0x01
+DefaultValue=0x02
 PDOMapping=0
 
 [1603sub1]
@@ -1069,7 +1070,7 @@ ObjectType=0x7
 DataType=0x0007
 AccessType=rw
 DefaultValue=0x60FE0120
-ParameterValue=0x60600008
+ParameterValue=0x60830020
 PDOMapping=0
 
 [1603sub2]
@@ -1078,6 +1079,7 @@ ObjectType=0x7
 DataType=0x0007
 AccessType=rw
 DefaultValue=0x00000000
+ParameterValue=0x60840020
 PDOMapping=0
 
 [1603sub3]
@@ -1871,6 +1873,7 @@ ObjectType=0x7
 DataType=0x0005
 AccessType=rw
 DefaultValue=0x02
+ParameterValue=0x03
 PDOMapping=0
 
 [1A00sub1]
@@ -1895,6 +1898,7 @@ ObjectType=0x7
 DataType=0x0007
 AccessType=rw
 DefaultValue=0x00000000
+ParameterValue=0x10010008
 PDOMapping=0
 
 [1A00sub4]
@@ -2033,6 +2037,7 @@ ObjectType=0x7
 DataType=0x0007
 AccessType=rw
 DefaultValue=0x60440010
+ParameterValue=0x606c0020
 PDOMapping=0
 
 [1A02sub2]

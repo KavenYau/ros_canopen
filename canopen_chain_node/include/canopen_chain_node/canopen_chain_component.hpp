@@ -40,6 +40,7 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <thread>
 // #include <utility>
 // #include <map>
 // #include <sys/stat.h>
@@ -55,6 +56,7 @@ class CanopenChainComponent : GuardedClassLoaderList, public canopen::LayerStack
 
 public:
   CanopenChainComponent();
+  ~CanopenChainComponent();
 
   rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn
   on_configure(const rclcpp_lifecycle::State &);
@@ -86,6 +88,10 @@ private:
   bool use_heartbeat_;
   float heartbeat_rate_;
 
+  bool use_dedicated_update_thread_;
+  std::thread update_thread_;
+  void runUpdate();
+
   canopen::MasterSharedPtr master_;
   canopen::SyncLayerSharedPtr sync_;
   can::DriverInterfaceSharedPtr interface_;
@@ -99,6 +105,8 @@ private:
   std::shared_ptr<canopen::LayerGroupNoDiag<canopen::EMCYHandler>> emcy_handlers_;
   std::vector<std::shared_ptr<IOSubcomponent>> io_profile_subcomponents_;
   std::vector<std::shared_ptr<MotorSubcomponent>> motor_profile_subcomponents_;
+
+  rclcpp::callback_group::CallbackGroup::SharedPtr update_timer_callback_group_;
 
   rclcpp::TimerBase::SharedPtr update_periodic_timer_;
   rclcpp::TimerBase::SharedPtr heartbeat_timer_;

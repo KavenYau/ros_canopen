@@ -30,6 +30,11 @@ find_package(Boost REQUIRED
     thread
 )
 
+# Uncomment for profiling with gprof
+# SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg")
+# SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
+# SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pg")
+
 include_directories(
   include
   ${rclcpp_lifecycle_INCLUDE_DIRS}
@@ -52,6 +57,7 @@ ament_target_dependencies(canopen_chain_component
   "canopen_master"
   "canopen_402"
   "canopen_msgs"
+  "std_msgs"
   "std_srvs"
   "lifecycle_msgs"
   "diagnostic_updater"

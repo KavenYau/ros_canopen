@@ -43,11 +43,28 @@ MotorSubcomponent::MotorSubcomponent(
             "Creating Motor Profile [402] Subcomponenet for %s",
             canopen_node_name_.c_str());
 
+    parent_component_->declare_parameter(canopen_node_name_ + ".device_type",
+                                         rclcpp::ParameterValue("unknown"));
+    parent_component_->declare_parameter(canopen_node_name_ + ".default_operation_mode",
+                                         rclcpp::ParameterValue("Profiled Velocity"));
+    parent_component_->declare_parameter(canopen_node_name_ + ".motor_to_angular_velocity_scaling_factor",
+                                         rclcpp::ParameterValue(1.0));
+
+    getParameters();
+
+    canopen_object_storage_->entry(velocity_actual_value_, 0x606c);
+    canopen_object_storage_->entry(profile_acceleration_, 0x6083);
+    canopen_object_storage_->entry(profile_deceleration_, 0x6084);
+
+    // Specific for Nanotech N5 motor controller
+    canopen_object_storage_->entry(velocity_numerator_, 0x2061);
+    canopen_object_storage_->entry(velocity_denominator_, 0x2062);
+
     // FIXME(sam): try to catch all possible timeout exceptions when reading/writing
     // to object dictionary to prevent program termination in case the canopen node stops responding.
 
     std::string alloc_name = "canopen_402/Motor402Allocator";
-    // TODO(sam): Remove/fix settings?
+    // TODO(sam): Remove/settings?
     RosSettings settings;
     try {
       motor_ = motor_allocator_.allocateInstance(
@@ -69,6 +86,9 @@ MotorSubcomponent::MotorSubcomponent(
 
     motor_state_publisher_ = parent_component_->create_publisher<canopen_msgs::msg::MotorState>(
         canopen_node_name_ + "/motor_state", rclcpp::QoS(rclcpp::SystemDefaultsQoS()));
+
+    velocity_actual_publisher_ = parent_component_->create_publisher<std_msgs::msg::Float32>(
+        canopen_node_name_ + "/velocity_actual", rclcpp::QoS(rclcpp::SystemDefaultsQoS()));
 }
 
 void MotorSubcomponent::handleSwitch402State(
@@ -80,27 +100,130 @@ void MotorSubcomponent::handleSwitch402State(
             request->state.c_str());
 
     auto state = motor_->getStateFromString(request->state);
-    motor_->switchState(state);
+    if (motor_->switchState(state))
+    {
+      response->success = true;
+      response->message = "Switched 402 State";
+    } else
+    {
+      response->success = false;
+      response->message = "Failed to switch 402 State";
+    }
+}
 
-    response->success = false;
-    response->message = "Failed to switch 402 State";
+
+void MotorSubcomponent::handleSwitchOperationMode(
+        const std::shared_ptr<canopen_msgs::srv::SwitchMotorOperationMode::Request> request,
+        std::shared_ptr<canopen_msgs::srv::SwitchMotorOperationMode::Response> response)
+{
+    RCLCPP_INFO(parent_component_->get_logger(), 
+            "Switching Operation Mode to %s",
+            request->operation_mode.c_str());
+
+    auto mode = motor_->getModeFromString(request->operation_mode);
+    if (motor_->enterModeAndWait(mode))
+    {
+      response->success = true;
+      response->message = "Switched Operation Mode";
+    } else
+    {
+      response->success = false;
+      response->message = "Failed to switch Operation Mode";
+    }
+}
+
+void MotorSubcomponent::getParameters()
+{
+  parent_component_->get_parameter(canopen_node_name_ + ".device_type",
+                                    device_type_);
+  RCLCPP_INFO(parent_component_->get_logger(),  
+              "%s device_type: %s", 
+              canopen_node_name_.c_str(),
+              device_type_.c_str());
+
+  if (device_type_ != "Nanotech-N5-2-2")
+  {
+    parent_component_->get_parameter(canopen_node_name_ + ".motor_to_angular_velocity_scaling_factor",
+                                     motor_to_angular_velocity_scaling_factor_);
+    RCLCPP_INFO(parent_component_->get_logger(),  
+                "%s motor_to_angular_velocity_scaling_factor: %f", 
+                canopen_node_name_.c_str(), 
+                motor_to_angular_velocity_scaling_factor_);
+  }
+
+  parent_component_->get_parameter(canopen_node_name_ + "default_operation_mode.",
+                                    default_operation_mode_);
+  RCLCPP_INFO(parent_component_->get_logger(),
+              "%s default_operation_mode: %s",
+              canopen_node_name_.c_str(),
+              default_operation_mode_.c_str());
+
 }
 
 void MotorSubcomponent::activate()
 {
+  if (device_type_ == "Nanotech-N5-2-2")
+  {
+    motor_to_angular_velocity_scaling_factor_ = 2 * M_PI * double(velocity_numerator_.get()) / double(velocity_denominator_.get());
+    RCLCPP_INFO(parent_component_->get_logger(),  
+                "%s motor_to_angular_velocity_scaling_factor: %f", 
+                canopen_node_name_.c_str(), 
+                motor_to_angular_velocity_scaling_factor_);
+  }
   switch_402_state_srv_ = parent_component_->create_service<canopen_msgs::srv::Switch402State>(
       canopen_node_name_ + "/switch_402_state", 
       std::bind(&MotorSubcomponent::handleSwitch402State, this,
       std::placeholders::_1, std::placeholders::_2));
 
-  motor_state_publisher_->on_activate();
+  switch_operation_mode_srv_ = parent_component_->create_service<canopen_msgs::srv::SwitchMotorOperationMode>(
+      canopen_node_name_ + "/switch_operation_mode", 
+      std::bind(&MotorSubcomponent::handleSwitchOperationMode, this,
+      std::placeholders::_1, std::placeholders::_2));
 
+  motor_state_publisher_->on_activate();
   auto publish_motor_state_callback = [this]() -> void
   {
     publishMotorState();
   };
-
   motor_state_publisher_timer_= parent_component_->create_wall_timer(100ms, publish_motor_state_callback);
+
+  velocity_actual_publisher_->on_activate();
+  auto publish_velocity_actual_callback = [this]() -> void
+  {
+    auto msg = std_msgs::msg::Float32();
+    msg.data = motor_to_angular_velocity_scaling_factor_ * velocity_actual_value_.get();
+    velocity_actual_publisher_->publish(msg);
+  };
+  velocity_actual_publisher_timer_= parent_component_->create_wall_timer(20ms, publish_velocity_actual_callback);
+
+  profiled_velocity_command_subscription_ = parent_component_->create_subscription<canopen_msgs::msg::ProfiledVelocityCommand>(
+    canopen_node_name_ + "/profiled_velocity_command",
+    10,
+    std::bind(&MotorSubcomponent::profiledVelocityCommandCallback, this, std::placeholders::_1));
+
+  if (!motor_->switchState(canopen::State402::Ready_To_Switch_On))
+  {
+      RCLCPP_ERROR(parent_component_->get_logger(), "Could not set moto to switched on");
+  }
+
+  // TODO(sam): Startup mode selectable by param?
+  motor_->enterModeAndWait(canopen::Motor402::Profiled_Velocity);
+
+  // FIXME(sam): Should not need to run this two times...
+  if (!motor_->switchState(canopen::State402::Operation_Enable))
+  {
+      RCLCPP_ERROR(parent_component_->get_logger(), "Could not enable motor");
+  }
+}
+
+void MotorSubcomponent::profiledVelocityCommandCallback(const canopen_msgs::msg::ProfiledVelocityCommand::SharedPtr msg)
+{
+    auto scaling_factor = 1/motor_to_angular_velocity_scaling_factor_;
+
+    profile_acceleration_.set(scaling_factor*msg->profile_acceleration);
+    profile_deceleration_.set(scaling_factor*msg->profile_deceleration);
+
+    motor_->setTarget(scaling_factor*msg->target_velocity);
 }
 
 void MotorSubcomponent::publishMotorState()
@@ -115,6 +238,7 @@ void MotorSubcomponent::publishMotorState()
 void MotorSubcomponent::deactivate()
 {
   motor_state_publisher_->on_deactivate();
+  velocity_actual_publisher_->on_deactivate();
 }
 
 bool MotorSubcomponent::switchMode(const canopen::MotorBase::OperationMode &operation_mode)
@@ -128,8 +252,8 @@ bool MotorSubcomponent::switchMode(const canopen::MotorBase::OperationMode &oper
             return false;
         }
     }
-    // NOTE(sam): hmmm
-    // motor_->switchState(canopen::State402::Quick_Stop_Active);
+
+    motor_->switchState(canopen::State402::Quick_Stop_Active);
     return true;
 }
 
