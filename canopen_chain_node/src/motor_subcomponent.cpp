@@ -56,7 +56,7 @@ MotorSubcomponent::MotorSubcomponent(
     canopen_object_storage_->entry(profile_acceleration_, 0x6083);
     canopen_object_storage_->entry(profile_deceleration_, 0x6084);
 
-    // Specific for Nanotech N5 motor controller
+    // Specific for Nanotec N5 motor controller
     canopen_object_storage_->entry(velocity_numerator_, 0x2061);
     canopen_object_storage_->entry(velocity_denominator_, 0x2062);
 
@@ -141,7 +141,7 @@ void MotorSubcomponent::getParameters()
               canopen_node_name_.c_str(),
               device_type_.c_str());
 
-  if (device_type_ != "Nanotech-N5-2-2")
+  if (device_type_ != "Nanotec-N5-2-2")
   {
     parent_component_->get_parameter(canopen_node_name_ + ".motor_to_angular_velocity_scaling_factor",
                                      motor_to_angular_velocity_scaling_factor_);
@@ -162,7 +162,7 @@ void MotorSubcomponent::getParameters()
 
 void MotorSubcomponent::activate()
 {
-  if (device_type_ == "Nanotech-N5-2-2")
+  if (device_type_ == "Nanotec-N5-2-2")
   {
     motor_to_angular_velocity_scaling_factor_ = 2 * M_PI * double(velocity_numerator_.get()) / double(velocity_denominator_.get());
     RCLCPP_INFO(parent_component_->get_logger(),  
