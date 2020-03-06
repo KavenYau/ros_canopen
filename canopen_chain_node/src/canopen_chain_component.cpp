@@ -420,6 +420,7 @@ bool CanopenChainComponent::configure_nodes()
   add(nodes_);
   add(emcy_handlers_);
 
+  // TODO(sam): implement a way to add layers from all subcomponents
   add(motors_);
 
   return true;
@@ -559,7 +560,7 @@ bool CanopenChainComponent::configure_node(std::string node_name)
 
     motor_profile_subcomponents_.push_back(motor_subcomponent);
 
-    // logger->add(motor_subcomponent->getMotor());
+    // TODO(sam): Move this inside motor subcomponent
     auto motor = motor_subcomponent->getMotor();
     motors_->add(motor);
     logger->add(motor);

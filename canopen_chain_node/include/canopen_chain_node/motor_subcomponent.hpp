@@ -75,13 +75,20 @@ private:
 
     std::string device_type_;
     std::string default_operation_mode_;
-    double motor_to_angular_velocity_scaling_factor_;
+    float motor_to_angular_velocity_scaling_factor_;
+    float gear_reduction_;
+    bool reverse_motor_direction_;
 
+    void declareParameters();
     void getParameters();
+    void initObjectDictionaryEntries();
+    void createMotorLayer();
+    void initRosInterface();
 
     bool switchMode(const canopen::MotorBase::OperationMode &m);
 
     void publishMotorState();
+    void publishVelocityActual();
 
     void handleSwitch402State(
             const std::shared_ptr<canopen_msgs::srv::Switch402State::Request> request,

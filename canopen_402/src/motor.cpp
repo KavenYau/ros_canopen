@@ -398,11 +398,6 @@ ModeSharedPtr Motor402::allocMode(uint16_t mode)
     boost::mutex::scoped_lock map_lock(map_mutex_);
     auto it = modes_.find(mode);
 
-    for( const auto& n : modes_ ) {
-        std::cout << "Key:[" << n.first << "] Value:[" << n.second << "]\n";
-    }
-
-    
     if (it != modes_.end()) {
       res = it->second;
     }

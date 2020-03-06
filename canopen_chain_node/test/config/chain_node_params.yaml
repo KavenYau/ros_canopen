@@ -48,6 +48,8 @@ canopen_chain:
       device_type: 'Nanotec-N5-2-2'
       default_operation_mode: 'Profiled Velocity'
       motor_to_angular_velocity_scaling_factor: 1.0 # not used for Nanotech driver
+      # gear_reduction: 2.0
+      # reverse_motor_direction: true
 
     motor_right:
       id: 3 

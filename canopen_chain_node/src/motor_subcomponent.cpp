@@ -43,15 +43,69 @@ MotorSubcomponent::MotorSubcomponent(
             "Creating Motor Profile [402] Subcomponenet for %s",
             canopen_node_name_.c_str());
 
+    declareParameters();
+    getParameters();
+
+    initObjectDictionaryEntries();
+
+    createMotorLayer();
+
+    initRosInterface();
+
+    // FIXME(sam): try to catch all possible timeout exceptions when reading/writing
+    // to object dictionary to prevent program termination in case the canopen node stops responding.
+}
+
+void MotorSubcomponent::declareParameters()
+{
     parent_component_->declare_parameter(canopen_node_name_ + ".device_type",
                                          rclcpp::ParameterValue("unknown"));
     parent_component_->declare_parameter(canopen_node_name_ + ".default_operation_mode",
                                          rclcpp::ParameterValue("Profiled Velocity"));
     parent_component_->declare_parameter(canopen_node_name_ + ".motor_to_angular_velocity_scaling_factor",
                                          rclcpp::ParameterValue(1.0));
+    parent_component_->declare_parameter(canopen_node_name_ + ".gear_reduction",
+                                         rclcpp::ParameterValue(1.0));
+    parent_component_->declare_parameter(canopen_node_name_ + ".reverse_motor_direction",
+                                         rclcpp::ParameterValue(false));
+}
 
-    getParameters();
+void MotorSubcomponent::getParameters()
+{
+  parent_component_->get_parameter(canopen_node_name_ + ".device_type",
+                                   device_type_);
+  RCLCPP_INFO(parent_component_->get_logger(),  
+              "%s, device_type: %s", 
+              canopen_node_name_.c_str(),
+              device_type_.c_str());
 
+  if (device_type_ != "Nanotec-N5-2-2")
+  {
+    parent_component_->get_parameter(canopen_node_name_ + ".motor_to_angular_velocity_scaling_factor",
+                                     motor_to_angular_velocity_scaling_factor_);
+    RCLCPP_INFO(parent_component_->get_logger(),  
+                "%s, motor_to_angular_velocity_scaling_factor: %f", 
+                canopen_node_name_.c_str(), 
+                motor_to_angular_velocity_scaling_factor_);
+  }
+
+  parent_component_->get_parameter(canopen_node_name_ + ".gear_reduction",
+                                   gear_reduction_);
+  RCLCPP_INFO(parent_component_->get_logger(),
+              "%s, gear reduction: %f",
+              canopen_node_name_.c_str(),
+              gear_reduction_);
+
+  parent_component_->get_parameter(canopen_node_name_ + ".reverse_motor_direction",
+                                   reverse_motor_direction_);
+  RCLCPP_INFO(parent_component_->get_logger(),
+              "%s, reverse_motor_direction: %s",
+              canopen_node_name_.c_str(),
+              reverse_motor_direction_ ? "true": "false");
+}
+
+void MotorSubcomponent::initObjectDictionaryEntries()
+{
     canopen_object_storage_->entry(velocity_actual_value_, 0x606c);
     canopen_object_storage_->entry(profile_acceleration_, 0x6083);
     canopen_object_storage_->entry(profile_deceleration_, 0x6084);
@@ -59,18 +113,18 @@ MotorSubcomponent::MotorSubcomponent(
     // Specific for Nanotec N5 motor controller
     canopen_object_storage_->entry(velocity_numerator_, 0x2061);
     canopen_object_storage_->entry(velocity_denominator_, 0x2062);
+}
 
-    // FIXME(sam): try to catch all possible timeout exceptions when reading/writing
-    // to object dictionary to prevent program termination in case the canopen node stops responding.
-
+void MotorSubcomponent::createMotorLayer()
+{
     std::string alloc_name = "canopen_402/Motor402Allocator";
-    // TODO(sam): Remove/settings?
+    // TODO(sam): Remove settings?
     RosSettings settings;
     try {
       motor_ = motor_allocator_.allocateInstance(
           alloc_name,
-          canopen_node_name + "_motor",
-          canopen_object_storage,
+          canopen_node_name_ + "_motor",
+          canopen_object_storage_,
           settings);
     } catch (const std::exception &e) {
       std::string info = boost::diagnostic_information(e);
@@ -83,7 +137,10 @@ MotorSubcomponent::MotorSubcomponent(
     }
 
     motor_->registerDefaultModes(canopen_object_storage_);
+}
 
+void MotorSubcomponent::initRosInterface()
+{
     motor_state_publisher_ = parent_component_->create_publisher<canopen_msgs::msg::MotorState>(
         canopen_node_name_ + "/motor_state", rclcpp::QoS(rclcpp::SystemDefaultsQoS()));
 
@@ -111,7 +168,6 @@ void MotorSubcomponent::handleSwitch402State(
     }
 }
 
-
 void MotorSubcomponent::handleSwitchOperationMode(
         const std::shared_ptr<canopen_msgs::srv::SwitchMotorOperationMode::Request> request,
         std::shared_ptr<canopen_msgs::srv::SwitchMotorOperationMode::Response> response)
@@ -130,34 +186,6 @@ void MotorSubcomponent::handleSwitchOperationMode(
       response->success = false;
       response->message = "Failed to switch Operation Mode";
     }
-}
-
-void MotorSubcomponent::getParameters()
-{
-  parent_component_->get_parameter(canopen_node_name_ + ".device_type",
-                                    device_type_);
-  RCLCPP_INFO(parent_component_->get_logger(),  
-              "%s device_type: %s", 
-              canopen_node_name_.c_str(),
-              device_type_.c_str());
-
-  if (device_type_ != "Nanotec-N5-2-2")
-  {
-    parent_component_->get_parameter(canopen_node_name_ + ".motor_to_angular_velocity_scaling_factor",
-                                     motor_to_angular_velocity_scaling_factor_);
-    RCLCPP_INFO(parent_component_->get_logger(),  
-                "%s motor_to_angular_velocity_scaling_factor: %f", 
-                canopen_node_name_.c_str(), 
-                motor_to_angular_velocity_scaling_factor_);
-  }
-
-  parent_component_->get_parameter(canopen_node_name_ + ".default_operation_mode",
-                                    default_operation_mode_);
-  RCLCPP_INFO(parent_component_->get_logger(),
-              "%s default_operation_mode: %s",
-              canopen_node_name_.c_str(),
-              default_operation_mode_.c_str());
-
 }
 
 void MotorSubcomponent::activate()
@@ -190,9 +218,7 @@ void MotorSubcomponent::activate()
   velocity_actual_publisher_->on_activate();
   auto publish_velocity_actual_callback = [this]() -> void
   {
-    auto msg = std_msgs::msg::Float32();
-    msg.data = motor_to_angular_velocity_scaling_factor_ * velocity_actual_value_.get();
-    velocity_actual_publisher_->publish(msg);
+    publishVelocityActual();
   };
   velocity_actual_publisher_timer_= parent_component_->create_wall_timer(20ms, publish_velocity_actual_callback);
 
@@ -216,9 +242,27 @@ void MotorSubcomponent::activate()
   }
 }
 
+void MotorSubcomponent::publishVelocityActual()
+{
+    float scaling_factor = motor_to_angular_velocity_scaling_factor_/gear_reduction_;
+    if (reverse_motor_direction_)
+    {
+      scaling_factor *= -1;
+    }
+
+    auto msg = std_msgs::msg::Float32();
+    msg.data = scaling_factor * velocity_actual_value_.get();
+    velocity_actual_publisher_->publish(msg);
+}
+
 void MotorSubcomponent::profiledVelocityCommandCallback(const canopen_msgs::msg::ProfiledVelocityCommand::SharedPtr msg)
 {
-    auto scaling_factor = 1/motor_to_angular_velocity_scaling_factor_;
+    auto scaling_factor = gear_reduction_/motor_to_angular_velocity_scaling_factor_;
+
+    if (reverse_motor_direction_) 
+    {
+      scaling_factor *= -1;
+    }
 
     profile_acceleration_.set(scaling_factor*msg->profile_acceleration);
     profile_deceleration_.set(scaling_factor*msg->profile_deceleration);
