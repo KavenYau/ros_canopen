@@ -123,6 +123,8 @@ CanopenChainComponent::on_configure(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(this->get_logger(), "Configuring canopen_chain");
 
+  motors_.reset(new canopen::LayerGroupNoDiag<canopen::MotorBase>("402 Layer"));
+
   srv_recover_ = create_service<std_srvs::srv::Trigger>(
         "recover", std::bind(&CanopenChainComponent::handle_recover, this,
                             std::placeholders::_1, std::placeholders::_2));
@@ -545,7 +547,6 @@ bool CanopenChainComponent::configure_node(std::string node_name)
     ));
   }
 
-  motors_.reset(new canopen::LayerGroupNoDiag<canopen::MotorBase>("402 Layer"));
 
   if (std::find(canopen_profiles.begin(), canopen_profiles.end(), "motor") != canopen_profiles.end())
   {

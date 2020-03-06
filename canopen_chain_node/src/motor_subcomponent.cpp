@@ -151,7 +151,7 @@ void MotorSubcomponent::getParameters()
                 motor_to_angular_velocity_scaling_factor_);
   }
 
-  parent_component_->get_parameter(canopen_node_name_ + "default_operation_mode.",
+  parent_component_->get_parameter(canopen_node_name_ + ".default_operation_mode",
                                     default_operation_mode_);
   RCLCPP_INFO(parent_component_->get_logger(),
               "%s default_operation_mode: %s",
@@ -203,7 +203,7 @@ void MotorSubcomponent::activate()
 
   if (!motor_->switchState(canopen::State402::Ready_To_Switch_On))
   {
-      RCLCPP_ERROR(parent_component_->get_logger(), "Could not set moto to switched on");
+      RCLCPP_ERROR(parent_component_->get_logger(), "Could not set motor to switched on");
   }
 
   // TODO(sam): Startup mode selectable by param?

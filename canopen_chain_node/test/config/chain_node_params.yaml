@@ -25,8 +25,11 @@ canopen_chain:
       eds_pkg: 'canopen_chain_node' # optional package  name for relative path
       eds_file: 'test/config/phyPS409Y.eds' # path to EDS/DCF file
 
-    canopen_nodes: ['motor_right']
-
+    canopen_nodes: ['motor_left', 'motor_right'] 
+    # canopen_nodes: ['motor_right', 'motor_left'] 
+    # canopen_nodes: ['motor_right'] 
+    # canopen_nodes: ['motor_left']
+      
     # io:
     #   id: 5
     #   profiles: ['io']
@@ -37,8 +40,8 @@ canopen_chain:
     #     digital_input_names: ['joystick_down', 'joystick_right', 'joystick_up', 'joystick_left']
     #     digital_output_names: ['everyting_is_fine_lamp', '', '', '', '', '', '', '', '', '', '', '', '', '', '','', 'relay_0', 'relay_1', 'relay_2', 'reset_emcy_stop']
 
-    motor_right:
-      id: 1 
+    motor_left:
+      id: 2 
       profiles: ['motor']
       eds_pkg: 'canopen_chain_node' # optional package  name for relative path
       eds_file: 'test/config/N5-2-2.eds' # path to EDS/DCF file
@@ -46,8 +49,8 @@ canopen_chain:
       default_operation_mode: 'Profiled Velocity'
       motor_to_angular_velocity_scaling_factor: 1.0 # not used for Nanotech driver
 
-    motor_left:
-      id: 2 
+    motor_right:
+      id: 3 
       profiles: ['motor']
       eds_pkg: 'canopen_chain_node' # optional package  name for relative path
       eds_file: 'test/config/N5-2-2.eds' # path to EDS/DCF file
