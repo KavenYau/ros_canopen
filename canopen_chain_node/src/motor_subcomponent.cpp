@@ -259,13 +259,14 @@ void MotorSubcomponent::profiledVelocityCommandCallback(const canopen_msgs::msg:
 {
     auto scaling_factor = gear_reduction_/motor_to_angular_velocity_scaling_factor_;
 
+    //NOTE(sam): Don't reverse direction for acceleration
+    profile_acceleration_.set(scaling_factor*msg->profile_acceleration);
+    profile_deceleration_.set(scaling_factor*msg->profile_deceleration);
+
     if (reverse_motor_direction_) 
     {
       scaling_factor *= -1;
     }
-
-    profile_acceleration_.set(scaling_factor*msg->profile_acceleration);
-    profile_deceleration_.set(scaling_factor*msg->profile_deceleration);
 
     motor_->setTarget(scaling_factor*msg->target_velocity);
 }
