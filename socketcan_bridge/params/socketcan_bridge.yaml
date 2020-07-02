@@ -1,0 +1,9 @@
+socketcan_bridge_node:
+  ros__parameters:
+    can_devices: ["can0", "can1"]
+    can0:
+      send_topic: "/can0/send"
+      receive_topic: "/can0/receive"
+    can1:
+      send_topic: "/can1/send"
+      receive_topic: "/can1/receive"
