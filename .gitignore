@@ -26,3 +26,6 @@ srv_gen
 
 # docker
 docker_includes
+
+# vscode
+.vscode

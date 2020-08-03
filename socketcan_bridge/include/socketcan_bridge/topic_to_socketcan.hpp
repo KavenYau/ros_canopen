@@ -25,7 +25,7 @@ namespace socketcan_bridge
 class TopicToSocketCAN
 {
 public:
-  TopicToSocketCAN(rclcpp::Node::SharedPtr node_ptr, can::DriverInterfaceSharedPtr driver);
+  TopicToSocketCAN(rclcpp::Node::SharedPtr node_ptr, can::DriverInterfaceSharedPtr driver, const std::string &topic);
   void setup();
 
 private:

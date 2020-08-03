@@ -27,9 +27,11 @@ int main(int argc, char * argv[])
   auto node = rclcpp::Node::make_shared("socketcan_to_topic_node");
 
   node->declare_parameter("can_device");
+  node->declare_parameter("topic");
 
-  std::string can_device;
+  std::string can_device, topic;
   node->get_parameter_or<std::string>("can_device", can_device, "can0");
+  node->get_parameter_or<std::string>("topic", topic, "/can0/receive");
 
   can::ThreadedSocketCANInterfaceSharedPtr driver =
     std::make_shared<can::ThreadedSocketCANInterface>();
@@ -48,7 +50,7 @@ int main(int argc, char * argv[])
       can_device.c_str());
   }
 
-  socketcan_bridge::SocketCANToTopic to_topic_bridge(node, driver);
+  socketcan_bridge::SocketCANToTopic to_topic_bridge(node, driver, topic);
   to_topic_bridge.setup(node);
 
   rclcpp::spin(node);

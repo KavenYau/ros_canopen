@@ -28,7 +28,7 @@ namespace socketcan_bridge
 class SocketCANToTopic
 {
 public:
-  SocketCANToTopic(rclcpp::Node::SharedPtr node_ptr, can::DriverInterfaceSharedPtr driver);
+  SocketCANToTopic(rclcpp::Node::SharedPtr node_ptr, can::DriverInterfaceSharedPtr driver, const std::string &topic);
   void setup();
   void setup(const can::FilteredFrameListener::FilterVector & filters);
   // void setup(XmlRpc::XmlRpcValue filters);  // TODO: Find replacement for XmlRpc filters.

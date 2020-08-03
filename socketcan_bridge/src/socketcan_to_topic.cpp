@@ -40,9 +40,11 @@ namespace socketcan_bridge
 {
 SocketCANToTopic::SocketCANToTopic(
   rclcpp::Node::SharedPtr node_ptr,
-  can::DriverInterfaceSharedPtr driver)
+  can::DriverInterfaceSharedPtr driver,
+  const std::string &topic)
 : node_ptr_(node_ptr),
-  can_topic_(node_ptr_->create_publisher<can_msgs::msg::Frame>("received_messages", 10)),
+  // can_topic_(node_ptr_->create_publisher<can_msgs::msg::Frame>("received_messages", 10)),
+  can_topic_(node_ptr_->create_publisher<can_msgs::msg::Frame>(topic, 10)),
   driver_(driver)
 {}
 
